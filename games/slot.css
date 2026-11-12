@@ -3,9 +3,21 @@
 @media(min-width:680px){.slot-frame{max-width:790px;margin:auto}.fortune .slot-frame{max-width:625px}.grid-reels{gap:7px}.reel{gap:7px}.symbol .glyph{font-size:76px}.fortune .symbol .glyph{font-size:110px}}
 @media(max-width:340px){.grid-reels{gap:2px;padding:2px}.reel{gap:2px}.symbol{border-radius:5px}.symbol .glyph{font-size:25px}.fortune .symbol .glyph{font-size:42px}}
 /* V3: cinta vertical con frenada y rebote suave en vez de símbolos parpadeantes. */
-.reel.reel-motion{display:block!important;position:relative;overflow:hidden!important;isolation:isolate;contain:paint;border-radius:9px;box-sizing:border-box}
-.reel-tape{display:flex;flex-direction:column;gap:var(--slot-row-gap,3px);will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
-.reel-tape .symbol,.reel.reel-motion .symbol{width:100%;aspect-ratio:auto!important;height:var(--slot-row-h,70px)!important;min-height:var(--slot-row-h,70px)!important;max-height:var(--slot-row-h,70px)!important;flex:0 0 var(--slot-row-h,70px)!important;box-sizing:border-box}
-.reel.reel-motion::after{content:'';pointer-events:none;position:absolute;inset:0;z-index:2;box-shadow:inset 0 14px 18px #090611a9,inset 0 -16px 20px #090611ba}
-.reel.reel-motion .glyph{filter:blur(.85px) saturate(1.2) brightness(1.08)}
+.reel.reel-motion{display:block!important;position:relative;overflow:hidden;isolation:isolate;border-radius:9px}
+.reel-tape{display:flex;flex-direction:column;gap:var(--slot-row-gap,3px);will-change:transform;transform:translate3d(0,0,0)}
+.reel-tape .symbol{width:100%;height:var(--slot-row-h,70px)!important;min-height:var(--slot-row-h,70px)!important;flex:0 0 var(--slot-row-h,70px);aspect-ratio:auto}
+.reel.reel-motion::after{content:'';pointer-events:none;position:absolute;inset:0;box-shadow:inset 0 14px 18px #090611a9,inset 0 -16px 20px #090611ba}
+.reel.reel-motion .glyph{filter:blur(.65px) saturate(1.25)}
 .slot-history{padding:8px 12px;min-height:38px;color:#b8dfc9;border:1px solid #7a877c46;border-radius:10px;background:#0c1a18;text-align:center;font-size:11px;font-variant-numeric:tabular-nums}
+
+
+/* v9: slot reels behave more like a real machine: deeper motion blur, shadow mask and soft settle. */
+.reel.reel-motion{background:linear-gradient(180deg,#130f23,#080611 13%,#110b1c 50%,#080611 87%,#130f23);}
+.reel.reel-motion::before{content:'';pointer-events:none;position:absolute;inset:0;background:linear-gradient(180deg,#ffffff18 0,transparent 18%,transparent 82%,#0000002a 100%);mix-blend-mode:screen;z-index:2}
+.reel.reel-motion::after{content:'';pointer-events:none;position:absolute;inset:0;box-shadow:inset 0 20px 24px #090611d8,inset 0 -22px 24px #090611e0,inset 0 0 0 1px #ffffff10;z-index:2}
+.reel.reel-spinning .reel-tape{filter:blur(.2px) saturate(1.08)}
+.reel.reel-spinning .symbol{transform:translateZ(0)}
+.reel.reel-spinning .glyph{filter:blur(1.8px) brightness(1.15) saturate(1.15)}
+.reel.reel-spinning .glimmer{opacity:.18}
+.reel.reel-landed{animation:reel-settle .18s ease-out}
+@keyframes reel-settle{0%{transform:translateY(-4px)}65%{transform:translateY(2px)}100%{transform:translateY(0)}}
