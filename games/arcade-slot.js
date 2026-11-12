@@ -45,27 +45,73 @@ function measureReel(node){
  const gap=Number.isFinite(gapParsed)?gapParsed:3;
  return {height,gap,row:height+gap,viewport:height*3+gap*2};
 }
+/** Giro real: la cinta se desplaza de forma visible (aceleración → lineal → frenada). */
 function animateColumn(node,start,target,index){return new Promise(resolve=>{
  const {height,gap,row,viewport}=measureReel(node);
- const fillers=17+index*5,all=[...start,...Array.from({length:fillers},()=>C.weighted(SYM)),...target];
- const strip=document.createElement('div');strip.className='reel-tape';strip.innerHTML=all.map(id=>cellHtml(id)).join('');
+ // Más símbolos en la cinta = más recorrido visible.
+ const fillers=28+index*8;
+ const all=[...start,...Array.from({length:fillers},()=>C.weighted(SYM)),...target];
+ const strip=document.createElement('div');
+ strip.className='reel-tape';
+ strip.innerHTML=all.map(id=>cellHtml(id)).join('');
  const distance=(3+fillers)*row;
  node.classList.add('reel-motion');
- node.style.height=viewport+'px';node.style.maxHeight=viewport+'px';node.style.minHeight=viewport+'px';node.style.overflow='hidden';
- node.style.setProperty('--slot-row-h',height+'px');node.style.setProperty('--slot-row-gap',gap+'px');
- node.replaceChildren(strip);void strip.offsetHeight;
- const duration=900+index*280;
- requestAnimationFrame(()=>{
-  strip.style.transition='transform '+duration+'ms cubic-bezier(.12,.7,.14,1)';
-  requestAnimationFrame(()=>{strip.style.transform='translate3d(0,-'+distance+'px,0)'});
- });
- setTimeout(()=>{
+ node.style.height=viewport+'px';
+ node.style.maxHeight=viewport+'px';
+ node.style.minHeight=viewport+'px';
+ node.style.overflow='hidden';
+ node.style.setProperty('--slot-row-h',height+'px');
+ node.style.setProperty('--slot-row-gap',gap+'px');
+ node.replaceChildren(strip);
+ void strip.offsetHeight;
+ // Cada rodillo tarda un poco más: se ven parar uno a uno.
+ const duration=1600+index*320;
+ let settled=false;
+ const finish=()=>{
+  if(settled)return;
+  settled=true;
   node.classList.remove('reel-motion');
-  node.style.height='';node.style.maxHeight='';node.style.minHeight='';node.style.overflow='';
-  node.style.removeProperty('--slot-row-h');node.style.removeProperty('--slot-row-gap');
-  node.innerHTML=target.map(id=>cellHtml(id)).join('');C.playSound('stop');resolve();
- },duration+90);
- })}
+  node.style.height='';
+  node.style.maxHeight='';
+  node.style.minHeight='';
+  node.style.overflow='';
+  node.style.removeProperty('--slot-row-h');
+  node.style.removeProperty('--slot-row-gap');
+  node.innerHTML=target.map(id=>cellHtml(id)).join('');
+  C.playSound('stop');
+  resolve();
+ };
+ const frames=[
+  {transform:'translate3d(0,0,0)',offset:0},
+  // Arranque corto
+  {transform:'translate3d(0,'+(-row*2)+'px,0)',offset:0.08},
+  // Tramo largo LINEAL: aquí se ve el giro de verdad
+  {transform:'translate3d(0,'+(-(distance-row*4))+'px,0)',offset:0.72},
+  // Frenada con leve rebote
+  {transform:'translate3d(0,'+(-(distance+row*0.18))+'px,0)',offset:0.9},
+  {transform:'translate3d(0,'+(-distance)+'px,0)',offset:1}
+ ];
+ try{
+  if(typeof strip.animate==='function'){
+   const anim=strip.animate(frames,{
+    duration,
+    easing:'linear',
+    fill:'forwards'
+   });
+   // Curvas por tramo con offset keyframes; linear global + offsets = movimiento continuo.
+   anim.onfinish=()=>{try{anim.cancel()}catch{};finish()};
+   anim.oncancel=finish;
+   window.setTimeout(finish,duration+120);
+   return;
+  }
+ }catch{}
+ // Fallback CSS transition (navegadores sin WAAPI)
+ strip.style.transform='translate3d(0,0,0)';
+ void strip.offsetHeight;
+ strip.style.transition='transform '+duration+'ms cubic-bezier(0.15, 0.05, 0.1, 1)';
+ requestAnimationFrame(()=>{strip.style.transform='translate3d(0,-'+distance+'px,0)'});
+ window.setTimeout(finish,duration+100);
+})}
 async function oneSpin(){if(running)return false;
  if(!freeSpins&&C.wallet().credit<bet){setStatus('Créditos demo insuficientes. Añade créditos desde el lobby.','error');autoStop=true;return false}
  const free=freeSpins>0;if(free){freeSpins--;save()}else if(!C.updateWallet(-bet,1)){setStatus('No se pudo registrar la apuesta de prueba.','error');return false}
@@ -83,7 +129,7 @@ async function oneSpin(){if(running)return false;
 }
 async function startAuto(){if(autoCount>0){autoStop=true;setStatus('El autojuego se detendrá después del giro actual.');return}if(running)return;
  autoStop=false;autoCount=Math.min(50,Math.max(1,Number($('autoSelect').value)||5));updateUI();
- while(autoCount>0&&!autoStop){const ok=await oneSpin();if(!ok)break;autoCount--;updateUI();if(!autoStop&&autoCount>0)await sleep(380)}
+ while(autoCount>0&&!autoStop){const ok=await oneSpin();if(!ok)break;autoCount--;updateUI();if(!autoStop&&autoCount>0)await sleep(420)}
  autoCount=0;autoStop=false;updateUI();if(!$('message').classList.contains('win'))setStatus('Giro automático finalizado.');}
 $('spin').addEventListener('click',()=>{if(!running&&!autoCount)void oneSpin()});$('autoButton').addEventListener('click',()=>void startAuto());
 document.querySelectorAll('[data-bet]').forEach(b=>b.addEventListener('click',()=>{if(running||autoCount||freeSpins)return;bet=Number(b.dataset.bet);C.playSound('tap');save();updateUI()}));
