@@ -121,3 +121,7 @@ El manifiesto facilita la presentación del sitio como aplicación web. Su insta
 **Fase 4 — Plataforma multiusuario recreativa:** si el proyecto lo requiere, agregar perfiles autenticados y backend para sincronizar progreso ficticio; las reglas de negocio no deberían depender de `localStorage`.
 
 **Conclusión:** la primera entrega óptima es un lobby útil, rápido y honesto con una tragamonedas realmente jugable. El resto del catálogo debe crecer sin inventar funciones ni comprometer la experiencia móvil.
+
+## 10. Entrega de la fase 2 (noviembre 2026)
+
+Tres juegos nuevos están implementados en `games/`: Diamond Stars (slot de 5 rodillos con bonos), Fortuna 7 (slot clásico de 3 rodillos) y Ruleta Europea (37 números y apuestas internas/externas). Se integraron con el lobby, la búsqueda, los favoritos y el saldo ficticio de Campana Link. La arquitectura sigue siendo estática y local: no hay registro real, pagos ni backend. Las animaciones no son una simulación física ni resultados certificados; quedan pendientes las pruebas reales en iPhone y una auditoría matemática de distribución de premios.

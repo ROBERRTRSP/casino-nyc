@@ -33,3 +33,12 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 - [`ESTUDIO_CASINO_NYC.md`](ESTUDIO_CASINO_NYC.md) — arquitectura, UX, pruebas, riesgos y hoja de ruta.
 
 > No hay cuentas reales, servidores de pagos ni premios canjeables. `localStorage` solo conserva datos recreativos dentro del navegador. La versión actual no ha sido certificada para uso comercial.
+
+## Juegos disponibles (fase 2)
+
+- **Campana Link:** cinco rodillos animados, diez líneas y giro automático.
+- **Diamond Stars:** cinco rodillos, comodines y cinco giros gratis con tres símbolos ✨.
+- **Fortuna 7:** tragamonedas clásica de tres rodillos y cinco líneas.
+- **Ruleta Europea:** números 0 al 36, un solo cero, fichas y apuestas a números, colores, paridad y docenas.
+
+Los cuatro comparten un mismo saldo de prueba mediante `localStorage`, **sin dinero real**.
