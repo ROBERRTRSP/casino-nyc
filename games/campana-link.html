@@ -28,7 +28,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;user-
 .symbol.coin{background:radial-gradient(circle,#a3290c,#4b0408)}.symbol.coin .symbol-art{width:98%;height:98%}.coin-value{position:absolute;z-index:4;top:57%;left:50%;transform:translate(-50%,-50%);font:bold clamp(11px,2vw,25px) 'Barlow Condensed',sans-serif;color:#fff;-webkit-text-stroke:.6px #280800;text-shadow:1px 2px 3px #000,0 0 7px #ffcf46;background:#26060665;padding:0 4px;border-radius:30%}
 .gemstone{font-size:clamp(49px,7vw,92px);background:linear-gradient(135deg,#d7ffff 5%,#00b7fa 28%,#004aca 50%,#c1fcff 67%,#2535db 81%);-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(1px 2px #0c113a) drop-shadow(0 0 14px #67f4ff)}.wild-art{font-size:clamp(46px,7vw,100px);color:#fffa81;text-shadow:0 0 10px #fff582,0 0 30px #ff8800,3px 4px 2px #741900}.waiting-bonus{color:#ffce51;font-size:40px;opacity:.25;animation:pulse 1.5s ease-in-out infinite alternate}
 .symbol.win{z-index:3;border:2px solid #ffeda3;box-shadow:0 0 14px #fff5a1,inset 0 0 19px #ffe2a7;animation:winning 650ms ease-in-out infinite alternate}
-.reels.spinning .symbol-art,.reels.spinning .gemstone,.reels.spinning .wild-art,.reel.rolling .symbol-art,.reel.rolling .gemstone,.reel.rolling .wild-art{filter:blur(2.2px) brightness(1.18);animation:shudder .14s linear infinite alternate}
+.reels.spinning .symbol-art,.reels.spinning .gemstone,.reels.spinning .wild-art,.reel.rolling .symbol-art,.reel.rolling .gemstone,.reel.rolling .wild-art{filter:brightness(1.05) saturate(1.05)}
 @keyframes shudder{from{transform:translateY(-9px)}to{transform:translateY(9px)}}@keyframes winning{from{filter:brightness(1)}to{filter:brightness(1.5)}}@keyframes pulse{to{opacity:.7}}
 .message{display:flex;align-items:center;justify-content:center;text-align:center;min-height:38px;margin:7px 2px 0;font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,2vw,21px);letter-spacing:.07em;color:#ffdeac;text-shadow:0 2px 2px #370303}.message.good{color:#b5ff93;text-shadow:0 0 12px #73ff68}.message.bonus{color:#fff285;text-shadow:0 0 12px #f99c22}
 .bonus-strip{display:none;align-items:center;justify-content:center;gap:10px;padding:6px 10px;background:linear-gradient(90deg,#4c0e0d,#9b4109,#4c0e0d);border:1px solid #ffcc6a;border-radius:8px;margin-top:8px}.bonus-strip.active{display:flex}.bonus-strip strong{font-size:24px;color:#fffba8}.bonus-strip span{font-size:13px}
@@ -259,7 +259,7 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
     const gap=Number.isFinite(gapParsed)?gapParsed:2;
     const row=h+gap;
     const fullHeight=h*3+gap*2;
-    const fillerCount=24+index*5; // Las 5 cintas recorren distancias diferentes
+    const fillerCount=32+index*7; // Más cinta = giro visible más largo
     const visible=state.board[index].slice();
     const strip=visible.concat(Array.from({length:fillerCount},randomSymbol),finalColumn);
     const offsetRows=3+fillerCount;
@@ -288,7 +288,8 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
     }
     const track=reel.querySelector('.reel-track');
     const travel=offsetRows*row;
-    const duration=1100+index*260;
+    // Giro visible: tramo largo lineal + frenada. Sin blur artificial.
+    const duration=1700+index*340;
     let done=false;
     function land(){
       if(done)return;
@@ -308,26 +309,26 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
       resolve();
     }
     try{
-      if(typeof track.animate==='function'){
+      if(track && typeof track.animate==='function'){
         const frames=[
-          {transform:'translate3d(0,0px,0)',offset:0,easing:'cubic-bezier(.25,0,.8,1)'},
-          {transform:'translate3d(0,'+(-row*5).toFixed(2)+'px,0)',offset:.15,easing:'linear'},
-          {transform:'translate3d(0,'+(-travel+row*7).toFixed(2)+'px,0)',offset:.68,easing:'cubic-bezier(.1,.15,.16,1)'},
-          {transform:'translate3d(0,'+(-travel+row*.55).toFixed(2)+'px,0)',offset:.92,easing:'ease-out'},
-          {transform:'translate3d(0,'+(-travel-row*.12).toFixed(2)+'px,0)',offset:.978,easing:'ease-out'},
+          {transform:'translate3d(0,0,0)',offset:0},
+          {transform:'translate3d(0,'+(-row*2).toFixed(2)+'px,0)',offset:0.08},
+          {transform:'translate3d(0,'+(-(travel-row*4)).toFixed(2)+'px,0)',offset:0.72},
+          {transform:'translate3d(0,'+(-(travel+row*0.18)).toFixed(2)+'px,0)',offset:0.9},
           {transform:'translate3d(0,'+(-travel).toFixed(2)+'px,0)',offset:1}
         ];
-        const animation=track.animate(frames,{duration,fill:'forwards',iterations:1});
-        animation.onfinish=()=>{animation.cancel();land()};
+        const animation=track.animate(frames,{duration,easing:'linear',fill:'forwards',iterations:1});
+        animation.onfinish=()=>{try{animation.cancel()}catch{};land()};
         animation.oncancel=land;
-        window.setTimeout(land,duration+260);
-      }else{
-        // Compatibilidad con navegadores iOS antiguos que carezcan de Web Animations.
-        track.style.transform='translateY(0)';
+        window.setTimeout(land,duration+140);
+      }else if(track){
+        track.style.transform='translate3d(0,0,0)';
         track.offsetHeight;
-        track.style.transition='transform '+duration+'ms cubic-bezier(.16,.8,.23,1)';
-        track.style.transform='translate3d(0,'+(-travel)+'px,0)';
-        window.setTimeout(land,duration+60);
+        track.style.transition='transform '+duration+'ms cubic-bezier(0.15,0.05,0.1,1)';
+        requestAnimationFrame(()=>{track.style.transform='translate3d(0,'+(-travel)+'px,0)'});
+        window.setTimeout(land,duration+100);
+      }else{
+        window.setTimeout(land,duration);
       }
     }catch(e){window.setTimeout(land,duration)}
   });
