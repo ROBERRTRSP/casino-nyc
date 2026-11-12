@@ -111,8 +111,10 @@ html:has(.wait-screen) body {
   max-height: 92cqh;
   aspect-ratio: 3.05 / 1;
   min-height: 0;
+  min-width: 0;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(380px, 0.88fr) minmax(460px, 1.55fr);
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.55fr);
   align-items: center;
   gap: 6px;
   padding: 14px 26px 14px 8px;
@@ -912,12 +914,17 @@ html:has(.wait-screen) body {
 }
 
 .tray {
+  position: relative;
+  z-index: 8;
+  flex: none;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   padding: 10px 16px 14px;
-  background: linear-gradient(180deg, rgba(12, 14, 13, 0.2), #0c0e0d 28%);
+  background: linear-gradient(180deg, #161310 0%, #0c0e0d 40%);
+  border-top: 1px solid rgba(214, 176, 96, 0.28);
+  box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.45);
 }
 
 .tray-chips {
@@ -1080,9 +1087,38 @@ html:has(.wait-screen) body {
 }
 
 @media (max-width: 980px) {
+  .mesa-bar {
+    gap: 8px;
+    min-height: 48px;
+    padding: 6px 10px;
+  }
+
+  .mesa-brand { font-size: 11px; }
+  .mesa-credit strong { font-size: 18px; }
+  .beads { gap: 4px; }
+  .bead { width: 24px; height: 24px; font-size: 11px; }
+
   .table-unit {
-    --croupier: clamp(84px, 13dvh, 118px);
-    padding: var(--croupier) 8px 8px;
+    --croupier: clamp(64px, 11dvh, 96px);
+    place-items: stretch;
+    padding: calc(var(--croupier) * 0.72) 8px 8px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .table-jackpot {
+    top: 2px;
+    padding: 4px 12px 5px;
+  }
+
+  .table-jackpot strong { font-size: 16px; }
+  .table-jackpot span { font-size: 9px; }
+
+  .table-croupier {
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--croupier) + 8px);
+    bottom: calc(100% - 12px);
   }
 
   .table-surface {
@@ -1092,18 +1128,231 @@ html:has(.wait-screen) body {
     aspect-ratio: auto;
     transform: none;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(220px, 42%) minmax(160px, 1fr);
+    grid-template-rows: minmax(140px, 38%) minmax(0, 1fr);
     border-radius: 28px;
-    padding: 10px;
+    border-width: 10px;
+    padding: 8px;
+    gap: 4px;
   }
 
   .wheel-well {
+    width: min(100%, 280px);
     height: 100%;
+    max-height: 100%;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    justify-self: center;
+  }
+
+  .felt-stage {
+    container-type: inline-size;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    place-items: center;
+  }
+
+  .felt-rail {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    aspect-ratio: 1016 / 432;
+  }
+
+  .demo-banner { display: none; }
+
+  .tray {
+    gap: 8px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .tray-chips {
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tray-chips::-webkit-scrollbar { display: none; }
+
+  .chip { width: 48px; height: 48px; }
+  .chip span { width: 30px; height: 30px; font-size: 12px; }
+
+  .ghost-btn {
+    height: 40px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .spin-btn {
+    height: 52px;
+    min-width: 108px;
+    padding: 0 16px;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+  }
+
+  .paint.num { font-size: clamp(12px, 3.4vw, 18px); }
+  .paint.outside,
+  .paint.dozen,
+  .paint.column { font-size: clamp(9px, 2.6vw, 13px); }
+}
+
+/* Teléfono vertical: paño grande abajo, rueda compacta arriba, tray fijo. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .mesa-bar a.back-lobby { height: 34px; padding: 0 8px; font-size: 10px; }
+  .mesa-brand small { display: none; }
+  .phase-pill { padding: 4px 8px; font-size: 10px; }
+
+  .table-unit {
+    --croupier: clamp(52px, 9dvh, 78px);
+    padding: calc(var(--croupier) * 0.55) 6px 4px;
+  }
+
+  .table-surface {
+    grid-template-rows: minmax(120px, 30%) minmax(0, 1fr);
+    border-radius: 22px;
+    border-width: 8px;
+    padding: 6px;
+  }
+
+  .wheel-well {
+    width: min(56%, 200px);
+    height: auto;
+    max-height: 28dvh;
+  }
+
+  .tray {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "chips spin"
+      "actions spin";
+    align-items: center;
+    gap: 6px 8px;
+  }
+
+  .tray-chips { grid-area: chips; }
+  .tray-actions {
+    grid-area: actions;
+    flex-wrap: nowrap;
+    gap: 4px;
+    justify-content: flex-start;
+  }
+  .tray-actions .phase-pill {
+    display: none;
+  }
+  .spin-btn {
+    grid-area: spin;
+    align-self: stretch;
+    height: auto;
+    min-height: 84px;
+    min-width: 96px;
+  }
+}
+
+/* Teléfono horizontal: rueda | paño, tray opaco abajo sin tapar. */
+@media (max-height: 500px) and (orientation: landscape),
+       (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+  .mesa-bar {
+    min-height: 40px;
+    padding: 4px 8px;
+  }
+
+  .mesa-brand small,
+  .demo-banner,
+  .table-jackpot span { display: none; }
+
+  .table-jackpot {
+    padding: 3px 10px;
+  }
+
+  .table-jackpot strong { font-size: 14px; }
+
+  .table-unit {
+    --croupier: clamp(40px, 14dvh, 64px);
+    padding: calc(var(--croupier) * 0.35) 6px 4px;
+  }
+
+  .table-croupier {
+    height: calc(var(--croupier) + 4px);
+  }
+
+  .table-surface {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+    grid-template-columns: minmax(100px, 0.42fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    border-radius: 999px 24px 24px 999px;
+    border-width: 8px;
+    padding: 6px 10px 6px 6px;
+    gap: 4px;
+  }
+
+  .wheel-well {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
     margin: 0;
   }
 
-  .chip { width: 58px; height: 58px; }
-  .chip span { width: 36px; height: 36px; font-size: 13px; }
+  .felt-stage {
+    height: 100%;
+    padding: 0;
+  }
+
+  .felt-rail {
+    width: 100%;
+    max-height: 100%;
+  }
+
+  .tray {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px calc(4px + env(safe-area-inset-bottom));
+  }
+
+  .tray-chips {
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+
+  .tray-actions {
+    flex: none;
+    gap: 4px;
+  }
+
+  .tray-actions .phase-pill { display: none; }
+
+  .chip { width: 40px; height: 40px; }
+  .chip span { width: 24px; height: 24px; font-size: 10px; }
+
+  .ghost-btn {
+    height: 36px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  .spin-btn {
+    height: 44px;
+    min-width: 88px;
+    padding: 0 12px;
+    font-size: 14px;
+    flex: none;
+  }
+
+  .paint.num { font-size: clamp(10px, 2.2vh, 16px); }
+  .paint.outside,
+  .paint.dozen,
+  .paint.column { font-size: clamp(8px, 1.8vh, 12px); }
 }
 
 /* iPad vertical: la mesa ocupa toda la pantalla. La rueda arriba y el paño, más grande, debajo. */
