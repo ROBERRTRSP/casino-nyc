@@ -1,0 +1,194 @@
+/* Casino NYC · game chrome inspired by iOS dark mode, not an Apple UI clone.
+   Maintain the original game art, mathematics, and spinning logic. */
+html { -webkit-text-size-adjust:100%; }
+body:not(:has(.cabinet)) {
+  --fg:#f5f7fc;
+  --muted:#a0a8b8;
+  --panel:#171d29;
+  --accent:#0a84ff;
+  background:linear-gradient(180deg,#0d1019,#090c12 67%)!important;
+  color:#f5f7fc;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif;
+}
+body:not(:has(.cabinet)) .top {
+  background:#0e131de8;border-bottom:1px solid #ffffff14;
+  -webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);
+}
+body:not(:has(.cabinet)) .back {
+  background:#202734;border:1px solid #ffffff22;color:#f1f4f9;
+  border-radius:13px;font-size:13px;font-weight:720;min-height:44px;
+}
+body:not(:has(.cabinet)) .bank .label {color:#98a5b7;letter-spacing:.07em;font-size:10px;}
+body:not(:has(.cabinet)) .bank strong {color:#f3f6fc;font-size:clamp(20px,5.5vw,30px);font-weight:800;letter-spacing:-.03em;font-family:inherit;}
+body:not(:has(.cabinet)) .coin {color:#7fbaff;filter:none;}
+body:not(:has(.cabinet)) .game-heading h1 {font-family:inherit;letter-spacing:-.044em;line-height:1.07;font-weight:790;text-shadow:none;}
+body:not(:has(.cabinet)) .game-heading .eyebrow {color:#99b5d2;letter-spacing:.075em;}
+body:not(:has(.cabinet)) .game-heading .pill {border:1px solid #ffffff1a;background:#1b2230;color:#adb9ca;}
+body:not(:has(.cabinet)) .stage,
+body:not(:has(.cabinet)) .control-card,
+body:not(:has(.cabinet)) .help-card {
+  border:1px solid #ffffff16;
+  background:#171d28;
+  box-shadow:none;
+  border-radius:20px;
+}
+body:not(:has(.cabinet)) .glass-title {
+  font-family:inherit;
+  font-size:11px;
+  color:#bccbdf;
+  font-weight:760;
+  letter-spacing:.015em;
+}
+body:not(:has(.cabinet)) .bonus-led {color:#a6b5d7;}
+body:not(:has(.cabinet)) .slot-frame,
+body:not(:has(.cabinet)) .fortune .slot-frame {
+  background:#1f2735;
+  border:2px solid #74859b55;
+  box-shadow:inset 0 0 0 1px #e4effc12;
+  border-radius:15px;
+  padding:4px;
+}
+body:not(:has(.cabinet)) .grid-reels {background:#0a0e18;border-radius:11px;}
+body:not(:has(.cabinet)) .status {
+  background:#1d2532;color:#dbe4f0;
+  border:1px solid #ffffff12;
+  border-radius:12px;
+  box-shadow:none;
+  font-size:12px;font-weight:660;
+}
+body:not(:has(.cabinet)) .scoreboard > div {
+  background:#111722;border:1px solid #ffffff14;
+  box-shadow:none;border-radius:12px;
+}
+body:not(:has(.cabinet)) .scoreboard small {color:#9daabc;font-size:10px;letter-spacing:.02em;}
+body:not(:has(.cabinet)) .scoreboard strong {color:#f3f7ff;font-family:inherit;font-weight:760;letter-spacing:-.035em;}
+body:not(:has(.cabinet)) .control-title strong {color:#f4f6fb;font-size:14px;font-weight:740;}
+body:not(:has(.cabinet)) .control-title small {color:#9eaabd;}
+body:not(:has(.cabinet)) .wagers button,
+body:not(:has(.cabinet)) .chip-choice {
+  background:#272e3d;
+  border:1px solid #ffffff22;
+  color:#edf2fa;
+  border-radius:12px;
+  box-shadow:none;
+  font-family:inherit;
+  font-size:clamp(14px,4vw,18px);
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+}
+body:not(:has(.cabinet)) .wagers button[aria-pressed=true],
+body:not(:has(.cabinet)) .chip-choice[aria-pressed=true] {
+  background:#0a84ff;
+  border-color:#3ca2ff;
+  color:white;
+  box-shadow:none;
+}
+body:not(:has(.cabinet)) .primary {
+  background:#0a84ff;
+  border:1px solid #2e9afc;
+  color:#fff;
+  box-shadow:none;
+  border-radius:13px;
+  font-weight:780;
+  letter-spacing:0;
+}
+body:not(:has(.cabinet)) .secondary {
+  background:#2a3140;
+  border:1px solid #ffffff1b;
+  color:#e7edf8;
+  box-shadow:none;
+  border-radius:13px;
+  font-weight:720;
+  letter-spacing:0;
+}
+body:not(:has(.cabinet)) .auto-row select,
+body:not(:has(.cabinet)) .kr-form select {
+  background:#262d3b;border:1px solid #ffffff22;
+  color:#f2f5fa;border-radius:11px;
+}
+body:not(:has(.cabinet)) .auto-status {color:#97c9ff;}
+body:not(:has(.cabinet)) .help-card {color:#d5deea;}
+body:not(:has(.cabinet)) .help-card summary {font-weight:730;}
+body:not(:has(.cabinet)) .help-card p {color:#aab5c4;}
+body:not(:has(.cabinet)) .note {color:#7f8b9e;}
+body:not(:has(.cabinet)) .slot-history {background:#131b26;border:1px solid #ffffff16;color:#a8bfce;}
+/* Roulette keeps a dark-green felt but the container and controls match the app. */
+.roulette-karma .stage {background:#13211e!important;border:1px solid #ffffff1b!important;}
+.roulette-karma .kr-wheel-holder {background:transparent;}
+.roulette-karma .kr-dealer {background:#192620;border:1px solid #ffffff22;border-radius:14px;}
+.roulette-karma .kr-dealer span {color:#dce6e5;}
+.roulette-karma .kr-last span {border:1px solid #ffffff39;}
+.roulette-karma .kr-side .number-result {border:1px solid #ffffff4a;}
+.roulette-karma .kr-tools button {background:#232d2c;color:#ddeae4;border:1px solid #ffffff29;border-radius:11px;}
+.roulette-karma .kr-form {background:#111f1c;border:1px solid #ffffff19;}
+.roulette-karma .kr-special {background:#0a84ff;border:1px solid #2f9cff;color:white;box-shadow:none;}
+.roulette-karma .kr-table .table-numbers button {border-radius:8px;box-shadow:none;}
+.roulette-karma .outside button {border-radius:11px;border:1px solid #ffffff25;font-size:11px;}
+.roulette-karma .placed-bets {background:#142621;border:1px solid #ffffff1c;border-radius:10px;color:#c4d5cf;}
+.roulette-karma .kr-actions {border-radius:15px;}
+.roulette-karma .kr-actions .primary {background:#0a84ff;color:white;}
+.roulette-karma .kr-actions .secondary {background:#28342f;color:#d2e4df;}
+/* Campana Link: preserve its rich slot art, simplify every frame around it. */
+body:has(.cabinet) {
+  background:linear-gradient(180deg,#0c1017,#080b10)!important;
+  color:#f5f7fa;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;
+}
+body:has(.cabinet)::before {opacity:.06;}
+body:has(.cabinet) .topbar {background:#141922d9;border-radius:14px;padding:7px 9px;margin-bottom:8px;}
+body:has(.cabinet) .brand {letter-spacing:0;font-weight:750;color:#eaf0f8;}
+body:has(.cabinet) .brand a {color:#dbe9ff!important;}
+body:has(.cabinet) .tinybtn {background:#29303c;border:1px solid #ffffff20;color:#e1eaf6;border-radius:11px;box-shadow:none;}
+body:has(.cabinet) .cabinet {box-shadow:none;border-color:#ffffff29;}
+body:has(.cabinet) .cabinet-content {box-shadow:none;}
+body:has(.cabinet) .control-deck {background:#1a202b;border-color:#ffffff24;box-shadow:none;border-radius:16px;}
+body:has(.cabinet) .wager {
+  background:#293240;border:1px solid #ffffff22;
+  color:#e8f1ff;text-shadow:none;box-shadow:none;
+  border-radius:12px;
+  font-family:inherit;
+  font-weight:760;
+}
+body:has(.cabinet) .wager.selected {background:#0a84ff;border-color:#66b8ff;box-shadow:none;color:white;}
+body:has(.cabinet) .spin {background:#0a84ff;border:2px solid #3ba6ff;box-shadow:none;text-shadow:none;font-family:inherit;font-weight:820;border-radius:14px;}
+body:has(.cabinet) .soft-button,body:has(.cabinet) .auto-button {background:#263140!important;border:1px solid #ffffff26!important;border-radius:11px!important;color:#e8f1ff!important;box-shadow:none!important;}
+body:has(.cabinet) .meter {background:#121a26;border:1px solid #ffffff24;box-shadow:none;}
+body:has(.cabinet) .meter .amount {color:#f1f6ff;text-shadow:none;font-family:inherit;letter-spacing:-.02em;}
+body:has(.cabinet) .meter .caption {color:#aab9cb;}
+body:has(.cabinet) .secondary-row {color:#aeb9c8;}
+body:has(.cabinet) .footnote {color:#7f8d9f;}
+@media(max-width:600px){
+  body:not(:has(.cabinet)) .top {min-height:56px;}
+  body:not(:has(.cabinet)) .layout {padding-inline:9px;}
+  body:not(:has(.cabinet)) .stage {padding:9px;}
+  body:not(:has(.cabinet)) .control-card {margin-top:9px;padding:12px;}
+  body:not(:has(.cabinet)) .wagers button {min-height:47px;}
+  body:not(:has(.cabinet)) .actions .primary,
+  body:not(:has(.cabinet)) .actions .secondary {min-height:54px;font-size:14px;}
+  .roulette-karma .kr-actions {background:#101a20ef;border:1px solid #ffffff29;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);}
+  .roulette-karma .kr-actions .primary,
+  .roulette-karma .kr-actions .secondary {min-height:51px;}
+  body:has(.cabinet) .control-deck {padding:8px;}
+  body:has(.cabinet) .spin {min-height:58px;}
+}
+@media(prefers-reduced-motion:reduce){
+  body:not(:has(.cabinet)) button {transition:none!important;}
+}
+
+/* Table actions remain visible in normal reading order and never obscure roulette cells. */
+@media (max-width:600px) {
+  .roulette-karma .kr-actions {
+    position:static!important;
+    left:auto!important;right:auto!important;bottom:auto!important;
+    max-width:none!important;
+    margin:12px 0 16px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0;
+    background:transparent!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .roulette-karma .kr-layout {padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))!important;}
+}

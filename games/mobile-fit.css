@@ -145,3 +145,58 @@ button, select, a { touch-action:manipulation; }
  body:has(.cabinet) .jackpot .jamount {font-size:14px;}
  body:has(.cabinet) .jackpot .jtitle {font-size:11px;}
 }
+
+
+/* v7 phone polish: keep the actual game visible first on iPhone screens. */
+@media (max-width: 600px) {
+  /* Hide the large marketing heading on phones; the glass-title already identifies the game. */
+  body[data-game] .game-heading,
+  .roulette-karma .game-heading { display:none; }
+
+  body[data-game] main,
+  .roulette-karma main { padding-top:8px; }
+
+  /* Slot pages: slightly shorter reel area and tighter panels so controls stay above the fold. */
+  body[data-game] .stage { padding:6px; }
+  body[data-game] .slot-frame { max-width:100%; }
+  body[data-game="diamond"] .symbol { aspect-ratio:auto; height:clamp(68px,19.8vw,86px); }
+  body[data-game="fortuna"] .symbol { aspect-ratio:auto; height:clamp(72px,21vw,92px); }
+  body[data-game] .scoreboard { margin-top:5px; }
+  body[data-game] .control-card { padding:10px; }
+  body[data-game] .help-card { padding:12px; }
+
+  /* Roulette: bring the wheel and betting board higher, and keep the summary compact. */
+  .roulette-karma .layout { padding-top:0; }
+  .roulette-karma .stage { padding:8px; }
+  .roulette-karma .glass-title { font-size:11px; }
+  .roulette-karma .kr-wheel-holder { height:clamp(188px,56vw,245px); }
+  .roulette-karma .kr-side { grid-template-columns:minmax(0,1fr) 70px; gap:6px; }
+  .roulette-karma .kr-dealer { min-height:50px; grid-row:1; align-items:center; }
+  .roulette-karma .kr-side .number-result { width:70px; min-width:70px; justify-self:end; }
+  .roulette-karma .kr-last { grid-column:1 / span 2; }
+  .roulette-karma .status { min-height:28px; padding:4px 7px; }
+  .roulette-karma .scoreboard > div { min-height:46px; }
+  .roulette-karma .control-card { padding:10px; }
+  .roulette-karma .chips { grid-template-columns:repeat(4,minmax(0,1fr)); display:grid; }
+  .roulette-karma .chips button { font-size:clamp(14px,4.3vw,18px); }
+  .roulette-karma .outside { grid-template-columns:repeat(2,minmax(0,1fr)); display:grid; }
+  .roulette-karma .outside button { min-height:46px; }
+}
+
+@media (max-width: 390px) {
+  body[data-game] .top,
+  .roulette-karma .top { padding-inline:0; }
+  body[data-game] .back,
+  .roulette-karma .back { padding:8px 10px; font-size:12px; }
+  body[data-game] .bank strong,
+  .roulette-karma .bank strong { font-size:clamp(18px,5.8vw,24px); }
+  body[data-game] .wagers { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body[data-game] .actions { grid-template-columns:1fr; }
+  body[data-game] .auto-row { align-items:flex-start; }
+  body[data-game] .auto-row select { width:100%; max-width:145px; }
+  .roulette-karma .chips { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .roulette-karma .outside { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .roulette-karma .kr-table .table-numbers { grid-template-rows:repeat(12,40px); padding-top:43px; }
+  .roulette-karma .kr-table .table-numbers button:not(.zero) { min-height:40px; font-size:17px; }
+  .roulette-karma .kr-table .table-numbers .zero { height:40px; }
+}

@@ -75,3 +75,9 @@ Los recursos se incluyen directamente en el repositorio y no necesitan servicios
 - El escritorio conserva su diseño de mayor tamaño.
 
 Pruebas locales con navegador móvil simulado en 320×568, 393×852, 852×393 y escritorio 1366×768. No sustituyen una prueba física en Safari o Android.
+
+## Interfaz iOS (v8)
+- Interfaz móvil oscura inspirada en iOS: tarjetas discretas, texto de sistema y controles azules.
+- El lobby y los cuatro juegos mantienen los símbolos, animaciones y reglas recreativas.
+- En la ruleta, los botones están debajo de las fichas y no ocultan las casillas.
+- Revisión visual a 320 y 393 píxeles; prueba física en Safari pendiente.

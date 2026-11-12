@@ -1,0 +1,157 @@
+/* Casino NYC · iOS-inspired interface v8
+   Original visual language: native system typography, restrained surfaces, clean touch hierarchy. */
+:root {
+  --bg: #0b0d13;
+  --panel: #171b25;
+  --panel2: #202531;
+  --line: #ffffff16;
+  --cream: #f6f7fa;
+  --muted: #9299a8;
+  --gold: #d5c5a0;
+  --ios-blue: #0a84ff;
+  --ios-text: #f6f7fa;
+  color-scheme: dark;
+}
+html { -webkit-text-size-adjust:100%; }
+body {
+  background:linear-gradient(180deg,#10141d 0%,#0a0c12 48%,#080a0e 100%)!important;
+  color:var(--ios-text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif;
+  letter-spacing:-.01em;
+}
+button,input,a {touch-action:manipulation;}
+button:focus-visible,a:focus-visible,input:focus-visible {outline:2px solid #64afff;outline-offset:3px;}
+.sidebar {background:#11151de8;border-color:#ffffff12;gap:25px;}
+.sidebar-bottom {background:#1b202b;border:1px solid #ffffff14;color:#aeb6c4;border-radius:16px;}
+.sidebar-bottom b {color:#c2d9f9;}
+.wordmark {font-size:18px;letter-spacing:-.035em;font-weight:800;}
+.wordmark small {letter-spacing:.08em;color:#8f98a9;font-weight:600;}
+.brand-logo {
+  background:#1d293c;
+  color:#91c5ff;
+  border:1px solid #7294c52e;
+  box-shadow:none;
+  border-radius:13px;
+}
+.nav-item {border-radius:12px;font-weight:650;color:#acb3c0;min-height:48px;}
+.nav-item[aria-current="page"],.nav-item:hover {color:#70b5ff;background:#0a84ff1a;border-color:#0a84ff28;}
+.content {max-width:1440px;}
+.topbar {margin-bottom:20px;}
+.topbar .welcome {color:#b2bac8;letter-spacing:0;font-size:12px;text-transform:none;}
+.topbar .subwelcome {font-size:14px;color:#aeb4c1;}
+.wallet {
+  background:#1a202c;border:1px solid #ffffff18;
+  border-radius:16px;box-shadow:none;
+  padding:8px 13px;
+}
+.wallet span {color:#9eacbe;letter-spacing:.045em;font-size:10px;}
+.wallet strong {color:#f4f7fd;font-size:19px;font-weight:800;letter-spacing:-.02em;}
+.avatar {background:#253248;border:1px solid #ffffff18;color:#a9d3ff;box-shadow:none;}
+.hero {
+  min-height:290px;
+  background:linear-gradient(115deg,#171d2a 0%,#171c27 58%,#1c2330 100%);
+  border:1px solid #ffffff16;border-radius:24px;
+  box-shadow:none;
+}
+.hero:after {box-shadow:none;border-radius:inherit;}
+.hero-copy {padding:clamp(22px,3vw,38px);}
+.hero .eyebrow {color:#9db4d2;}
+.hero h1 {
+  font-size:clamp(33px,4.6vw,55px);
+  line-height:1.05;
+  letter-spacing:-.048em;
+  font-weight:760;
+  margin:10px 0 12px;
+  text-shadow:none;
+}
+.hero h1 em {background:none;color:#84c5ff;}
+.hero p {color:#b2bdce;line-height:1.48;font-size:14px;margin-bottom:18px;}
+.eyebrow {color:#849bb6;font-size:10px;letter-spacing:.08em;font-weight:750;}
+.primary,.game-card .action {
+  background:#0a84ff!important;
+  color:white!important;
+  border:1px solid #2b9bff!important;
+  text-shadow:none!important;
+  box-shadow:none!important;
+  border-radius:13px;
+  font-weight:750;
+  letter-spacing:-.01em;
+}
+.primary:hover,.game-card .action:hover {background:#258ffe!important;}
+.secondary {background:#ffffff0d!important;border:1px solid #ffffff22!important;color:#e8ebf1!important;box-shadow:none!important;}
+.hero .actions a,.hero .actions button {min-height:48px;}
+.hero-art {filter:saturate(.80);}
+.hero-stamp {background:#111826c8!important;border-color:#ffffff23!important;color:#e4e8ee!important;box-shadow:none!important;}
+.quick-grid {gap:10px;margin-top:12px;}
+.stat-card,.info-card {
+  background:#171c26;border:1px solid #ffffff14;
+  box-shadow:none;border-radius:18px;
+}
+.stat-card {padding:17px;}
+.stat-card span,.stat-card p {color:#99a2b2;}
+.stat-card strong {font-weight:780;letter-spacing:-.035em;color:#f5f7fb;}
+.stat-card button,.sectionhead button {color:#75baff;font-weight:720;}
+.sectionhead {margin:24px 0 12px;}
+.sectionhead h2 {font-size:clamp(21px,3vw,28px);letter-spacing:-.035em;font-weight:780;}
+.game-grid {gap:12px;}
+.game-card,.game-card.ready {
+  background:#181d27;
+  border:1px solid #ffffff17;
+  box-shadow:none;
+  border-radius:20px;
+  transition:transform .16s ease,border-color .16s ease;
+}
+.game-card:hover {box-shadow:none;border-color:#4775ae4c;transform:translateY(-1px);}
+.game-card .cover {background:#101723;}
+.game-card .cover:after {background:linear-gradient(180deg,#0b101626,transparent 42%,#070a11ac 100%);}
+.game-card .game-info {gap:8px;}
+.game-card h3 {font-weight:760;letter-spacing:-.027em;}
+.game-card p {color:#9fa9b9;line-height:1.4;}
+.game-meta span,.game-tag {border:1px solid #ffffff1b!important;background:#212836cc!important;color:#b9c5d6!important;box-shadow:none!important;text-shadow:none!important;}
+.fav {background:#151a24dd!important;border:1px solid #ffffff2d!important;box-shadow:none!important;}
+.game-card .action {min-height:46px;}
+.search,.field-input {background:#1a202b;border:1px solid #ffffff1b;border-radius:13px;}
+.search input {color:#f3f5f9;}
+.filters {gap:6px;}
+.filter {background:#1c222f;border-color:#ffffff15;color:#b0bac9;border-radius:11px;}
+.filter[aria-pressed="true"] {background:#0a84ff2a;border-color:#0a84ff5a;color:#b1d6ff;}
+.info-card h3 {font-weight:750;}
+.info-card p {color:#a7b0bf;}
+.dialog {background:#1a202b;border:1px solid #ffffff24;box-shadow:0 25px 80px #0008;}
+.mobnav {background:#10141ce8!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid #ffffff20!important;}
+.mobnav .nav-item[aria-current="page"] {background:#0a84ff19;color:#83c5ff;}
+@media(max-width:760px){
+  .content {padding:calc(12px + env(safe-area-inset-top,0px)) 13px calc(90px + env(safe-area-inset-bottom,0px));}
+  .topbar {margin-bottom:14px;gap:6px;}
+  .topbar .subwelcome {font-size:11px;}
+  .wallet {padding:7px 10px;min-height:42px;}
+  .wallet strong {font-size:16px;}
+  .mobile-logo {font-size:16px;letter-spacing:-.035em;}
+  .hero {display:grid;min-height:0;grid-template-columns:1fr;grid-template-rows:auto 120px;border-radius:20px;}
+  .hero-copy {padding:20px 18px 13px!important;}
+  .hero h1 {font-size:clamp(30px,8vw,41px)!important;margin:7px 0 9px!important;line-height:1.05!important;}
+  .hero p {font-size:12px!important;line-height:1.42!important;margin:0 0 13px!important;}
+  .hero-art {max-height:120px!important;min-height:115px;}
+  .hero .actions {display:grid;grid-template-columns:1.1fr 1fr;width:100%;}
+  .hero .actions a,.hero .actions button {min-height:46px!important;font-size:12px;}
+  .quick-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+  .quick-grid .stat-card:last-child {grid-column:span 2;}
+  .stat-card {padding:12px;border-radius:14px;}
+  .stat-card span {font-size:10px;}
+  .stat-card strong {font-size:18px;}
+  .stat-card p {font-size:10px;}
+  .sectionhead {margin:21px 0 10px;}
+  .game-card .cover {height:clamp(120px,35vw,162px)!important;}
+  .game-card .game-info {padding:13px;}
+  .game-card h3 {font-size:16px;}
+  .game-card p {font-size:12px;}
+  .game-card .action {min-height:46px;}
+  .mobnav .nav-item {color:#939eaf;min-height:52px;}
+  .mobnav .nav-label {font-size:10px;}
+}
+@media(max-width:355px){
+ .hero .actions a,.hero .actions button {font-size:11px;padding:8px 5px;}
+ .mobile-logo {font-size:14px;}
+ .topbar .subwelcome {font-size:10px;}
+}
+@media(prefers-reduced-motion:reduce){.game-card{transition:none}}
