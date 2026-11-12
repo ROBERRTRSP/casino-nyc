@@ -9,8 +9,14 @@ Simulador de tragamonedas para navegador móvil, basado en el prototipo **Campan
 - Interfaz en español para teléfonos y computadoras.
 - Ajustes de los recuadros y controles para pantallas móviles.
 
+## Publicación con GitHub Pages
+1. En el repositorio entra a **Settings → Pages**.
+2. En **Build and deployment**, elige **Deploy from a branch**.
+3. Selecciona rama `MAIN` y carpeta `/(root)`, y haz clic en **Save**.
+4. Cuando GitHub publique el sitio, la dirección será: https://roberrtrsp.github.io/casino-nyc/
+
 ## Cómo abrir
-Abre `index.html` en un navegador que permita JavaScript, o publica la carpeta como sitio web estático (GitHub Pages, Netlify, etc.).
+Abre el enlace publicado desde Safari o Chrome. También es posible abrir `index.html` en un navegador que permita JavaScript.
 
 > La vista previa de archivos dentro de algunas aplicaciones móviles puede bloquear JavaScript. Para jugar, abre el sitio publicado en Safari o Chrome.
 
