@@ -1,26 +1,64 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10141c"><title>Ruleta Europea KARMA · Casino NYC</title><link rel="icon" href="../icons/casino-nyc.svg" type="image/svg+xml"><link rel="stylesheet" href="arcade.css"><link rel="stylesheet" href="roulette.css"><link rel="stylesheet" href="karma-roulette.css"><link rel="stylesheet" href="graphics-polish.css"><link rel="stylesheet" href="mobile-fit.css"><link rel="stylesheet" href="ios-games.css"></head>
-<body class="roulette-karma"><div class="layout">
-<header class="top"><a href="../index.html#juegos" class="back">‹ LOBBY</a><div class="bank"><span class="coin">✦</span><div><div class="label">CRÉDITOS DE PRUEBA</div><strong id="balance">278.35</strong></div></div></header>
-<section class="game-heading"><div class="eyebrow">CASINO NYC · RUEDA 3D DE KARMA</div><h1>Ruleta Europea</h1><p>Rueda Three.js del repositorio KARMA: trayectoria, caída y rebotes originales. Mesa con apuestas clásicas y especiales.</p><span class="pill">Solo créditos ficticios · No se conecta al POS</span></section>
-<main class="kr-layout"><section class="stage"><div class="glass-title"><span>RULETA EUROPEA · 0–36</span><span>Un solo cero</span></div>
-<div class="kr-stage"><div class="kr-wheel-holder" id="wheelHolder"><canvas id="karmaCanvas" role="img" aria-label="Rueda de ruleta europea animada, con bola y 37 casillas"></canvas></div>
-<div class="kr-side"><div class="kr-dealer"><img class="kr-mascot kr-mascot-img" src="../assets/crupier-nyc.svg" alt="" aria-hidden="true"><span>CRUPIER NYC<small>Inspirado en la mesa de KARMA</small></span></div><div class="kr-caption">ÚLTIMO NÚMERO</div><div class="number-result" id="resultNum">—</div><div class="kr-caption">HISTORIAL</div><div class="kr-last" id="history" aria-live="polite"></div><div class="kr-dealer-note">Al girar, la bola recorre la pista y se detiene en un número de la rueda.</div></div></div>
-<div id="message" class="status" aria-live="polite">Selecciona una ficha y toca una casilla.</div>
-<div class="scoreboard"><div><small>EN MESA</small><strong id="stake">0.00</strong></div><div><small>ÚLTIMO PREMIO</small><strong id="win">0.00</strong></div><div><small>APUESTAS</small><strong id="betsCount">0</strong></div></div></section>
-<section class="control-card"><div class="control-title"><strong>1. Elige el valor de tu ficha</strong><small>Créditos demo</small></div><div class="chips" id="chips" role="group" aria-label="Valor de fichas"><button class="chip-choice" data-chip="50" aria-pressed="true">0.50</button><button class="chip-choice" data-chip="100" aria-pressed="false">1.00</button><button class="chip-choice" data-chip="200" aria-pressed="false">2.00</button><button class="chip-choice" data-chip="500" aria-pressed="false">5.00</button></div>
-<div class="kr-actions"><button id="spin" type="button" class="primary">🎡 GIRAR RULETA</button><button id="clear" type="button" class="secondary">LIMPIAR FICHAS</button></div>
-<div class="control-title" style="margin-top:15px"><strong>2. Coloca fichas sobre la mesa</strong><small>Toca los números o las apuestas externas</small></div>
-<div class="kr-table"><div class="table-numbers" id="numberGrid" role="group" aria-label="Números del 0 al 36"></div></div>
-<div class="outside" id="outside" role="group" aria-label="Apuestas externas"><button data-choice="red" class="red-bg">ROJO <span>1:1</span></button><button data-choice="black" class="black-bg">NEGRO <span>1:1</span></button><button data-choice="even">PAR <span>1:1</span></button><button data-choice="odd">IMPAR <span>1:1</span></button><button data-choice="low">1–18 <span>1:1</span></button><button data-choice="high">19–36 <span>1:1</span></button><button data-choice="dozen1">1ª DOCENA <span>2:1</span></button><button data-choice="dozen2">2ª DOCENA <span>2:1</span></button><button data-choice="dozen3">3ª DOCENA <span>2:1</span></button><button data-choice="col1">1ª COLUMNA <span>2:1</span></button><button data-choice="col2">2ª COLUMNA <span>2:1</span></button><button data-choice="col3">3ª COLUMNA <span>2:1</span></button></div>
-<div class="control-title" style="margin-top:15px"><strong>Apuestas especiales de KARMA</strong><small>Opcionales</small></div><div class="kr-form"><label for="specialType">Tipo de apuesta</label><select id="specialType"><option value="split">Semipleno (17:1)</option><option value="street">Calle (11:1)</option><option value="corner">Cuadro (8:1)</option><option value="line">Seisena (5:1)</option><option value="trio">Trío (11:1)</option><option value="basket">Cuadro 0–3 (8:1)</option></select><select id="specialChoice" aria-label="Combinación especial"></select><button id="specialAdd" type="button" class="kr-special">＋ AÑADIR FICHA</button></div>
-<div id="placedBets" class="placed-bets" aria-live="polite">Sin apuestas seleccionadas</div>
-<div class="kr-tools"><button id="undo" type="button">↶ Deshacer</button><button id="repeat" type="button">↻ Repetir última apuesta</button><span id="betNotice" class="kr-toast"></span></div>
-</section>
-<details class="help-card kr-help"><summary>Reglas de KARMA y tabla de pagos</summary><p>Un cero y 37 números. Apuestas: pleno 35:1, semipleno 17:1, calle y trío 11:1, cuadro 8:1, seisena 5:1, docena y columna 2:1, color/paridad/mitad 1:1. Al acertar se devuelve la apuesta además del premio. El cero pierde en las apuestas externas.</p><p>Los números se eligen con generación uniforme local; la rueda y la bola animadas muestran el resultado ya elegido. No existe fondo, jackpot ni saldo real del POS. Todos los valores son créditos ficticios en este dispositivo.</p></details>
-<p class="note">Casino NYC · Rueda 3D portada del repositorio KARMA (Three.js + matemática de giro). No es la mesa conectada al POS, no admite dinero real ni pagos, y no usa ninguna API de KARMA.</p></main></div>
-<script src="casino-core.js"></script>
-<script src="vendor/three.min.js"></script>
-<script src="karma-wheel-3d.js"></script>
-<script src="karma-wheel.js"></script>
-<script src="roulette.js"></script>
-</body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0e0c0a">
+  <title>Ruleta Europea · Mesa KARMA · Casino NYC</title>
+  <link rel="icon" href="../icons/casino-nyc.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="karma-mesa.css">
+</head>
+<body>
+  <div class="mesa-root" id="mesaRoot">
+    <header class="mesa-bar">
+      <a class="back-lobby" href="../index.html#juegos">‹ Lobby</a>
+      <div class="mesa-brand">
+        CASINO NYC
+        <small>Mesa KARMA · Demo</small>
+      </div>
+      <div class="beads" id="beads" aria-label="Números anteriores"></div>
+      <div class="mesa-credit">
+        <span>Crédito</span>
+        <strong id="creditValue">0.00</strong>
+      </div>
+      <div class="phase-pill" id="phasePill">Apuesta 0.00</div>
+    </header>
+
+    <div class="table-unit">
+      <p class="table-jackpot"><span>Jackpot</span><strong id="jackpotValue">0.00</strong></p>
+      <div class="table-surface">
+        <img class="table-croupier" src="../assets/monkey-croupier-real.png" alt="" draggable="false">
+        <section class="wheel-well">
+          <div class="banner" id="noMoreBets" hidden>No más apuestas</div>
+          <div class="plaque" id="plaque" hidden></div>
+          <canvas id="karmaCanvas" class="wheel-canvas" role="img" aria-label="Rueda de ruleta europea animada"></canvas>
+          <p class="demo-banner">Solo créditos ficticios · Sin POS ni dinero real</p>
+        </section>
+        <div class="felt-stage">
+          <div class="felt-rail">
+            <div class="felt-cloth" id="feltCloth"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="tray">
+      <div class="tray-chips" id="trayChips"></div>
+      <div class="tray-actions">
+        <button type="button" class="ghost-btn" id="undoBtn">Deshacer</button>
+        <button type="button" class="ghost-btn" id="clearBtn">Limpiar</button>
+        <button type="button" class="ghost-btn" id="repeatBtn">Repetir</button>
+        <span class="phase-pill" id="mesaNotice" aria-live="polite"></span>
+      </div>
+      <button type="button" class="spin-btn" id="spinBtn">Girar</button>
+    </footer>
+  </div>
+
+  <script src="casino-core.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="karma-wheel-3d.js"></script>
+  <script src="karma-wheel.js"></script>
+  <script src="karma-board.js"></script>
+  <script src="karma-mesa.js"></script>
+</body>
+</html>
