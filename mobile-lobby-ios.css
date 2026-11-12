@@ -1,0 +1,79 @@
+/* Casino NYC iOS — Mobile-specific optimizations */
+/* Additional mobile refinements for iOS-style clean interface */
+
+@media (max-width: 600px) {
+  /* Hero adjustments */
+  .hero {
+    min-height: 460px;
+  }
+  
+  .hero-copy {
+    padding: var(--spacing-lg) !important;
+  }
+  
+  .hero h1 {
+    font-size: clamp(34px, 8vw, 42px) !important;
+    margin: var(--spacing-sm) 0 var(--spacing-md) !important;
+    line-height: 1.1 !important;
+  }
+  
+  .hero p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin: 0 0 var(--spacing-lg) !important;
+  }
+  
+  .hero .actions {
+    gap: var(--spacing-sm) !important;
+  }
+  
+  .hero .actions a,
+  .hero .actions button {
+    min-height: 48px !important;
+    font-size: 15px !important;
+    padding: 12px var(--spacing-md) !important;
+  }
+  
+  /* Card refinements */
+  .game-card .cover {
+    height: clamp(130px, 36vw, 160px) !important;
+  }
+  
+  .game-card .game-info {
+    gap: var(--spacing-sm) !important;
+    padding: var(--spacing-md) !important;
+  }
+  
+  .game-card .action {
+    min-height: 48px !important;
+    font-size: 15px !important;
+  }
+  
+  /* Touch optimization */
+  button,
+  a,
+  .nav-item {
+    touch-action: manipulation;
+  }
+  
+  /* Spacing adjustments */
+  .sectionhead {
+    margin: var(--spacing-lg) 0 var(--spacing-md);
+  }
+  
+  .sectionhead h2 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 375px) {
+  .hero h1 {
+    font-size: 32px !important;
+  }
+  
+  .mobile-logo .brand-logo {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 20px !important;
+  }
+}
