@@ -1,0 +1,36 @@
+(()=>{'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], walletKey='campana_link_demo_v2', favKey='casino_nyc_favorites', profileKey='casino_nyc_profile', bonusKey='casino_nyc_last_daily', settingsKey='casino_nyc_settings';
+const games={campana:{name:'Campana Link',category:'tragamonedas',live:true,path:'games/campana-link.html'},diamond:{name:'Diamond Stars',category:'tragamonedas',live:false},ruleta:{name:'Ruleta Europea',category:'mesas',live:false},fortuna:{name:'Fortuna 7',category:'tragamonedas',live:false}};
+const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}};
+const save=(key,val)=>{try{localStorage.setItem(key,JSON.stringify(val));return true}catch{return false}};
+const money=n=>(Math.max(0,n)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const validWallet=s=>s&&Number.isSafeInteger(s.credit)&&s.credit>=0&&s.credit<=100000000&&[250,500,750,1000].includes(s.bet)&&Number.isSafeInteger(s.spins??0);
+const wallet=()=>{const s=read(walletKey,null);return validWallet(s)?s:{credit:27835,bet:250,spins:0}};
+let favorites=read(favKey,[]);if(!Array.isArray(favorites))favorites=[];favorites=favorites.filter(id=>Object.hasOwn(games,id));
+let profile=read(profileKey,{});if(typeof profile!=='object'||!profile)profile={};
+let settings=read(settingsKey,{});if(typeof settings!=='object'||!settings)settings={};
+let activePage='inicio',activeFilter='todos',dialogAction=null,toastTimer;
+function displayBalance(){const amt=money(wallet().credit);['#balanceHeader','#balanceHome','#balanceProfile'].forEach(s=>{const e=$(s);if(e)e.textContent=amt});$('#recentGame').textContent=profile.lastGame?'Campana Link':'Sin jugar';$('#greeting').textContent='Hola'+(profile.nickname?' '+profile.nickname:'')+' · Juega con créditos de prueba';$('#avatar').textContent=(profile.nickname||'C').trim().slice(0,1).toUpperCase();$('#nickname').value=profile.nickname||'';$('#soundToggle').setAttribute('aria-pressed',String(!!settings.sound));$('#favoriteSummary').textContent=favorites.length?'Tienes '+favorites.length+' juego'+(favorites.length!==1?'s':'')+' guardado'+(favorites.length!==1?'s':'')+' en favoritos.':'Aún no has marcado juegos como favoritos.';const last=Number(read(bonusKey,0));const remaining=86400000-(Date.now()-last);$$('[data-daily]').forEach(b=>{b.disabled=remaining>0;b.textContent=remaining>0?'Disponible en '+Math.ceil(remaining/3600000)+' h':'Recibir 100 créditos demo ›'})}
+function toast(message){const box=$('#toast');box.textContent=message;box.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.classList.remove('show'),3100)}
+function openDialog(title,text,confirm=null){dialogAction=confirm;$('#dialogTitle').textContent=title;$('#dialogText').textContent=text;$('#confirmDialog').hidden=!confirm;$('#dialogWrap').hidden=false;$('#cancelDialog').focus()}
+function closeDialog(){dialogAction=null;$('#dialogWrap').hidden=true}
+function favoritesUI(){$$('[data-favorite]').forEach(b=>{const on=favorites.includes(b.dataset.favorite);b.setAttribute('aria-pressed',String(on));b.textContent=on?'♥':'♡';b.setAttribute('aria-label',(on?'Eliminar de':'Añadir a')+' favoritos: '+games[b.dataset.favorite].name)})}
+function filterGames(){const q=$('#gameSearch').value.trim().toLocaleLowerCase('es');let shown=0;$$('#catalogGrid [data-game]').forEach(card=>{const id=card.dataset.game,g=games[id];const visible=(activeFilter==='todos'||activeFilter===g.category||(activeFilter==='favoritos'&&favorites.includes(id)))&&(g.name.toLowerCase().includes(q)||g.category.includes(q));card.hidden=!visible;if(visible)shown++});$('#emptyGames').hidden=shown!==0;$('#resultsCount').textContent=shown+' resultado'+(shown!==1?'s':'');$$('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===activeFilter)))}
+function showPage(page){if(page==='favoritos'){activeFilter='favoritos';page='juegos'}else if(page==='juegos'&&activePage!=='juegos'){activeFilter='todos'}if(!$('#panel-'+page))page='inicio';activePage=page;$$('.panel').forEach(p=>p.hidden=p.id!==('panel-'+page));const activeNav=page==='juegos'&&activeFilter==='favoritos'?'favoritos':page;$$('[data-nav]').forEach(b=>b.setAttribute('aria-current',b.dataset.nav===activeNav?'page':'false'));filterGames();displayBalance();window.scrollTo({top:0,behavior:'instant'});try{history.replaceState(null,'','#'+page)}catch{}}
+function launch(id){const g=games[id];if(!g)return;if(!g.live){openDialog(g.name,'Este juego está anunciado para una próxima versión. Todavía no está disponible en Casino NYC.');return;}profile.lastGame='campana';save(profileKey,profile);window.location.href=g.path}
+function claimBonus(){const now=Date.now(),last=Number(read(bonusKey,0));if(now-last<86400000){toast('El regalo de prueba ya fue recibido.');return}const w=wallet();w.credit=Math.min(100000000,w.credit+10000);if(save(walletKey,w)){save(bonusKey,now);displayBalance();toast('¡+100.00 créditos ficticios añadidos!')}else toast('El navegador no permite guardar créditos de prueba.')}
+$$('[data-nav]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.nav)));
+$$('[data-launch]').forEach(b=>b.addEventListener('click',()=>launch(b.dataset.launch)));
+$$('[data-play-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();launch('campana')}));
+$$('[data-favorite]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save(favKey,favorites);favoritesUI();filterGames();displayBalance();toast(favorites.includes(id)?'Guardado en favoritos':'Eliminado de favoritos')}));
+$$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;filterGames()}));
+$('#gameSearch').addEventListener('input',filterGames);
+$$('[data-daily]').forEach(b=>b.addEventListener('click',claimBonus));
+$('#saveProfile').addEventListener('click',()=>{let name=$('#nickname').value.trim().replace(/[<>]/g,'').slice(0,24);profile.nickname=name;save(profileKey,profile);displayBalance();toast('Nombre guardado en este dispositivo')});
+$('#soundToggle').addEventListener('click',()=>{settings.sound=!settings.sound;save(settingsKey,settings);displayBalance();toast(settings.sound?'Sonido activado':'Sonido desactivado')});
+$('#resetDemo').addEventListener('click',()=>openDialog('Restablecer créditos','Esto volverá a dejar el juego en 278.35 créditos de prueba, con 0 giros. ¿Quieres continuar?',()=>{const w={credit:27835,bet:250,spins:0};save(walletKey,w);displayBalance();toast('Créditos demo restablecidos')}));
+$('#cancelDialog').addEventListener('click',closeDialog);$('#confirmDialog').addEventListener('click',()=>{const fn=dialogAction;closeDialog();fn?.()});$('#dialogWrap').addEventListener('click',e=>{if(e.target.id==='dialogWrap')closeDialog()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog()});
+window.addEventListener('pageshow',displayBalance);
+window.addEventListener('storage',event=>{if([walletKey,favKey,profileKey,settingsKey].includes(event.key))displayBalance()});
+favoritesUI();showPage(['inicio','juegos','premios','perfil','ayuda'].includes(location.hash.slice(1))?location.hash.slice(1):'inicio');
+})();
