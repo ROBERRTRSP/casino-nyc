@@ -1,0 +1,19 @@
+{
+  "name": "Casino NYC · Arcade de demostración",
+  "short_name": "Casino NYC",
+  "description": "Lobby de tragamonedas recreativas con créditos ficticios",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090914",
+  "theme_color": "#090914",
+  "icons": [
+    {
+      "src": "icons/casino-nyc.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
