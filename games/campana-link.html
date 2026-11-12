@@ -205,7 +205,13 @@ button{touch-action:manipulation}
 .auto-feedback{min-width:85px;text-align:center;font-size:12px;color:#f8ca94;font-variant-numeric:tabular-nums}
 @media(max-width:560px){.auto-deck{margin:8px 4px 0;gap:7px;padding:8px 7px}.auto-label{flex:1 0 100%;text-align:center;font-size:11px}.auto-count{flex:0 0 auto;min-width:100px;min-height:45px}.auto-button{flex:1 1 170px;min-width:0;min-height:46px;font-size:14px}.auto-feedback{flex:1 0 100%;font-size:11px}}
 @media(orientation:landscape) and (max-height:550px) and (max-width:1000px){.auto-deck{padding:5px;margin:5px 0 0}.auto-label{font-size:10px;flex:0 0 auto}.auto-count{min-height:35px;padding:3px 7px;font-size:13px}.auto-button{min-height:36px;padding:4px 9px;font-size:12px;min-width:130px}.auto-feedback{font-size:10px;min-width:auto;flex:0 0 auto}}
-</style><link rel="stylesheet" href="mobile-fit.css"><link rel="stylesheet" href="ios-games.css"></head><body><div id="previewBanner" role="alert" style="margin:12px auto 4px;width:min(100% - 24px,760px);background:#2b1110;color:#fff4cf;border:2px solid #ffd263;border-radius:14px;padding:13px 16px;text-align:center;font:700 15px/1.45 system-ui;box-shadow:0 0 18px #0008">⚠️ <strong>VISTA PREVIA SIN JUEGO:</strong> Si ves este aviso, los botones no pueden funcionar aquí. Abre este archivo como una página web en Safari para jugar. <a href="https://app.netlify.com/drop" style="color:#afffff">Publicar en Netlify Drop</a>.</div>
+</style><link rel="stylesheet" href="mobile-fit.css"><link rel="stylesheet" href="ios-games.css"><style id="ios-spin-paint-fix">
+@media (max-width:900px){
+  .reel.rolling{contain:none!important}
+  .reel.rolling .reel-track{will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+  .reel.rolling .symbol-art{filter:none!important;-webkit-filter:none!important}
+}
+</style></head><body><div id="previewBanner" role="alert" style="margin:12px auto 4px;width:min(100% - 24px,760px);background:#2b1110;color:#fff4cf;border:2px solid #ffd263;border-radius:14px;padding:13px 16px;text-align:center;font:700 15px/1.45 system-ui;box-shadow:0 0 18px #0008">⚠️ <strong>VISTA PREVIA SIN JUEGO:</strong> Si ves este aviso, los botones no pueden funcionar aquí. Abre este archivo como una página web en Safari para jugar. <a href="https://app.netlify.com/drop" style="color:#afffff">Publicar en Netlify Drop</a>.</div>
 <main class="app"><header class="topbar"><div class="brand"><i class="led"></i> <a href="../index.html" style="color:#ffe9a6;text-decoration:none;display:inline-flex;align-items:center;gap:7px;min-height:38px">‹ LOBBY</a> <span>· CAMPANA LINK</span></div><div class="top-actions"><button aria-label="Alternar pantalla completa" class="tinybtn" id="fullscreenBtn" title="Pantalla completa" type="button">⛶ Pantalla completa</button><button aria-label="Activar o desactivar sonido" class="tinybtn" id="soundBtn" title="Sonido" type="button">🔇 Sonido</button><button aria-label="Mostrar ayuda" class="tinybtn" id="rulesBtn" title="Ayuda" type="button">ⓘ Ayuda</button></div></header>
 <section aria-label="Máquina de tragamonedas de demostración" class="cabinet"><div class="cabinet-content">
 <div class="marquee"><div aria-label="Campana dorada y logotipo Bell Link" class="hero-art" role="img"></div><div aria-label="Premios especiales ficticios" class="jackpots"><div class="jackpot grand"><span class="jtitle">GRAND</span><span class="jamount">55,458.30</span></div><div class="jackpot major"><span class="jtitle">MAJOR</span><span class="jamount">2,997.50</span></div><div class="jackpot minor"><span class="jtitle">MINOR</span><span class="jamount">250.00</span></div><div class="jackpot mini"><span class="jtitle">MINI</span><span class="jamount">50.00</span></div></div></div>
@@ -259,7 +265,8 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
     const gap=Number.isFinite(gapParsed)?gapParsed:2;
     const row=h+gap;
     const fullHeight=h*3+gap*2;
-    const fillerCount=32+index*7; // Más cinta = giro visible más largo
+    const mobile=window.matchMedia('(max-width: 900px)').matches || /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    const fillerCount=mobile?14+index*3:32+index*7; // Reducir carga gráfica en teléfonos
     const visible=state.board[index].slice();
     const strip=visible.concat(Array.from({length:fillerCount},randomSymbol),finalColumn);
     const offsetRows=3+fillerCount;
@@ -307,6 +314,36 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
       sound('stop');
       try{if(navigator.vibrate)navigator.vibrate(12)}catch{}
       resolve();
+    }
+    // Safari móvil: repintar la cinta mediante requestAnimationFrame.
+    // Evita que Web Animations deje congelados los símbolos en pantalla.
+    if(mobile && track){
+      const total=.735;
+      let started=null,frame=0;
+      const tick=(now)=>{
+        if(done)return;
+        if(started===null)started=now;
+        const t=Math.min(1,Math.max(0,(now-started)/duration));
+        let progress;
+        if(t<.16)progress=(t*t/(2*.16))/total;
+        else if(t<.68)progress=(.08+t-.16)/total;
+        else if(t<.95){
+          const u=t-.68;
+          progress=(.60+u-u*u/(2*.27))/total;
+        }else progress=1;
+        let y=travel*Math.min(1,progress);
+        if(t>=.95){
+          const u=(t-.95)/.05;
+          y+=Math.sin(u*Math.PI*2)*(1-u)*row*.1;
+        }
+        track.style.transform='translate3d(0,'+(-y.toFixed(2))+'px,0)';
+        if(t<1)frame=requestAnimationFrame(tick);
+        else land();
+      };
+      track.style.transform='translate3d(0,0,0)';
+      frame=requestAnimationFrame(tick);
+      window.setTimeout(()=>{cancelAnimationFrame(frame);land()},duration+500);
+      return;
     }
     try{
       if(track && typeof track.animate==='function'){
