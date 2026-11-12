@@ -48,6 +48,16 @@ button, select, a { touch-action:manipulation; }
   .symbol {border-radius:6px;min-width:0;}
   body[data-game="diamond"] .symbol {aspect-ratio:1/1.02;}
   body[data-game="fortuna"] .symbol {aspect-ratio:auto;height:clamp(77px,22vw,98px);}
+  /* Durante el giro la cinta fija la altura: el aspect-ratio móvil no debe abrir una 4ª fila. */
+  body[data-game="diamond"] .reel.reel-motion .symbol,
+  body[data-game="fortuna"] .reel.reel-motion .symbol,
+  .reel.reel-motion .reel-tape .symbol,
+  .reel.rolling .reel-track > .symbol{
+    aspect-ratio:auto!important;
+    height:var(--slot-row-h,var(--slot-cell-height,70px))!important;
+    min-height:var(--slot-row-h,var(--slot-cell-height,70px))!important;
+    max-height:var(--slot-row-h,var(--slot-cell-height,70px))!important;
+  }
   .symbol .glyph.graphic {background-position:center;background-repeat:no-repeat;background-size:contain;max-width:95%;}
   .paylist .symbol {height:52px!important;aspect-ratio:1/1!important;}
 

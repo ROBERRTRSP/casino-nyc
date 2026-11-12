@@ -28,7 +28,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;user-
 .symbol.coin{background:radial-gradient(circle,#a3290c,#4b0408)}.symbol.coin .symbol-art{width:98%;height:98%}.coin-value{position:absolute;z-index:4;top:57%;left:50%;transform:translate(-50%,-50%);font:bold clamp(11px,2vw,25px) 'Barlow Condensed',sans-serif;color:#fff;-webkit-text-stroke:.6px #280800;text-shadow:1px 2px 3px #000,0 0 7px #ffcf46;background:#26060665;padding:0 4px;border-radius:30%}
 .gemstone{font-size:clamp(49px,7vw,92px);background:linear-gradient(135deg,#d7ffff 5%,#00b7fa 28%,#004aca 50%,#c1fcff 67%,#2535db 81%);-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(1px 2px #0c113a) drop-shadow(0 0 14px #67f4ff)}.wild-art{font-size:clamp(46px,7vw,100px);color:#fffa81;text-shadow:0 0 10px #fff582,0 0 30px #ff8800,3px 4px 2px #741900}.waiting-bonus{color:#ffce51;font-size:40px;opacity:.25;animation:pulse 1.5s ease-in-out infinite alternate}
 .symbol.win{z-index:3;border:2px solid #ffeda3;box-shadow:0 0 14px #fff5a1,inset 0 0 19px #ffe2a7;animation:winning 650ms ease-in-out infinite alternate}
-.reels.spinning .symbol-art,.reels.spinning .gemstone,.reels.spinning .wild-art{filter:blur(3px) brightness(1.2);animation:shudder .14s linear infinite alternate}
+.reels.spinning .symbol-art,.reels.spinning .gemstone,.reels.spinning .wild-art,.reel.rolling .symbol-art,.reel.rolling .gemstone,.reel.rolling .wild-art{filter:blur(2.2px) brightness(1.18);animation:shudder .14s linear infinite alternate}
 @keyframes shudder{from{transform:translateY(-9px)}to{transform:translateY(9px)}}@keyframes winning{from{filter:brightness(1)}to{filter:brightness(1.5)}}@keyframes pulse{to{opacity:.7}}
 .message{display:flex;align-items:center;justify-content:center;text-align:center;min-height:38px;margin:7px 2px 0;font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,2vw,21px);letter-spacing:.07em;color:#ffdeac;text-shadow:0 2px 2px #370303}.message.good{color:#b5ff93;text-shadow:0 0 12px #73ff68}.message.bonus{color:#fff285;text-shadow:0 0 12px #f99c22}
 .bonus-strip{display:none;align-items:center;justify-content:center;gap:10px;padding:6px 10px;background:linear-gradient(90deg,#4c0e0d,#9b4109,#4c0e0d);border:1px solid #ffcc6a;border-radius:8px;margin-top:8px}.bonus-strip.active{display:flex}.bonus-strip strong{font-size:24px;color:#fffba8}.bonus-strip span{font-size:13px}
@@ -181,9 +181,9 @@ button{touch-action:manipulation}
 
 
 /* Movimiento de cinta real, con desplazamiento vertical por rodillo. */
-.reel.rolling {display:block!important;position:relative;overflow:hidden;isolation:isolate;contain:paint;box-shadow:inset 0 0 12px #fff2aa40,0 0 3px #ffbf6a60;border-radius:2px;}
+.reel.rolling {display:block!important;position:relative;overflow:hidden!important;isolation:isolate;contain:paint;box-sizing:border-box;box-shadow:inset 0 0 12px #fff2aa40,0 0 3px #ffbf6a60;border-radius:2px;}
 .reel.rolling .reel-track {position:absolute;z-index:1;top:0;left:0;width:100%;display:flex;flex-direction:column;gap:var(--slot-cell-gap,2px);will-change:transform;backface-visibility:hidden;transform:translate3d(0,0,0);}
-.reel.rolling .reel-track > .symbol {box-sizing:border-box;display:grid!important;flex:0 0 var(--slot-cell-height)!important;height:var(--slot-cell-height)!important;width:100%!important;min-height:0!important;aspect-ratio:auto!important;}
+.reel.rolling .reel-track > .symbol {box-sizing:border-box;display:grid!important;flex:0 0 var(--slot-cell-height)!important;height:var(--slot-cell-height)!important;min-height:var(--slot-cell-height)!important;max-height:var(--slot-cell-height)!important;width:100%!important;aspect-ratio:auto!important;}
 .reel.rolling::after{content:'';position:absolute;pointer-events:none;inset:0;z-index:4;background:linear-gradient(180deg,#0700039c 0%,#04000319 17%,transparent 35%,transparent 64%,#0a00041e 80%,#08000396 100%);box-shadow:inset 0 13px 18px -11px #000e,inset 0 -13px 18px -11px #000e;border-inline:1px solid #efc57d88;}
 .reel.rolling .frozen-bell{position:absolute;left:0;right:0;z-index:5;display:block;pointer-events:none;filter:drop-shadow(0 0 5px #ffce35);animation:heldGold 1.1s ease-in-out infinite alternate;}
 .reel.rolling .frozen-bell .symbol{width:100%;height:100%!important;min-height:0!important;aspect-ratio:auto!important;box-shadow:inset 0 0 7px #ffe899,0 0 7px #ffd349;}
@@ -254,20 +254,26 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
   return new Promise(resolve=>{
     const reel=$('reels').children[index];
     const current=Array.from(reel.querySelectorAll(':scope > .symbol'));
-    const h=current[0]?.getBoundingClientRect().height || 65;
-    const gap=parseFloat(getComputedStyle(reel).rowGap)||2;
+    const h=Math.max(48,Math.round((current[0]?.getBoundingClientRect().height || 65)*100)/100);
+    const gapParsed=Number.parseFloat(getComputedStyle(reel).rowGap);
+    const gap=Number.isFinite(gapParsed)?gapParsed:2;
     const row=h+gap;
-    const fullHeight=reel.getBoundingClientRect().height || (h*3+gap*2);
-    const fillerCount=27+index*6; // Las 5 cintas recorren distancias diferentes
+    const fullHeight=h*3+gap*2;
+    const fillerCount=24+index*5; // Las 5 cintas recorren distancias diferentes
     const visible=state.board[index].slice();
     const strip=visible.concat(Array.from({length:fillerCount},randomSymbol),finalColumn);
     const offsetRows=3+fillerCount;
     reel.style.height=fullHeight+'px';
+    reel.style.maxHeight=fullHeight+'px';
+    reel.style.minHeight=fullHeight+'px';
+    reel.style.overflow='hidden';
     reel.style.setProperty('--slot-cell-height',h+'px');
     reel.style.setProperty('--slot-cell-gap',gap+'px');
     reel.classList.add('rolling');
     reel.classList.remove('landing');
     reel.innerHTML='<div class="reel-track">'+strip.map(k=>cellMarkup(k)).join('')+'</div>';
+    const trackWarm=reel.querySelector('.reel-track');
+    if(trackWarm) void trackWarm.offsetHeight;
     if(bonusMode && freeze){
       for(let y=0;y<3;y++){
         const value=freeze[index*3+y];
@@ -282,7 +288,7 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
     }
     const track=reel.querySelector('.reel-track');
     const travel=offsetRows*row;
-    const duration=1650+index*390;
+    const duration=1100+index*260;
     let done=false;
     function land(){
       if(done)return;
@@ -290,8 +296,11 @@ function animateSingleReel(index, finalColumn, freeze, bonusMode){
       reel.classList.remove('rolling');
       reel.style.removeProperty('--slot-cell-height');
       reel.style.removeProperty('--slot-cell-gap');
-      reel.innerHTML=finalColumn.map((k,y)=>cellMarkup(k,bonusMode?freeze?.[index*3+y]:null)).join('');
       reel.style.height='';
+      reel.style.maxHeight='';
+      reel.style.minHeight='';
+      reel.style.overflow='';
+      reel.innerHTML=finalColumn.map((k,y)=>cellMarkup(k,bonusMode?freeze?.[index*3+y]:null)).join('');
       reel.classList.add('landing');
       window.setTimeout(()=>reel.classList.remove('landing'),340);
       sound('stop');
