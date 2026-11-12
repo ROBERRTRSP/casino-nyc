@@ -1,0 +1,18 @@
+/* Casino NYC lobby: phone-first access to the game catalog. */
+@media(max-width:600px){
+  .hero{min-height:0!important;}
+  .hero-copy{padding:17px 16px 12px!important;}
+  .hero h1{font-size:clamp(31px,8vw,39px)!important;margin:7px 0 7px!important;line-height:1.0!important;}
+  .hero p{font-size:12px!important;line-height:1.32!important;margin:0 0 11px!important;}
+  .hero .actions{gap:7px!important;}
+  .hero .actions a,.hero .actions button{min-height:44px!important;}
+  .hero-visual,.hero-art{max-height:145px!important;}
+  .game-card .cover{height:clamp(118px,34vw,155px)!important;}
+  .game-card .game-info{gap:6px!important;}
+  .game-card .action{min-height:46px!important;}
+  button,a,.nav-item{touch-action:manipulation;}
+}
+@media(max-width:355px){
+  .hero-visual,.hero-art{max-height:110px!important;}
+  .hero h1{font-size:29px!important;}
+}

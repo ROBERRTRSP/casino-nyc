@@ -66,3 +66,12 @@ La versión demo incluye probabilidades documentadas y símbolos mejorados. Cons
 Los recursos se incluyen directamente en el repositorio y no necesitan servicios externos. Los gráficos vectoriales conservan su nitidez al escalar; las fotografías preexistentes de frutas provienen del prototipo y **no son capturas 4K nativas**.
 
 **Pruebas:** inspección en Chromium con anchos de 320, 393 y 1366 píxeles, comprobación visual del giro y la ruleta, y verificación de ausencia de desbordamiento horizontal. Queda pendiente comprobar el resultado en Safari en un iPhone físico.
+
+## Diseño para teléfonos (v6)
+- Interfaces optimizadas para 320–430 px de ancho y modo horizontal.
+- Rodillos y botones de jugar/autogiro dimensionados para pantalla táctil.
+- Campana Link muestra los cuatro jackpots sin recortes en móvil.
+- Ruleta: la mesa pasa a 3 columnas táctiles, números de al menos 44 px de alto y botón de giro siempre visible abajo; se puede desplazarse verticalmente para ver todas las apuestas.
+- El escritorio conserva su diseño de mayor tamaño.
+
+Pruebas locales con navegador móvil simulado en 320×568, 393×852, 852×393 y escritorio 1366×768. No sustituyen una prueba física en Safari o Android.

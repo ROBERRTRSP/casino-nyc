@@ -39,7 +39,7 @@ function addBet(id){if(busy)return;if(C.wallet().credit<total()+chip){status('No
 function populate(){const kind=$('specialType').value;const opts=spotOptions[kind]||[];$('specialChoice').innerHTML=opts.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}
 $('specialType').addEventListener('change',populate);populate();
 $('specialAdd').addEventListener('click',()=>addBet($('specialChoice').value));
-$('numberGrid').innerHTML='<button class="zero" type="button" data-choice="n0">0</button>'+Array.from({length:36},(_,i)=>{const n=i+1,col=Math.floor(i/3)+1,row=3-i%3;return `<button type="button" style="grid-column:${col};grid-row:${row}" class="${color(n)}-bg" data-choice="n${n}">${n}</button>`}).join('');
+$('numberGrid').innerHTML='<button class="zero" type="button" data-choice="n0">0</button>'+Array.from({length:36},(_,i)=>{const n=i+1,col=Math.floor(i/3)+1,row=3-i%3;return `<button type="button" style="--mcol:${(n-1)%3+1};--mrow:${Math.floor((n-1)/3)+1};grid-column:${col};grid-row:${row}" class="${color(n)}-bg" data-choice="n${n}">${n}</button>`}).join('');
 $('numberGrid').addEventListener('click',e=>{const el=e.target.closest('[data-choice]');if(el)addBet(el.dataset.choice)});
 $('outside').addEventListener('click',e=>{const el=e.target.closest('[data-choice]');if(el)addBet(el.dataset.choice)});
 $('chips').addEventListener('click',e=>{const el=e.target.closest('[data-chip]');if(el&&!busy){chip=Number(el.dataset.chip);C.playSound('tap');update()}});
