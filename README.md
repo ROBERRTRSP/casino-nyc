@@ -53,3 +53,16 @@ Los cuatro comparten un mismo saldo de prueba mediante `localStorage`, **sin din
 
 ## Probabilidades y gráficos
 La versión demo incluye probabilidades documentadas y símbolos mejorados. Consulta [PROBABILIDADES_Y_GRAFICOS.md](PROBABILIDADES_Y_GRAFICOS.md).
+
+
+## Mejora gráfica v5 · 12 de noviembre de 2026
+
+- Diamond Stars y Fortuna 7 ahora muestran los recursos gráficos locales de `games/casino-symbols.css` en los **rodillos y en la tabla de premios**, sustituyendo las fuentes emoji que variaban según el sistema operativo.
+- Se ajusta la presentación del símbolo BAR, del siete y de las campanas para evitar recortes.
+- El catálogo del lobby incluye tres portadas nuevas de alta resolución, disponibles en `.webp` y en versión vectorial `.svg` en `assets/`.
+- La ruleta mantiene su lógica actual: nuevo emblema original de crupier, cabecera compacta y rueda más equilibrada en móvil.
+- `graphics-lobby.css` y `games/graphics-polish.css` contienen los ajustes visuales de esta fase.
+
+Los recursos se incluyen directamente en el repositorio y no necesitan servicios externos. Los gráficos vectoriales conservan su nitidez al escalar; las fotografías preexistentes de frutas provienen del prototipo y **no son capturas 4K nativas**.
+
+**Pruebas:** inspección en Chromium con anchos de 320, 393 y 1366 píxeles, comprobación visual del giro y la ruleta, y verificación de ausencia de desbordamiento horizontal. Queda pendiente comprobar el resultado en Safari en un iPhone físico.

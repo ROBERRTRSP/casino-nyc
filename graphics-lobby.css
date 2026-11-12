@@ -1,0 +1,11 @@
+/* Casino NYC illustrated library: vector thumbnails remain sharp at 4K. */
+.game-card .cover{background-color:#0f0d19;isolation:isolate}
+.cover .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:saturate(1.06) contrast(1.05)}
+.cover .cover-symbol{display:none}
+.game-card .cover:after{background:linear-gradient(180deg,#09091513 0%,transparent 35%,#0b071d50 83%,#0b0816a0 100%)}
+.game-card .game-info{gap:9px}
+.game-card .action{background:linear-gradient(180deg,#ffedb7,#e3b15b);color:#2a180f;text-shadow:none;border:1px solid #fff4c4;font-weight:900}
+.game-card:hover{box-shadow:0 12px 36px #0009,0 0 0 1px #d2a35e70}
+.game-card .cover.green,.game-card .cover.blue,.game-card .cover.purple{background:#0e111a}
+@media(min-width:768px){.cover{height:190px}}
+@media(max-width:760px){.cover{height:clamp(132px,32vw,185px)}}

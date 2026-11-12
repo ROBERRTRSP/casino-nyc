@@ -19,7 +19,7 @@ let creditsPrize=0,spins=Number.isSafeInteger(stored.spins)&&stored.spins>=0?sto
 let history=Array.isArray(stored.history)?stored.history.slice(0,5):[];
 const sleep=C.wait;
 const symbol=s=>SYM.find(x=>x.id===s)||SYM[0];
-function symHtml(id){const s=symbol(id);return '<span class="glyph '+(/^(7|BAR)$/.test(s.glyph)?'text-glyph':'')+'">'+s.glyph+'</span><span class="glimmer"></span>'}
+function symHtml(id){const s=symbol(id);return '<span class="glyph graphic graphic-'+s.id+'" aria-hidden="true"></span><span class="glimmer"></span>'}
 function cellHtml(id,highlight=false){return '<div class="symbol'+(highlight?' highlight':'')+'" aria-label="'+symbol(id).id+'">'+symHtml(id)+'</div>'}
 function draw(winners=[]){const high=new Set(winners.flat());$('reels').innerHTML=board.map((col,i)=>'<div class="reel" data-col="'+i+'">'+col.map((x,j)=>cellHtml(x,high.has(i*3+j))).join('')+'</div>').join('')}
 function setStatus(s,kind=''){$('message').textContent=s;$('message').className='status '+kind}
@@ -70,7 +70,7 @@ async function startAuto(){if(autoCount>0){autoStop=true;setStatus('El autojuego
 $('spin').addEventListener('click',()=>{if(!running&&!autoCount)void oneSpin()});$('autoButton').addEventListener('click',()=>void startAuto());
 document.querySelectorAll('[data-bet]').forEach(b=>b.addEventListener('click',()=>{if(running||autoCount||freeSpins)return;bet=Number(b.dataset.bet);C.playSound('tap');save();updateUI()}));
 // Tabla de pagos realmente usada por los símbolos y por la función evaluate.
-const paylist=$('paylist');if(paylist){paylist.innerHTML=SYM.filter(s=>!s.scatter).map(s=>'<div><b>'+s.glyph+'</b><div>'+(isDiamond?'3: '+(s.pay[0]??'–')+'x · 4: '+(s.pay[1]??'–')+'x · 5: '+(s.pay[2]??'–')+'x':'3: '+s.pay[0]+'x')+'</div></div>').join('');}
+const paylist=$('paylist');if(paylist){paylist.innerHTML=SYM.filter(s=>!s.scatter).map(s=>'<div><span class="symbol pay-symbol"><span class="glyph graphic graphic-'+s.id+'" aria-hidden="true"></span></span><b>'+s.id.toUpperCase()+'</b><div>'+(isDiamond?'3: '+(s.pay[0]??'–')+'x · 4: '+(s.pay[1]??'–')+'x · 5: '+(s.pay[2]??'–')+'x':'3: '+s.pay[0]+'x')+'</div></div>').join('');}
 window.addEventListener('pageshow',updateUI);window.addEventListener('storage',updateUI);draw();updateUI();if($('slotHistory'))$('slotHistory').textContent=history.length?'Últimos: '+history.join(' · '):'Últimos giros: sin historial';
 window.__casinoSlotTest={evaluate,getState:()=>({freeSpins,spins,bet,board,autoCount}),setBoard:next=>{board=next;draw()}};
 })();

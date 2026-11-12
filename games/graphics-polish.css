@@ -1,0 +1,63 @@
+/* Casino NYC graphics v5 — image-first, responsive and readable in small screens. */
+.game-heading {padding:15px 6px 14px;max-width:920px;margin:auto}
+.game-heading h1 {font-size:clamp(30px,5.4vw,58px);letter-spacing:-.012em;line-height:1.08;overflow-wrap:normal;word-break:normal;text-wrap:balance;margin:7px 0}
+.game-heading p {line-height:1.45;margin:6px auto;max-width:670px}
+.game-heading .eyebrow{letter-spacing:.12em;font-size:clamp(9px,1.7vw,11px)}
+.glass-title{line-height:1.4;flex-wrap:wrap;padding:5px 4px 10px}
+/* Restore illustrated artwork without clipping the rectangle or blurring valuable detail. */
+.symbol .glyph.graphic {width:95%;height:92%;max-width:100%;max-height:100%;flex:none;transform:none;filter:drop-shadow(0 5px 5px #0009) saturate(1.12);-webkit-mask-image:none;mask-image:none}
+.symbol .glyph.graphic-bar {width:91%;height:73%;background-size:contain!important}
+.symbol .glyph.graphic-seven {width:82%;height:86%;background-size:contain!important}
+.symbol .glyph.graphic-bell {width:88%;height:88%;background-size:contain!important}
+.symbol .glyph.graphic-star {width:85%;height:85%}
+.symbol .glyph.graphic-diamond {width:85%;height:86%}
+.symbol .glimmer {mix-blend-mode:screen;pointer-events:none}
+.symbol {isolation:isolate;border-radius:8px;box-shadow:inset 0 2px 0 #ffffff28,inset 0 -10px 14px #05030ebf;}
+.symbol::before {content:'';pointer-events:none;position:absolute;inset:0;border:1px solid #ffffff14;border-radius:inherit;z-index:1}
+.slot-frame {overflow:visible}
+.grid-reels {overflow:hidden}
+.pay-symbol{display:grid;place-items:center;width:58px;height:51px;aspect-ratio:auto;margin:0 auto 4px;background:linear-gradient(140deg,#2b1832,#0d0b1a);border-radius:6px}
+.pay-symbol .glyph.graphic{width:88%;height:88%}
+.paylist b{display:block;text-transform:capitalize;font-size:10px;letter-spacing:.04em}
+.paylist{grid-template-columns:repeat(auto-fit,minmax(112px,1fr))}
+.paylist>div{padding:8px 6px 10px;min-width:0}
+.scoreboard strong{font-variant-numeric:tabular-nums}
+.roulette-karma .kr-mascot-img {display:block;object-fit:contain;width:75px;height:75px;flex:0 0 auto;animation:kr-bop 3s ease-in-out infinite;font-size:0}
+.roulette-karma .kr-dealer {min-height:94px;padding:7px 10px}
+.roulette-karma .kr-dealer span {font-size:12px}
+.roulette-karma .kr-wheel-holder {height:clamp(232px,28vw,360px)}
+.roulette-karma .kr-stage {grid-template-columns:minmax(0,1.3fr) minmax(175px,.7fr)}
+.roulette-karma .kr-wheel-holder canvas {object-fit:contain}
+.roulette-karma .stage{padding:clamp(10px,1.7vw,18px)}
+.roulette-karma .kr-side .number-result{height:66px;font-size:43px}
+.roulette-karma .kr-dealer-note {line-height:1.35}
+@media(max-width:640px){
+ .game-heading{padding:10px 4px 12px}
+ .game-heading h1{font-size:clamp(27px,7.7vw,38px);margin:7px 0}
+ .game-heading p{font-size:12px}
+ .game-heading .eyebrow{letter-spacing:.07em;font-size:9px}
+ .slot-frame{padding:3px;border-width:3px}
+ .grid-reels{gap:3px;padding:3px}
+ .reel{gap:3px}
+ .symbol{border-radius:6px}
+ .symbol .glyph.graphic{width:98%;height:94%}
+ .symbol .glyph.graphic-bar{width:91%;height:80%}
+ .scoreboard {gap:6px}
+ .roulette-karma .kr-stage{grid-template-columns:1fr}
+ .roulette-karma .kr-wheel-holder{height:clamp(225px,64vw,310px)}
+ .roulette-karma .kr-side{display:grid;grid-template-columns:1fr auto;gap:6px;padding:5px}
+ .roulette-karma .kr-dealer{grid-row:span 2;min-height:69px;justify-content:flex-start}
+ .roulette-karma .kr-mascot-img{height:55px;width:55px}
+ .roulette-karma .kr-dealer-note{display:none}
+ .roulette-karma .kr-caption{font-size:9px;letter-spacing:.05em}
+ .roulette-karma .kr-last{grid-column:span 2}
+ .roulette-karma .kr-side .number-result{width:58px;height:51px;font-size:32px}
+ .roulette-karma .kr-caption:nth-of-type(2){text-align:right}
+ .roulette-karma .kr-wheel-holder::before{inset:9%}
+}
+@media(max-width:350px){.game-heading h1{font-size:27px}.symbol .glyph.graphic{height:88%}.roulette-karma .kr-wheel-holder{height:224px}}
+@media(prefers-reduced-motion:reduce){.roulette-karma .kr-mascot-img{animation:none}}
+/* Separate the roulette label from the subtitle, including narrow phones. */
+.roulette-karma .glass-title{gap:8px;align-items:center;justify-content:space-between}
+.roulette-karma .glass-title span:last-child{display:inline-flex;align-items:center;background:#d7b66d1c;border:1px solid #ba99684b;border-radius:8px;padding:3px 8px;white-space:nowrap}
+@media(max-width:360px){.roulette-karma .glass-title{font-size:10px;gap:5px}.roulette-karma .glass-title span:last-child{font-size:10px;padding:2px 5px}}
