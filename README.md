@@ -49,3 +49,7 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 **Límite importante:** la ruleta del repositorio original de KARMA es un componente WebGL/Three.js integrado con Next.js y con un servidor POS. Esta versión es una **adaptación visual y matemática propia en Canvas 2D** para poder servir Casino NYC como web estática; **no copia el componente Three.js ni el servidor**, ni comparte autenticación, saldos, fondos, jackpots, cajeros o bases de datos.
 
 Los cuatro comparten un mismo saldo de prueba mediante `localStorage`, **sin dinero real**.
+
+
+## Probabilidades y gráficos
+La versión demo incluye probabilidades documentadas y símbolos mejorados. Consulta [PROBABILIDADES_Y_GRAFICOS.md](PROBABILIDADES_Y_GRAFICOS.md).
