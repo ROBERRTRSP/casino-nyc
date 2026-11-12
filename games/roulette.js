@@ -1,10 +1,30 @@
 (()=>{'use strict';
-const C=window.CasinoCore,K=window.CasinoKarmaWheel,$=id=>document.getElementById(id);
+const C=window.CasinoCore,$=id=>document.getElementById(id);
+function pickWheelApi(){
+  const prefer=window.__KarmaWheel3D;
+  const fallback=window.__KarmaWheel2D||window.CasinoKarmaWheel;
+  if(prefer){
+    try{
+      const probe=document.createElement('canvas');
+      const gl=probe.getContext('webgl')||probe.getContext('experimental-webgl');
+      if(gl){window.CasinoKarmaWheel=prefer;return prefer;}
+    }catch{}
+  }
+  window.CasinoKarmaWheel=fallback;
+  return fallback;
+}
+const K=pickWheelApi();
 const redSet=K.REDS,color=K.color;
 let chip=50,bets=new Map(),stack=[],previous=[],busy=false,history=read('casino_nyc_roulette_history',[]),last=0;
 function read(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v??def}catch{return def}}
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
-const wheel=new K.KarmaWheel($('karmaCanvas'));
+let wheel;
+try{wheel=new K.KarmaWheel($('karmaCanvas'));}
+catch(err){
+  console.warn('Fallo al montar la rueda preferida, usando Canvas 2D de KARMA.',err);
+  const F=window.__KarmaWheel2D; if(!F) throw err;
+  window.CasinoKarmaWheel=F; wheel=new F.KarmaWheel($('karmaCanvas'));
+}
 const labels={red:'ROJO',black:'NEGRO',even:'PAR',odd:'IMPAR',low:'1–18',high:'19–36',dozen1:'1ª DOCENA',dozen2:'2ª DOCENA',dozen3:'3ª DOCENA',col1:'1ª COLUMNA',col2:'2ª COLUMNA',col3:'3ª COLUMNA'};
 const spotOptions={split:[],street:[],corner:[],line:[],trio:[],basket:[]};
 const key=(kind,nums)=>`${kind}:${nums.slice().sort((a,b)=>a-b).join('-')}`;
@@ -47,7 +67,7 @@ $('undo').addEventListener('click',()=>{if(busy||!stack.length)return;const {id,
 $('clear').addEventListener('click',()=>{if(busy)return;bets.clear();stack=[];update();status('Mesa limpia. Coloca nuevas fichas.')});
 $('repeat').addEventListener('click',()=>{if(busy||!previous.length||total())return;const v=previous.reduce((n,item)=>n+item[1],0);if(v>C.wallet().credit){status('No hay créditos suficientes para repetir esa apuesta.','error');return}bets=new Map(previous);stack=previous.map(([id,value])=>({id,value}));update();status('Apuestas anteriores repetidas.')});
 $('spin').addEventListener('click',()=>{if(busy||!total())return;const stake=total();if(!C.updateWallet(-stake,1)){status('Saldo demo insuficiente.','error');update();return}
- busy=true;last=0;previous=[...bets.entries()];stack=[];const outcome=C.randint(37);status('No más apuestas. La bola está girando…');C.playSound('spin');update();
+ busy=true;last=0;previous=[...bets.entries()];stack=[];const outcome=C.randint(37);status(window.CasinoKarmaWheel?.mode==='three'?'No más apuestas. Rueda 3D de KARMA en movimiento…':'No más apuestas. La bola está girando…');C.playSound('spin');update();
  if(!wheel.start(outcome,pocket=>{
   let prize=0;for(const [id,value] of bets)prize+=value*payoutFor(id,pocket);
   if(prize){if(C.updateWallet(prize)){C.playSound('win');status(`¡Salió ${pocket}! Cobras ${C.money(prize)} créditos ficticios.`, 'win')}else status('El navegador no pudo guardar el premio demo.','error')}

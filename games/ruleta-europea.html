@@ -1,7 +1,7 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10141c"><title>Ruleta Europea KARMA · Casino NYC</title><link rel="icon" href="../icons/casino-nyc.svg" type="image/svg+xml"><link rel="stylesheet" href="arcade.css"><link rel="stylesheet" href="roulette.css"><link rel="stylesheet" href="karma-roulette.css"><link rel="stylesheet" href="graphics-polish.css"><link rel="stylesheet" href="mobile-fit.css"><link rel="stylesheet" href="ios-games.css"></head>
 <body class="roulette-karma"><div class="layout">
 <header class="top"><a href="../index.html#juegos" class="back">‹ LOBBY</a><div class="bank"><span class="coin">✦</span><div><div class="label">CRÉDITOS DE PRUEBA</div><strong id="balance">278.35</strong></div></div></header>
-<section class="game-heading"><div class="eyebrow">CASINO NYC · ADAPTACIÓN VISUAL DE KARMA</div><h1>Ruleta Europea</h1><p>Rueda estilo KARMA, bola con caída y rebotes, mesa con apuestas clásicas y especiales.</p><span class="pill">Solo créditos ficticios · No se conecta al POS</span></section>
+<section class="game-heading"><div class="eyebrow">CASINO NYC · RUEDA 3D DE KARMA</div><h1>Ruleta Europea</h1><p>Rueda Three.js del repositorio KARMA: trayectoria, caída y rebotes originales. Mesa con apuestas clásicas y especiales.</p><span class="pill">Solo créditos ficticios · No se conecta al POS</span></section>
 <main class="kr-layout"><section class="stage"><div class="glass-title"><span>RULETA EUROPEA · 0–36</span><span>Un solo cero</span></div>
 <div class="kr-stage"><div class="kr-wheel-holder" id="wheelHolder"><canvas id="karmaCanvas" role="img" aria-label="Rueda de ruleta europea animada, con bola y 37 casillas"></canvas></div>
 <div class="kr-side"><div class="kr-dealer"><img class="kr-mascot kr-mascot-img" src="../assets/crupier-nyc.svg" alt="" aria-hidden="true"><span>CRUPIER NYC<small>Inspirado en la mesa de KARMA</small></span></div><div class="kr-caption">ÚLTIMO NÚMERO</div><div class="number-result" id="resultNum">—</div><div class="kr-caption">HISTORIAL</div><div class="kr-last" id="history" aria-live="polite"></div><div class="kr-dealer-note">Al girar, la bola recorre la pista y se detiene en un número de la rueda.</div></div></div>
@@ -17,6 +17,10 @@
 <div class="kr-tools"><button id="undo" type="button">↶ Deshacer</button><button id="repeat" type="button">↻ Repetir última apuesta</button><span id="betNotice" class="kr-toast"></span></div>
 </section>
 <details class="help-card kr-help"><summary>Reglas de KARMA y tabla de pagos</summary><p>Un cero y 37 números. Apuestas: pleno 35:1, semipleno 17:1, calle y trío 11:1, cuadro 8:1, seisena 5:1, docena y columna 2:1, color/paridad/mitad 1:1. Al acertar se devuelve la apuesta además del premio. El cero pierde en las apuestas externas.</p><p>Los números se eligen con generación uniforme local; la rueda y la bola animadas muestran el resultado ya elegido. No existe fondo, jackpot ni saldo real del POS. Todos los valores son créditos ficticios en este dispositivo.</p></details>
-<p class="note">Casino NYC · Adaptación recreativa independiente de KARMA. No es la mesa conectada al POS, no admite dinero real ni pagos, y no usa ninguna API de KARMA.</p></main></div>
-<script src="casino-core.js"></script><script src="karma-wheel.js"></script><script src="roulette.js"></script>
+<p class="note">Casino NYC · Rueda 3D portada del repositorio KARMA (Three.js + matemática de giro). No es la mesa conectada al POS, no admite dinero real ni pagos, y no usa ninguna API de KARMA.</p></main></div>
+<script src="casino-core.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="karma-wheel-3d.js"></script>
+<script src="karma-wheel.js"></script>
+<script src="roulette.js"></script>
 </body></html>

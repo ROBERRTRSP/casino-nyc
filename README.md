@@ -32,7 +32,9 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 - `games/diamond-stars.html` y `games/fortuna-7.html` — tragamonedas adicionales.
 - `games/arcade-slot.js` y `games/slot.css` — motor de rodillos físicos y tabla de pagos.
 - `games/ruleta-europea.html` — ruleta adaptada de KARMA.
-- `games/karma-wheel.js` — orden europeo y trayectoria de giro adaptados del proyecto KARMA; dibujado en Canvas 2D de alta densidad.
+- `games/karma-wheel-3d.js` — rueda Three.js portada de `ROBERRTRSP/karma` (misma matemática y geometría).
+- `games/karma-wheel.js` — fallback Canvas 2D si WebGL no está disponible.
+- `games/vendor/three.min.js` — Three.js r160 local.
 - `games/roulette.js` y `games/karma-roulette.css` — controles, apuestas especiales y mesa de ruleta.
 - `manifest.webmanifest` e `icons/casino-nyc.svg` — metadatos e icono.
 - [`ESTUDIO_CASINO_NYC.md`](ESTUDIO_CASINO_NYC.md) — arquitectura, UX, pruebas, riesgos y hoja de ruta.
@@ -44,9 +46,9 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 - **Campana Link:** cinco rodillos animados, diez líneas y giro automático.
 - **Diamond Stars:** cinco rodillos con cinta deslizante y frenada progresiva, comodines, tabla de pagos y bono de cinco giros gratis al salir tres símbolos ✨.
 - **Fortuna 7:** tragamonedas clásica de tres rodillos con giro vertical suave, cinco líneas y tabla de premios.
-- **Ruleta KARMA:** rueda europea de un cero, trayectoria de la bola y orden de casillas adaptados del código de KARMA, apuestas a números, colores, paridad, docenas, columnas, semiplenos, calles, cuadros, seisenas y tríos; deshacer, limpiar y repetir.
+- **Ruleta KARMA:** rueda 3D Three.js del repo KARMA (fallback 2D), trayectoria original de 10 s, apuestas a números, colores, paridad, docenas, columnas, semiplenos, calles, cuadros, seisenas y tríos; deshacer, limpiar y repetir.
 
-**Límite importante:** la ruleta del repositorio original de KARMA es un componente WebGL/Three.js integrado con Next.js y con un servidor POS. Esta versión es una **adaptación visual y matemática propia en Canvas 2D** para poder servir Casino NYC como web estática; **no copia el componente Three.js ni el servidor**, ni comparte autenticación, saldos, fondos, jackpots, cajeros o bases de datos.
+**Integración KARMA:** Casino NYC ahora incluye la **rueda 3D Three.js** del repositorio KARMA (matemática de giro + geometría del bowl), empaquetada como web estática. **No** incluye el servidor POS, fondos, autenticación, jackpots ni bases de datos. Si el dispositivo no tiene WebGL, se usa automáticamente el fallback Canvas 2D.
 
 Los cuatro comparten un mismo saldo de prueba mediante `localStorage`, **sin dinero real**.
 

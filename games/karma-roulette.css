@@ -3,9 +3,9 @@ body.roulette-karma{background:radial-gradient(circle at 47% -15%,#54402a,#0c131
 .roulette-karma .game-heading{text-align:center;padding-top:4px}
 .roulette-karma .stage{background:radial-gradient(ellipse at 50% 10%,#334f3c 0%,#112b22 45%,#071714 100%);border-color:#ae8954}
 .kr-stage{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(205px,.8fr);align-items:center;gap:12px}
-.kr-wheel-holder{width:100%;height:clamp(245px,35vw,430px);min-width:0;display:grid;place-items:center;position:relative;background:radial-gradient(ellipse at 50% 62%,#ba915a26 0%,transparent 64%);overflow:hidden;border-radius:20px}
-.kr-wheel-holder canvas{display:block;max-width:100%;touch-action:pan-y}
-.kr-wheel-holder::before{content:'';position:absolute;inset:8% 14%;border:1px solid #d5ae4832;border-radius:50%;pointer-events:none;box-shadow:0 0 25px #ddb34a21}
+.kr-wheel-holder{width:100%;height:clamp(280px,42vw,480px);min-width:0;display:grid;place-items:stretch;position:relative;background:radial-gradient(ellipse at 50% 55%,#1a120c 0%,#07110c 70%,#040807 100%);overflow:hidden;border-radius:20px;border:1px solid #ae895455}
+.kr-wheel-holder canvas{display:block;width:100%!important;height:100%!important;max-width:none;touch-action:none}
+.kr-wheel-holder::before{content:none}
 .kr-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;padding:7px}
 .kr-dealer{position:relative;display:flex;gap:9px;align-items:center;justify-content:center;border:1px solid #a3834975;background:linear-gradient(145deg,#1c241d,#1a1410);border-radius:16px;padding:10px 9px;width:100%;min-height:74px}
 .kr-mascot{font-size:45px;line-height:1;transform-origin:center bottom;animation:kr-bop 3s ease-in-out infinite}
@@ -37,8 +37,8 @@ body.roulette-karma{background:radial-gradient(circle at 47% -15%,#54402a,#0c131
 .kr-actions .primary{font-size:20px;min-height:60px}.kr-actions .secondary{font-size:13px;min-height:60px}
 .kr-selected{border:2px solid #ffe7aa!important;box-shadow:0 0 16px #ffe3a765!important}
 @keyframes kr-bop{50%{transform:translateY(-5px) rotate(3deg)}}
-@media(max-width:700px){.kr-stage{grid-template-columns:1fr}.kr-wheel-holder{height:clamp(250px,70vw,365px)}.kr-side{display:grid;grid-template-columns:65px 1fr;grid-template-rows:auto auto;gap:6px 10px;justify-content:stretch}.kr-dealer{grid-row:span 2;grid-column:1;min-height:82px;padding:2px;display:flex;flex-direction:column;gap:0}.kr-dealer span{font-size:9px;text-align:center}.kr-dealer small{display:none}.kr-mascot{font-size:38px}.kr-side .number-result{grid-column:2;width:100%;height:44px;font-size:28px}.kr-caption{display:none}.kr-last{grid-column:2;max-width:100%;justify-content:flex-start}.kr-dealer-note{display:none}}
-@media(max-width:420px){.kr-wheel-holder{height:clamp(238px,69vw,310px)}.kr-form{grid-template-columns:1fr}.kr-form #specialChoice,.kr-special{grid-column:1}.kr-actions .primary{font-size:18px}.kr-table .table-numbers{grid-template-rows:repeat(3,39px)}.kr-table .table-numbers button{font-size:12px}}
+@media(max-width:700px){.kr-stage{grid-template-columns:1fr}.kr-wheel-holder{height:clamp(290px,78vw,400px)}.kr-side{display:grid;grid-template-columns:65px 1fr;grid-template-rows:auto auto;gap:6px 10px;justify-content:stretch}.kr-dealer{grid-row:span 2;grid-column:1;min-height:82px;padding:2px;display:flex;flex-direction:column;gap:0}.kr-dealer span{font-size:9px;text-align:center}.kr-dealer small{display:none}.kr-mascot{font-size:38px}.kr-side .number-result{grid-column:2;width:100%;height:44px;font-size:28px}.kr-caption{display:none}.kr-last{grid-column:2;max-width:100%;justify-content:flex-start}.kr-dealer-note{display:none}}
+@media(max-width:420px){.kr-wheel-holder{height:clamp(270px,76vw,340px)}.kr-form{grid-template-columns:1fr}.kr-form #specialChoice,.kr-special{grid-column:1}.kr-actions .primary{font-size:18px}.kr-table .table-numbers{grid-template-rows:repeat(3,39px)}.kr-table .table-numbers button{font-size:12px}}
 
 .roulette-karma .glass-title{flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;line-height:1.4}
 .roulette-karma .table-numbers button:focus-visible{outline:2px solid #ffeeb0;outline-offset:1px}
