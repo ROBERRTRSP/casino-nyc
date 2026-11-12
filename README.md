@@ -1,30 +1,35 @@
-# Casino NYC 🎰
+# 🎰 Casino NYC
 
-Simulador de tragamonedas para navegador móvil, basado en el prototipo **Campana Link Ultra**.
+**Lobby de casino recreativo** para teléfono y computadora. Solo usa créditos ficticios; no acepta dinero real, depósitos ni retiros.
 
-## Funciones
-- Cinco rodillos animados con frenado escalonado.
-- Diez líneas de juego y bonos de campanas.
-- Apuestas y premios con **créditos ficticios**.
-- Interfaz en español para teléfonos y computadoras.
-- Ajustes de los recuadros y controles para pantallas móviles.
+## Funciones disponibles
 
-## Publicación con GitHub Pages
-1. En el repositorio entra a **Settings → Pages**.
-2. En **Build and deployment**, elige **Deploy from a branch**.
-3. Selecciona rama `MAIN` y carpeta `/(root)`, y haz clic en **Save**.
-4. Cuando GitHub publique el sitio, la dirección será: https://roberrtrsp.github.io/casino-nyc/
+- **Inicio:** portada, acceso rápido al juego, créditos de demostración y regalo diario ficticio.
+- **Juegos:** catálogo, búsqueda, categorías y fichas marcadas `Próximamente` para juegos aún no desarrollados.
+- **Favoritos:** selección de juegos guardada localmente en el navegador.
+- **Premios:** consulta informativa de los cuatro premios ficticios de Campana Link.
+- **Perfil:** apodo local, sonido, restablecer créditos demo.
+- **Campana Link:** cinco rodillos animados, diez líneas, bonificación de campanas y **giro automático de 5 / 10 / 25 / 50 giros**, con parada manual.
+- Diseño adaptable a móviles y metadatos de app web.
 
-## Cómo abrir
-Abre el enlace publicado desde Safari o Chrome. También es posible abrir `index.html` en un navegador que permita JavaScript.
+## Ejecutar o publicar
 
-> La vista previa de archivos dentro de algunas aplicaciones móviles puede bloquear JavaScript. Para jugar, abre el sitio publicado en Safari o Chrome.
+Se puede servir la carpeta como sitio estático con cualquier servidor HTTP. Para publicar en GitHub Pages:
 
-## Aviso
-Esta es una demostración recreativa; **no acepta dinero real ni realiza pagos, depósitos o retiros**.
+1. Abrir el repositorio y entrar a **Settings → Pages**.
+2. En `Build and deployment` elegir `Deploy from a branch`.
+3. Escoger rama `MAIN` y carpeta `/(root)`.
+4. Pulsar `Save`.
+5. Cuando se complete la publicación, entrar en https://roberrtrsp.github.io/casino-nyc/.
 
-## Estructura
-- `index.html`: juego completo, con estilos, recursos visuales y lógica integrados.
+Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en algunas aplicaciones bloquea JavaScript).
 
-## Versión
-2026-11-12 · Ajustes de recuadros y adaptación móvil.
+## Organización
+
+- `index.html` — pantalla principal / lobby.
+- `lobby.css` y `lobby.js` — estilos y funciones interactivas.
+- `games/campana-link.html` — tragamonedas completa.
+- `manifest.webmanifest` e `icons/casino-nyc.svg` — metadatos e icono.
+- [`ESTUDIO_CASINO_NYC.md`](ESTUDIO_CASINO_NYC.md) — arquitectura, UX, pruebas, riesgos y hoja de ruta.
+
+> No hay cuentas reales, servidores de pagos ni premios canjeables. `localStorage` solo conserva datos recreativos dentro del navegador. La versión actual no ha sido certificada para uso comercial.
