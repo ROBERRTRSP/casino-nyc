@@ -14,3 +14,15 @@
 /* Asentamiento suave al parar — sin blur de símbolos. */
 .reel.reel-landed{animation:reel-settle .2s ease-out}
 @keyframes reel-settle{0%{transform:translateY(-3px)}70%{transform:translateY(1.5px)}100%{transform:translateY(0)}}
+
+
+/* iOS mobile: keep reel compositing simple so the symbols visibly move. */
+@media (max-width:900px){
+  .reel.reel-motion {contain:none!important;isolation:auto;}
+  .reel-tape {-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform;}
+  .reel.reel-motion .glyph,
+  .reel.reel-motion .glyph.graphic {
+    filter:none!important;
+    -webkit-filter:none!important;
+  }
+}
