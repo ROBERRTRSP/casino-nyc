@@ -48,8 +48,12 @@ function measureReel(node){
 /** Giro real: la cinta se desplaza de forma visible (aceleración → lineal → frenada). */
 function animateColumn(node,start,target,index){return new Promise(resolve=>{
  const {height,gap,row,viewport}=measureReel(node);
- // Más símbolos en la cinta = más recorrido visible.
- const fillers=28+index*8;
+ // En Safari iOS evitamos Web Animations sobre cintas largas con imágenes:
+ // sus capas pueden no repintarse aunque el giro se complete.
+ const mobile=window.matchMedia('(max-width: 900px)').matches ||
+   /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+   (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const fillers=mobile?14+index*3:28+index*8;
  const all=[...start,...Array.from({length:fillers},()=>C.weighted(SYM)),...target];
  const strip=document.createElement('div');
  strip.className='reel-tape';
@@ -63,13 +67,13 @@ function animateColumn(node,start,target,index){return new Promise(resolve=>{
  node.style.setProperty('--slot-row-h',height+'px');
  node.style.setProperty('--slot-row-gap',gap+'px');
  node.replaceChildren(strip);
- void strip.offsetHeight;
- // Cada rodillo tarda un poco más: se ven parar uno a uno.
- const duration=1600+index*320;
- let settled=false;
- const finish=()=>{
+ const duration=mobile?1550+index*280:1600+index*320;
+ let settled=false,frame=0,backup=0;
+ function finish(){
   if(settled)return;
   settled=true;
+  cancelAnimationFrame(frame);
+  clearTimeout(backup);
   node.classList.remove('reel-motion');
   node.style.height='';
   node.style.maxHeight='';
@@ -82,37 +86,59 @@ function animateColumn(node,start,target,index){return new Promise(resolve=>{
   window.setTimeout(()=>node.classList.remove('reel-landed'),200);
   C.playSound('stop');
   resolve();
- };
+ }
+ // Movimiento manual en móvil: cada frame cambia de verdad el desplazamiento
+ // vertical, sin depender del compositor WAAPI de Safari.
+ if(mobile){
+  let started=null;
+  const total=0.735; // área de velocidad: aceleración + crucero + frenada
+  const animateFrame=(now)=>{
+   if(settled)return;
+   if(started===null)started=now;
+   const t=Math.min(1,Math.max(0,(now-started)/duration));
+   let progress;
+   if(t<0.16)progress=(t*t/(2*0.16))/total;
+   else if(t<0.68)progress=(0.08+(t-0.16))/total;
+   else if(t<0.95){
+    const u=t-0.68;
+    progress=(0.60+u-u*u/(2*0.27))/total;
+   }else progress=1;
+   let y=distance*Math.min(1,progress);
+   if(t>=0.95){
+    const u=(t-0.95)/0.05;
+    y+=Math.sin(u*Math.PI*2)*(1-u)*row*0.10;
+   }
+   strip.style.transform='translate3d(0,'+(-y.toFixed(2))+'px,0)';
+   if(t<1)frame=requestAnimationFrame(animateFrame);
+   else finish();
+  };
+  strip.style.transform='translate3d(0,0,0)';
+  frame=requestAnimationFrame(animateFrame);
+  backup=window.setTimeout(finish,duration+500);
+  return;
+ }
+ // En PC conservamos la animación que ya funciona.
  const frames=[
   {transform:'translate3d(0,0,0)',offset:0},
-  // Arranque corto
   {transform:'translate3d(0,'+(-row*2)+'px,0)',offset:0.08},
-  // Tramo largo LINEAL: aquí se ve el giro de verdad
   {transform:'translate3d(0,'+(-(distance-row*4))+'px,0)',offset:0.72},
-  // Frenada con leve rebote
   {transform:'translate3d(0,'+(-(distance+row*0.18))+'px,0)',offset:0.9},
   {transform:'translate3d(0,'+(-distance)+'px,0)',offset:1}
  ];
  try{
   if(typeof strip.animate==='function'){
-   const anim=strip.animate(frames,{
-    duration,
-    easing:'linear',
-    fill:'forwards'
-   });
-   // Curvas por tramo con offset keyframes; linear global + offsets = movimiento continuo.
+   const anim=strip.animate(frames,{duration,easing:'linear',fill:'forwards'});
    anim.onfinish=()=>{try{anim.cancel()}catch{};finish()};
    anim.oncancel=finish;
-   window.setTimeout(finish,duration+120);
+   backup=window.setTimeout(finish,duration+150);
    return;
   }
  }catch{}
- // Fallback CSS transition (navegadores sin WAAPI)
  strip.style.transform='translate3d(0,0,0)';
  void strip.offsetHeight;
  strip.style.transition='transform '+duration+'ms cubic-bezier(0.15, 0.05, 0.1, 1)';
- requestAnimationFrame(()=>{strip.style.transform='translate3d(0,-'+distance+'px,0)'});
- window.setTimeout(finish,duration+100);
+ frame=requestAnimationFrame(()=>{strip.style.transform='translate3d(0,-'+distance+'px,0)'});
+ backup=window.setTimeout(finish,duration+150);
 })}
 async function oneSpin(){if(running)return false;
  if(!freeSpins&&C.wallet().credit<bet){setStatus('Créditos demo insuficientes. Añade créditos desde el lobby.','error');autoStop=true;return false}
