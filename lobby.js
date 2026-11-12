@@ -21,7 +21,7 @@ function launch(id){const g=games[id];if(!g)return;if(!g.live){openDialog(g.name
 function claimBonus(){const now=Date.now(),last=Number(read(bonusKey,0));if(now-last<86400000){toast('El regalo de prueba ya fue recibido.');return}const w=wallet();w.credit=Math.min(100000000,w.credit+10000);if(save(walletKey,w)){save(bonusKey,now);displayBalance();toast('¡+100.00 créditos ficticios añadidos!')}else toast('El navegador no permite guardar créditos de prueba.')}
 $$('[data-nav]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.nav)));
 $$('[data-launch]').forEach(b=>b.addEventListener('click',()=>launch(b.dataset.launch)));
-$$('[data-play-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();launch('campana')}));
+$('[data-play-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();const id=b.closest('.stat-card')&&games[profile.lastGame]?.live?profile.lastGame:'campana';launch(id)}));
 $$('[data-favorite]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save(favKey,favorites);favoritesUI();filterGames();displayBalance();toast(favorites.includes(id)?'Guardado en favoritos':'Eliminado de favoritos')}));
 $$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;filterGames()}));
 $('#gameSearch').addEventListener('input',filterGames);
