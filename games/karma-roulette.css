@@ -1,0 +1,44 @@
+/* Adaptación móvil independiente de la mesa y rueda de KARMA, solo créditos demo. */
+body.roulette-karma{background:radial-gradient(circle at 47% -15%,#54402a,#0c1311 55%,#070b0a 100%)}
+.roulette-karma .game-heading{text-align:center;padding-top:4px}
+.roulette-karma .stage{background:radial-gradient(ellipse at 50% 10%,#334f3c 0%,#112b22 45%,#071714 100%);border-color:#ae8954}
+.kr-stage{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(205px,.8fr);align-items:center;gap:12px}
+.kr-wheel-holder{width:100%;height:clamp(245px,35vw,430px);min-width:0;display:grid;place-items:center;position:relative;background:radial-gradient(ellipse at 50% 62%,#ba915a26 0%,transparent 64%);overflow:hidden;border-radius:20px}
+.kr-wheel-holder canvas{display:block;max-width:100%;touch-action:pan-y}
+.kr-wheel-holder::before{content:'';position:absolute;inset:8% 14%;border:1px solid #d5ae4832;border-radius:50%;pointer-events:none;box-shadow:0 0 25px #ddb34a21}
+.kr-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;padding:7px}
+.kr-dealer{position:relative;display:flex;gap:9px;align-items:center;justify-content:center;border:1px solid #a3834975;background:linear-gradient(145deg,#1c241d,#1a1410);border-radius:16px;padding:10px 9px;width:100%;min-height:74px}
+.kr-mascot{font-size:45px;line-height:1;transform-origin:center bottom;animation:kr-bop 3s ease-in-out infinite}
+.kr-dealer span{font-size:12px;color:#e9ce89;font-weight:750;line-height:1.35}
+.kr-dealer small{display:block;color:#9ab19b;font-size:10px;margin-top:4px}
+.kr-chip-rack{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.kr-last{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:32px}
+.kr-last span{width:29px;height:29px;border:1px solid #efdcaf5a;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;color:white}
+.kr-last .red{background:#a92127}.kr-last .black{background:#161c1c}.kr-last .green{background:#15743d}
+.kr-side .number-result{width:88px;height:75px;border-radius:14px;font-size:48px;border-color:#b99558}
+.kr-caption{font-size:10px;color:#eddbb5;font-weight:900;letter-spacing:.12em;text-align:center}
+.kr-dealer-note{font-size:10px;color:#b9c4b7;text-align:center;max-width:255px}
+.kr-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.kr-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.kr-tools button{background:#292d23;border:1px solid #9d8151;color:#fff1d4;min-height:44px;border-radius:9px;font-size:12px;padding:7px 11px;font-weight:850}
+.kr-tools button:disabled{opacity:.42}
+.kr-form{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:8px;border-radius:12px;padding:11px;background:#0a211bdd;border:1px solid #947c4c}
+.kr-form label{font-size:12px;color:#e4d3b0;font-weight:750}.kr-form select{border-radius:8px;min-height:42px;width:100%;padding:7px 8px;background:#22352d;color:#fff2d6;border:1px solid #b8a175;font-size:12px}
+.kr-form #specialChoice{grid-column:span 2}
+.kr-special{grid-column:span 2;min-height:44px;border-radius:9px;background:linear-gradient(#d5b56b,#a27e42);border:1px solid #fff3bc;color:#201305;font-weight:950}
+.kr-special:disabled{opacity:.5}
+.kr-toast{font-size:11px;color:#e7c683}
+.kr-table{overflow-x:auto;scrollbar-width:thin;padding:5px 1px}
+.kr-table .table-numbers{min-width:0;width:calc(100% - 32px);margin-left:32px;grid-template-rows:repeat(3,clamp(37px,4.6vw,52px));gap:3px}
+.kr-table .table-numbers .zero{width:29px;left:-32px}
+.kr-table .table-numbers button{font-size:clamp(12px,1.6vw,19px)}
+.kr-help{font-size:12px;line-height:1.55}
+.kr-actions{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:8px;margin-top:13px}
+.kr-actions .primary{font-size:20px;min-height:60px}.kr-actions .secondary{font-size:13px;min-height:60px}
+.kr-selected{border:2px solid #ffe7aa!important;box-shadow:0 0 16px #ffe3a765!important}
+@keyframes kr-bop{50%{transform:translateY(-5px) rotate(3deg)}}
+@media(max-width:700px){.kr-stage{grid-template-columns:1fr}.kr-wheel-holder{height:clamp(250px,70vw,365px)}.kr-side{display:grid;grid-template-columns:65px 1fr;grid-template-rows:auto auto;gap:6px 10px;justify-content:stretch}.kr-dealer{grid-row:span 2;grid-column:1;min-height:82px;padding:2px;display:flex;flex-direction:column;gap:0}.kr-dealer span{font-size:9px;text-align:center}.kr-dealer small{display:none}.kr-mascot{font-size:38px}.kr-side .number-result{grid-column:2;width:100%;height:44px;font-size:28px}.kr-caption{display:none}.kr-last{grid-column:2;max-width:100%;justify-content:flex-start}.kr-dealer-note{display:none}}
+@media(max-width:420px){.kr-wheel-holder{height:clamp(238px,69vw,310px)}.kr-form{grid-template-columns:1fr}.kr-form #specialChoice,.kr-special{grid-column:1}.kr-actions .primary{font-size:18px}.kr-table .table-numbers{grid-template-rows:repeat(3,39px)}.kr-table .table-numbers button{font-size:12px}}
+
+.roulette-karma .glass-title{flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;line-height:1.4}
+.roulette-karma .table-numbers button:focus-visible{outline:2px solid #ffeeb0;outline-offset:1px}

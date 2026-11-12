@@ -5,7 +5,7 @@
 ## Funciones disponibles
 
 - **Inicio:** portada, acceso rápido al juego, créditos de demostración y regalo diario ficticio.
-- **Juegos:** catálogo, búsqueda, categorías y fichas marcadas `Próximamente` para juegos aún no desarrollados.
+- **Juegos:** catálogo, búsqueda, categorías y acceso a los cuatro juegos funcionales.
 - **Favoritos:** selección de juegos guardada localmente en el navegador.
 - **Premios:** consulta informativa de los cuatro premios ficticios de Campana Link.
 - **Perfil:** apodo local, sonido, restablecer créditos demo.
@@ -29,6 +29,11 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 - `index.html` — pantalla principal / lobby.
 - `lobby.css` y `lobby.js` — estilos y funciones interactivas.
 - `games/campana-link.html` — tragamonedas completa.
+- `games/diamond-stars.html` y `games/fortuna-7.html` — tragamonedas adicionales.
+- `games/arcade-slot.js` y `games/slot.css` — motor de rodillos físicos y tabla de pagos.
+- `games/ruleta-europea.html` — ruleta adaptada de KARMA.
+- `games/karma-wheel.js` — orden europeo y trayectoria de giro adaptados del proyecto KARMA; dibujado en Canvas 2D de alta densidad.
+- `games/roulette.js` y `games/karma-roulette.css` — controles, apuestas especiales y mesa de ruleta.
 - `manifest.webmanifest` e `icons/casino-nyc.svg` — metadatos e icono.
 - [`ESTUDIO_CASINO_NYC.md`](ESTUDIO_CASINO_NYC.md) — arquitectura, UX, pruebas, riesgos y hoja de ruta.
 
@@ -37,8 +42,10 @@ Abrir la dirección publicada en Safari o Chrome (la vista previa de HTML en alg
 ## Juegos disponibles (fase 2)
 
 - **Campana Link:** cinco rodillos animados, diez líneas y giro automático.
-- **Diamond Stars:** cinco rodillos, comodines y cinco giros gratis con tres símbolos ✨.
-- **Fortuna 7:** tragamonedas clásica de tres rodillos y cinco líneas.
-- **Ruleta Europea:** números 0 al 36, un solo cero, fichas y apuestas a números, colores, paridad y docenas.
+- **Diamond Stars:** cinco rodillos con cinta deslizante y frenada progresiva, comodines, tabla de pagos y bono de cinco giros gratis al salir tres símbolos ✨.
+- **Fortuna 7:** tragamonedas clásica de tres rodillos con giro vertical suave, cinco líneas y tabla de premios.
+- **Ruleta KARMA:** rueda europea de un cero, trayectoria de la bola y orden de casillas adaptados del código de KARMA, apuestas a números, colores, paridad, docenas, columnas, semiplenos, calles, cuadros, seisenas y tríos; deshacer, limpiar y repetir.
+
+**Límite importante:** la ruleta del repositorio original de KARMA es un componente WebGL/Three.js integrado con Next.js y con un servidor POS. Esta versión es una **adaptación visual y matemática propia en Canvas 2D** para poder servir Casino NYC como web estática; **no copia el componente Three.js ni el servidor**, ni comparte autenticación, saldos, fondos, jackpots, cajeros o bases de datos.
 
 Los cuatro comparten un mismo saldo de prueba mediante `localStorage`, **sin dinero real**.

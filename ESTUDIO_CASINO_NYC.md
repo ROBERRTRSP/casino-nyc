@@ -125,3 +125,16 @@ El manifiesto facilita la presentación del sitio como aplicación web. Su insta
 ## 10. Entrega de la fase 2 (noviembre 2026)
 
 Tres juegos nuevos están implementados en `games/`: Diamond Stars (slot de 5 rodillos con bonos), Fortuna 7 (slot clásico de 3 rodillos) y Ruleta Europea (37 números y apuestas internas/externas). Se integraron con el lobby, la búsqueda, los favoritos y el saldo ficticio de Campana Link. La arquitectura sigue siendo estática y local: no hay registro real, pagos ni backend. Las animaciones no son una simulación física ni resultados certificados; quedan pendientes las pruebas reales en iPhone y una auditoría matemática de distribución de premios.
+
+
+## Fase 3 — Integración de la ruleta estilo KARMA (12/11/2026)
+
+- El código original de `ROBERRTRSP/karma` se revisó en `src/domain/roulette/wheel.ts`, `spin.ts` y en los componentes `src/components/roulette`.
+- Se adaptaron el orden europeo de 37 casillas, la trayectoria de giro, la fase de caída de la bola y la mesa con apuestas especiales.
+- Por tratarse de un sitio estático de demostración, se implementó un **renderizador Canvas 2D propio** en lugar de copiar la dependencia Three.js y el backend del POS. El archivo original de KARMA permanece sin modificar.
+- Premios de ruleta comprobados: pleno 35:1, semipleno 17:1, calle/trío 11:1, cuadro 8:1, seisena 5:1, docenas/columnas 2:1, color/paridad/mitad 1:1. El cero pierde las apuestas externas.
+- Añadidos controles: deshacer, repetir apuesta, borrar fichas, selector de 60 semiplenos, 12 calles, 22 cuadros, 11 seisenas, 2 tríos y cuadro 0–3.
+- Diamond Stars y Fortuna 7: nuevas animaciones con cintas verticales y frenada individual; tabla de premios visible, historial y persistencia de los giros gratis.
+- Pruebas automáticas en Chromium virtual con 393 × 852 y 320 × 568: comprobados 37 plenos, apuestas especiales, cálculos de pago, bloqueo durante giro, saldo demo y autojuego con parada. Sin errores de JavaScript.
+- **Pendiente:** prueba física en Safari de iPhone. Los recursos gráficos siguen siendo ilustrativos y no alcanzan una certificación de resolución/animación 4K.
+- No hay dinero real, pagos, retiros, mesa conectada ni un sistema seguro de saldos en servidor.

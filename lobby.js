@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], walletKey='campana_link_demo_v2', favKey='casino_nyc_favorites', profileKey='casino_nyc_profile', bonusKey='casino_nyc_last_daily', settingsKey='casino_nyc_settings';
-const games={campana:{name:'Campana Link',category:'tragamonedas',live:true,path:'games/campana-link.html'},diamond:{name:'Diamond Stars',category:'tragamonedas',live:true,path:'games/diamond-stars.html'},ruleta:{name:'Ruleta Europea',category:'mesas',live:true,path:'games/ruleta-europea.html'},fortuna:{name:'Fortuna 7',category:'tragamonedas',live:true,path:'games/fortuna-7.html'}};
+const games={campana:{name:'Campana Link',category:'tragamonedas',live:true,path:'games/campana-link.html'},diamond:{name:'Diamond Stars',category:'tragamonedas',live:true,path:'games/diamond-stars.html'},ruleta:{name:'Ruleta KARMA',category:'mesas',live:true,path:'games/ruleta-europea.html'},fortuna:{name:'Fortuna 7',category:'tragamonedas',live:true,path:'games/fortuna-7.html'}};
 const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}};
 const save=(key,val)=>{try{localStorage.setItem(key,JSON.stringify(val));return true}catch{return false}};
 const money=n=>(Math.max(0,n)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -21,7 +21,7 @@ function launch(id){const g=games[id];if(!g)return;if(!g.live){openDialog(g.name
 function claimBonus(){const now=Date.now(),last=Number(read(bonusKey,0));if(now-last<86400000){toast('El regalo de prueba ya fue recibido.');return}const w=wallet();w.credit=Math.min(100000000,w.credit+10000);if(save(walletKey,w)){save(bonusKey,now);displayBalance();toast('¡+100.00 créditos ficticios añadidos!')}else toast('El navegador no permite guardar créditos de prueba.')}
 $$('[data-nav]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.nav)));
 $$('[data-launch]').forEach(b=>b.addEventListener('click',()=>launch(b.dataset.launch)));
-$('[data-play-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();const id=b.closest('.stat-card')&&games[profile.lastGame]?.live?profile.lastGame:'campana';launch(id)}));
+$$('[data-play-link]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();const id=b.closest('.stat-card')&&games[profile.lastGame]?.live?profile.lastGame:'campana';launch(id)}));
 $$('[data-favorite]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save(favKey,favorites);favoritesUI();filterGames();displayBalance();toast(favorites.includes(id)?'Guardado en favoritos':'Eliminado de favoritos')}));
 $$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;filterGames()}));
 $('#gameSearch').addEventListener('input',filterGames);
