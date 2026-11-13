@@ -231,13 +231,97 @@
 .slot-fx-sparks b:nth-child(11) { --dx: -70px; --dy: -40px; animation-delay: 0.03s; }
 .slot-fx-sparks b:nth-child(12) { --dx: 80px; --dy: 40px; animation-delay: 0.07s; }
 
+.slot-fx-cast {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(4px, 2vw, 16px);
+  width: min(96vw, 560px);
+  padding: 0 4px;
+}
+
+.slot-fx-mono {
+  flex: 0 0 auto;
+  width: clamp(72px, 22vw, 118px);
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.45));
+  transform-origin: 50% 100%;
+}
+
+.slot-fx-mono.is-left { animation: mono-enter-left 0.55s cubic-bezier(0.2, 1.4, 0.35, 1) both; }
+.slot-fx-mono.is-right { animation: mono-enter-right 0.55s cubic-bezier(0.2, 1.4, 0.35, 1) both; }
+
+.slot-fx.is-win .slot-fx-mono.is-left,
+.slot-fx.is-bonus .slot-fx-mono.is-left {
+  animation: mono-enter-left 0.55s cubic-bezier(0.2, 1.4, 0.35, 1) both, mono-jump 0.55s ease 0.55s infinite;
+}
+
+.slot-fx.is-win .slot-fx-mono.is-right,
+.slot-fx.is-bonus .slot-fx-mono.is-right {
+  animation: mono-enter-right 0.55s cubic-bezier(0.2, 1.4, 0.35, 1) both, mono-jump 0.55s ease 0.75s infinite;
+}
+
+.slot-fx.is-lose .slot-fx-mono.is-left {
+  animation: mono-enter-left 0.5s ease both, mono-sob 0.7s ease 0.5s infinite;
+}
+
+.slot-fx.is-lose .slot-fx-mono.is-right {
+  animation: mono-enter-right 0.5s ease both, mono-sob 0.7s ease 0.65s infinite;
+}
+
+.slot-fx-mono .mono-svg { display: block; width: 100%; height: auto; }
+
+.slot-fx.is-win .slot-fx-mono .mono-arm-l,
+.slot-fx.is-bonus .slot-fx-mono .mono-arm-l {
+  transform-origin: 22px 108px;
+  animation: mono-wave-l 0.45s ease infinite alternate;
+}
+
+.slot-fx.is-win .slot-fx-mono .mono-arm-r,
+.slot-fx.is-bonus .slot-fx-mono .mono-arm-r {
+  transform-origin: 98px 108px;
+  animation: mono-wave-r 0.45s ease infinite alternate;
+}
+
+.slot-fx-bananas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slot-fx-bananas i {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  font-size: clamp(22px, 6vw, 34px);
+  line-height: 1;
+  margin: -12px;
+  animation: banana-fling 1.35s ease-out forwards;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+}
+
+.slot-fx-bananas i:nth-child(1) { --bx: -140px; --by: -120px; --br: -40deg; animation-delay: 0.05s; }
+.slot-fx-bananas i:nth-child(2) { --bx: 150px; --by: -110px; --br: 50deg; animation-delay: 0.1s; }
+.slot-fx-bananas i:nth-child(3) { --bx: -180px; --by: 40px; --br: -80deg; animation-delay: 0.14s; }
+.slot-fx-bananas i:nth-child(4) { --bx: 190px; --by: 30px; --br: 70deg; animation-delay: 0.08s; }
+.slot-fx-bananas i:nth-child(5) { --bx: -90px; --by: -160px; --br: 20deg; animation-delay: 0.18s; }
+.slot-fx-bananas i:nth-child(6) { --bx: 100px; --by: -150px; --br: -25deg; animation-delay: 0.22s; }
+.slot-fx-bananas i:nth-child(7) { --bx: -60px; --by: 130px; --br: 90deg; animation-delay: 0.12s; }
+.slot-fx-bananas i:nth-child(8) { --bx: 70px; --by: 140px; --br: -100deg; animation-delay: 0.2s; }
+.slot-fx-bananas i:nth-child(9) { --bx: -210px; --by: -40px; --br: 120deg; animation-delay: 0.26s; }
+.slot-fx-bananas i:nth-child(10) { --bx: 220px; --by: -20px; --br: -110deg; animation-delay: 0.16s; }
+
 .slot-fx-stamp {
   position: relative;
   z-index: 3;
   text-align: center;
-  padding: 26px 30px 28px;
+  padding: 26px 22px 28px;
   border-radius: 24px;
-  min-width: min(88vw, 360px);
+  min-width: min(58vw, 280px);
+  flex: 1 1 auto;
   animation: slot-stamp-slam 0.55s cubic-bezier(0.15, 1.5, 0.35, 1) both;
 }
 
@@ -469,13 +553,59 @@ body.is-slot-celebrate {
   80% { transform: translate(2px, 1px); }
 }
 
+@keyframes mono-enter-left {
+  0% { transform: translate(-80px, 40px) scale(0.4) rotate(-18deg); opacity: 0; }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes mono-enter-right {
+  0% { transform: translate(80px, 40px) scale(0.4) rotate(18deg); opacity: 0; }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes mono-jump {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-18px) rotate(3deg); }
+}
+
+@keyframes mono-sob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(4px) rotate(4deg); }
+}
+
+@keyframes mono-wave-l {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(18deg); }
+}
+
+@keyframes mono-wave-r {
+  from { transform: rotate(8deg); }
+  to { transform: rotate(-18deg); }
+}
+
+@keyframes banana-fling {
+  0% { transform: translate(0, 0) rotate(0deg) scale(0.4); opacity: 0; }
+  15% { opacity: 1; transform: translate(calc(var(--bx) * 0.25), calc(var(--by) * 0.25)) rotate(var(--br)) scale(1); }
+  100% { transform: translate(var(--bx), var(--by)) rotate(calc(var(--br) * 2)) scale(0.7); opacity: 0; }
+}
+
+@media (max-width: 380px) {
+  .slot-fx-mono { width: 64px; }
+  .slot-fx-stamp { padding: 20px 14px 22px; min-width: 0; }
+  .slot-fx-stamp strong { font-size: clamp(28px, 9vw, 40px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .slot-fx,
   .slot-fx-rays,
   .slot-fx-coins i,
   .slot-fx-sparks b,
+  .slot-fx-bananas i,
   .slot-fx-stamp,
   .slot-fx-icon,
+  .slot-fx-mono,
+  .slot-fx-mono .mono-arm-l,
+  .slot-fx-mono .mono-arm-r,
   .stage.is-slot-win .slot-frame,
   .stage.is-slot-lose .slot-frame,
   .stage.is-slot-bonus .slot-frame,

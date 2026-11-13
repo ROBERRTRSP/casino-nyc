@@ -39,6 +39,35 @@ const BONUS_LINES=[
   '¡SCATTER EN LLAMAS!',
 ];
 let fxTimer=0;
+function monkeySvg(mood){
+  const mouth=mood==='sad'
+    ?'<path d="M42 78 Q60 68 78 78" fill="none" stroke="#5a2a18" stroke-width="4" stroke-linecap="round"/>'
+    :mood==='wow'
+    ?'<ellipse cx="60" cy="78" rx="10" ry="12" fill="#3a1810"/><ellipse cx="60" cy="74" rx="5" ry="4" fill="#f2a090"/>'
+    :'<path d="M40 72 Q60 92 80 72" fill="#3a1810"/><path d="M46 74 Q60 86 74 74" fill="#f2a090"/>';
+  const brow=mood==='sad'
+    ?'<path d="M28 42 Q38 48 48 44" fill="none" stroke="#3a1810" stroke-width="3" stroke-linecap="round"/><path d="M72 44 Q82 48 92 42" fill="none" stroke="#3a1810" stroke-width="3" stroke-linecap="round"/>'
+    :'<path d="M28 46 Q38 40 48 44" fill="none" stroke="#3a1810" stroke-width="3" stroke-linecap="round"/><path d="M72 44 Q82 40 92 46" fill="none" stroke="#3a1810" stroke-width="3" stroke-linecap="round"/>';
+  const arms=mood==='sad'
+    ?'<path class="mono-arm-l" d="M22 108 Q8 130 28 148" fill="none" stroke="#8b5a2b" stroke-width="14" stroke-linecap="round"/><path class="mono-arm-r" d="M98 108 Q112 130 92 148" fill="none" stroke="#8b5a2b" stroke-width="14" stroke-linecap="round"/>'
+    :'<path class="mono-arm-l" d="M22 108 Q-6 70 18 42" fill="none" stroke="#8b5a2b" stroke-width="14" stroke-linecap="round"/><path class="mono-arm-r" d="M98 108 Q126 70 102 42" fill="none" stroke="#8b5a2b" stroke-width="14" stroke-linecap="round"/>';
+  return `<svg class="mono-svg" viewBox="0 0 120 170" aria-hidden="true">
+    <ellipse cx="22" cy="48" rx="18" ry="22" fill="#8b5a2b"/><ellipse cx="22" cy="48" rx="10" ry="12" fill="#e8b896"/>
+    <ellipse cx="98" cy="48" rx="18" ry="22" fill="#8b5a2b"/><ellipse cx="98" cy="48" rx="10" ry="12" fill="#e8b896"/>
+    <ellipse cx="60" cy="120" rx="34" ry="40" fill="#8b5a2b"/>
+    <ellipse cx="60" cy="122" rx="22" ry="26" fill="#e8b896"/>
+    <circle cx="60" cy="58" r="38" fill="#8b5a2b"/>
+    <ellipse cx="60" cy="66" rx="28" ry="24" fill="#e8b896"/>
+    ${brow}
+    <circle cx="44" cy="56" r="7" fill="#1a0e08"/><circle cx="76" cy="56" r="7" fill="#1a0e08"/>
+    <circle cx="46" cy="54" r="2.2" fill="#fff"/><circle cx="78" cy="54" r="2.2" fill="#fff"/>
+    <ellipse cx="60" cy="68" rx="8" ry="6" fill="#c47a5a"/>
+    ${mouth}
+    ${arms}
+    <path d="M48 158 Q40 170 52 168" fill="none" stroke="#8b5a2b" stroke-width="12" stroke-linecap="round"/>
+    <path d="M72 158 Q80 170 68 168" fill="none" stroke="#8b5a2b" stroke-width="12" stroke-linecap="round"/>
+  </svg>`;
+}
 function clearOutcomeFx(){
   const fx=document.getElementById('slotFx');
   if(fx)fx.remove();
@@ -56,9 +85,13 @@ function showOutcomeFx(kind,amountText,detail){
   const kicker=lines[Math.floor(Math.random()*lines.length)];
   const title=kind==='win'?'¡GANASTE!':kind==='bonus'?'¡BONO!':'¡PERDISTE!';
   const icon=kind==='win'?'💎':kind==='bonus'?'✨':'💥';
+  const mood=kind==='lose'?'sad':kind==='bonus'?'wow':'happy';
   const coins=kind==='lose'
     ?''
     :`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:42},()=>'<i></i>').join('')}</span>`;
+  const bananas=kind==='lose'
+    ?''
+    :`<span class="slot-fx-bananas" aria-hidden="true">${Array.from({length:10},()=>'<i>🍌</i>').join('')}</span>`;
   const sparks=`<span class="slot-fx-sparks" aria-hidden="true">${Array.from({length:12},()=>'<b></b>').join('')}</span>`;
   const fx=document.createElement('div');
   fx.id='slotFx';
@@ -71,17 +104,22 @@ function showOutcomeFx(kind,amountText,detail){
     <div class="slot-fx-shock"></div>
     <div class="slot-fx-shock slot-fx-shock-2"></div>
     ${coins}
+    ${bananas}
     ${sparks}
-    <div class="slot-fx-stamp">
-      <span class="slot-fx-icon">${icon}</span>
-      <span class="slot-fx-kicker">${kicker}</span>
-      <strong>${title}</strong>
-      <em>${detail||amountText||''}</em>
+    <div class="slot-fx-cast">
+      <div class="slot-fx-mono is-left" aria-hidden="true">${monkeySvg(mood)}</div>
+      <div class="slot-fx-stamp">
+        <span class="slot-fx-icon">${icon}</span>
+        <span class="slot-fx-kicker">${kicker}</span>
+        <strong>${title}</strong>
+        <em>${detail||amountText||''}</em>
+      </div>
+      <div class="slot-fx-mono is-right" aria-hidden="true">${monkeySvg(mood)}</div>
     </div>`;
   document.body.appendChild(fx);
   if(kind==='lose')C.playSound('lose');
   else C.playSound('coins');
-  const ttl=kind==='lose'?2600:3800;
+  const ttl=kind==='lose'?2800:4000;
   fxTimer=window.setTimeout(clearOutcomeFx,ttl);
 }
 function record(outcome){history.unshift(outcome);history=history.slice(0,5);const el=$('slotHistory');if(el)el.textContent=history.map(e=>e).join('  ·  ');save()}
