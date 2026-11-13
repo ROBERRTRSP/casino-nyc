@@ -58,7 +58,7 @@ function showOutcomeFx(kind,amountText,detail){
   const icon=kind==='win'?'💎':kind==='bonus'?'✨':'💥';
   const coins=kind==='lose'
     ?''
-    :`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:30},()=>'<i></i>').join('')}</span>`;
+    :`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:42},()=>'<i></i>').join('')}</span>`;
   const sparks=`<span class="slot-fx-sparks" aria-hidden="true">${Array.from({length:12},()=>'<b></b>').join('')}</span>`;
   const fx=document.createElement('div');
   fx.id='slotFx';
@@ -79,7 +79,9 @@ function showOutcomeFx(kind,amountText,detail){
       <em>${detail||amountText||''}</em>
     </div>`;
   document.body.appendChild(fx);
-  const ttl=kind==='lose'?2600:3600;
+  if(kind==='lose')C.playSound('lose');
+  else C.playSound('coins');
+  const ttl=kind==='lose'?2600:3800;
   fxTimer=window.setTimeout(clearOutcomeFx,ttl);
 }
 function record(outcome){history.unshift(outcome);history=history.slice(0,5);const el=$('slotHistory');if(el)el.textContent=history.map(e=>e).join('  ·  ');save()}

@@ -10,7 +10,28 @@ const money=(c)=>(Math.max(0,c)/100).toLocaleString('en-US',{minimumFractionDigi
 function randint(max){if(max<1)return 0;if(window.crypto?.getRandomValues){const n=new Uint32Array(1),size=2**32,limit=size-size%max;do{window.crypto.getRandomValues(n)}while(n[0]>=limit);return n[0]%max}return Math.floor(Math.random()*max)}
 function weighted(list){const sum=list.reduce((a,s)=>a+s.weight,0);let v=randint(sum);for(const s of list){v-=s.weight;if(v<0)return s.id}return list.at(-1).id}
 let audio;
-function playSound(type){if(!read(SETTINGS,{}).sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;audio ||=new AC();const ctx=audio;if(ctx.state==='suspended')ctx.resume();const seq=type==='win'?[523,659,784,1047]:type==='tap'?[340]:type==='stop'?[210,280]:[220,260];seq.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.085;o.type='sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.045,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.13)})}catch{}}
+function playSound(type){if(!read(SETTINGS,{}).sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;audio ||=new AC();const ctx=audio;if(ctx.state==='suspended')ctx.resume();
+  if(type==='coins'){
+    for(let i=0;i<10;i++){
+      const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.055;
+      o.type='triangle';o.frequency.setValueAtTime(880+i*40+(i%2?60:0),t);o.frequency.exponentialRampToValueAtTime(420,t+.12);
+      g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);
+      o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.15);
+    }
+    return;
+  }
+  const seq=type==='win'?[523,659,784,1047,1319]:type==='tap'?[340]:type==='stop'?[210,280]:type==='lose'?[180,140,110]:[220,260];
+  seq.forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+i*.085;
+    o.type=type==='lose'?'sawtooth':'sine';
+    o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(type==='lose'?0.03:0.05,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+(type==='lose'?0.22:0.14));
+    o.connect(g).connect(ctx.destination);
+    o.start(t);
+    o.stop(t+(type==='lose'?0.24:0.15));
+  });
+}catch{}}
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 window.CasinoCore={read,write,wallet,updateWallet,money,randint,weighted,playSound,wait,KEY};
 })();
