@@ -1,0 +1,511 @@
+/* Gabinete físico para Diamond Stars / Fortuna 7 */
+
+:root {
+  --cab-chrome: #e8c56a;
+  --cab-chrome-deep: #8a5a18;
+  --cab-metal: #2a1a12;
+  --cab-ink: #0a0610;
+  --cab-led: #ffe08a;
+  --cab-neon: #6cf0ff;
+}
+
+body[data-game] {
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -10%, #3a1a4a88, transparent 55%),
+    radial-gradient(circle at 12% 80%, #1a3a5a55, transparent 35%),
+    radial-gradient(circle at 88% 70%, #5a182855, transparent 32%),
+    #07050c;
+  min-height: 100svh;
+}
+
+body[data-game] .layout {
+  max-width: 520px;
+  padding: 0 10px calc(28px + env(safe-area-inset-bottom, 0px));
+}
+
+body[data-game] .top {
+  background: #08060ed9;
+  border-bottom-color: #ffe08a33;
+}
+
+body[data-game] .game-heading {
+  display: none;
+}
+
+/* —— Gabinete —— */
+.cabinet {
+  position: relative;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg,
+      #1a1018 0%,
+      #f2e6c8 1.2%,
+      #c9a46a 2.4%,
+      #3a1810 5%,
+      #6a2040 12%,
+      #1a0c18 50%,
+      #6a2040 88%,
+      #3a1810 95%,
+      #c9a46a 97.6%,
+      #f2e6c8 98.8%,
+      #1a1018 100%);
+  box-shadow:
+    0 0 0 2px #0a0408,
+    0 0 0 5px #c9a040aa,
+    0 0 28px #ffb84a44,
+    0 28px 70px #000c;
+  isolation: isolate;
+}
+
+.cabinet::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 23px;
+  border: 2px solid #ffd07099;
+  box-shadow: inset 0 0 18px #ffb84a33, 0 0 12px #ffc05055;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cabinet-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, #5a286888, transparent 55%),
+    linear-gradient(180deg, #2a1438 0%, #120818 40%, #0a0610 100%);
+  border: 2px solid #4a2030;
+  box-shadow: inset 0 0 40px #000c;
+}
+
+body.fortune .cabinet {
+  background:
+    linear-gradient(90deg,
+      #1a1010 0%,
+      #f0d8a8 1.2%,
+      #d09040 2.4%,
+      #4a1810 5%,
+      #8a2018 12%,
+      #1a0808 50%,
+      #8a2018 88%,
+      #4a1810 95%,
+      #d09040 97.6%,
+      #f0d8a8 98.8%,
+      #1a1010 100%);
+}
+
+body.fortune .cabinet-inner {
+  background:
+    radial-gradient(ellipse at 50% 0%, #8a281888, transparent 55%),
+    linear-gradient(180deg, #3a1218 0%, #140808 40%, #0a0406 100%);
+  border-color: #5a1818;
+}
+
+/* —— Marquee / letrero —— */
+.cab-marquee {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  padding: 14px 12px 12px;
+  text-align: center;
+  border-bottom: 3px ridge var(--cab-chrome);
+  background:
+    radial-gradient(ellipse at 50% 20%, #ffe08a33, transparent 60%),
+    linear-gradient(180deg, #4a2860, #1a0c28 70%);
+  overflow: hidden;
+}
+
+body.fortune .cab-marquee {
+  background:
+    radial-gradient(ellipse at 50% 20%, #ffc05044, transparent 60%),
+    linear-gradient(180deg, #6a1820, #1a0808 70%);
+}
+
+.cab-marquee::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 14px,
+    #ffe08a0a 14px 15px
+  );
+  pointer-events: none;
+}
+
+.cab-marquee .cab-eyebrow {
+  position: relative;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  font-weight: 800;
+  color: #ffd070;
+  text-transform: uppercase;
+}
+
+.cab-marquee h1 {
+  position: relative;
+  margin: 0;
+  font: 900 clamp(28px, 8vw, 42px) / 0.95 "Barlow Condensed", "Arial Narrow", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff6d0;
+  text-shadow:
+    0 0 12px #ffe08a99,
+    0 3px 0 #5a3010,
+    0 0 28px #ffb84a66;
+}
+
+.cab-marquee .cab-sub {
+  position: relative;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #e8c8ff;
+  text-transform: uppercase;
+}
+
+body.fortune .cab-marquee .cab-sub { color: #ffd090; }
+
+.cab-leds {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.cab-leds i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffe08a;
+  box-shadow: 0 0 8px #ffe08a;
+  animation: cab-blink 1.1s ease-in-out infinite alternate;
+}
+
+.cab-leds i:nth-child(2) { animation-delay: 0.2s; background: #6cf0ff; box-shadow: 0 0 8px #6cf0ff; }
+.cab-leds i:nth-child(3) { animation-delay: 0.4s; background: #ff6ec7; box-shadow: 0 0 8px #ff6ec7; }
+.cab-leds i:nth-child(4) { animation-delay: 0.1s; }
+.cab-leds i:nth-child(5) { animation-delay: 0.35s; background: #6cf0ff; box-shadow: 0 0 8px #6cf0ff; }
+
+@keyframes cab-blink {
+  from { opacity: 0.35; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+
+/* —— Campo de juego —— */
+.cab-playfield {
+  padding: 10px 8px 6px;
+}
+
+.reel-shell {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  gap: 4px;
+  align-items: stretch;
+}
+
+.line-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 2px ridge #ffc857;
+  border-radius: 8px;
+  color: #ffe187;
+  background: linear-gradient(90deg, #3e1020, #c04028 46%, #501018);
+  box-shadow: inset 0 0 0 2px #7c1706, 0 0 10px #ff7b2644;
+  text-shadow: 1px 2px #530304;
+  min-width: 0;
+}
+
+.line-rail strong {
+  font: 900 18px/1 "Barlow Condensed", sans-serif;
+}
+
+.line-rail span {
+  font: 900 8px/1.1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.04em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+body[data-game] .stage {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+body[data-game] .slot-frame {
+  position: relative;
+  border: 5px ridge #f2ae39;
+  border-radius: 12px;
+  padding: 5px;
+  background: linear-gradient(90deg, #7b260a, #ffb935 2%, #6a240d 5%, #e6a736 50%, #782a04 95%, #ffca4c 98%);
+  box-shadow: inset 0 0 0 3px #480408, 0 0 22px #ff622d66;
+}
+
+body[data-game] .slot-frame::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    linear-gradient(180deg, #ffffff28 0%, transparent 18%, transparent 78%, #00000033 100%),
+    linear-gradient(105deg, #ffffff18 0%, transparent 28%);
+  box-shadow: inset 0 0 20px #0006;
+}
+
+body[data-game] .grid-reels {
+  background: #05030a;
+  border-radius: 8px;
+  gap: 3px;
+  padding: 4px;
+  box-shadow: inset 0 8px 24px #000c;
+}
+
+body[data-game] .symbol {
+  border-radius: 6px;
+  border-color: #ffffff22;
+  background:
+    radial-gradient(ellipse at 50% 20%, #ffffff14, transparent 55%),
+    linear-gradient(180deg, #2a1a40, #0c0818);
+  box-shadow: inset 0 0 14px #000a;
+}
+
+body.fortune .symbol {
+  background:
+    radial-gradient(circle at 50% 18%, #7e152b, #1a080e 78%);
+}
+
+body[data-game] .glass-title {
+  display: none;
+}
+
+/* Medidores LED */
+.cab-meters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.cab-meter {
+  border: 2px ridge #ffc857;
+  border-radius: 10px;
+  padding: 8px 4px 6px;
+  text-align: center;
+  background: linear-gradient(180deg, #131828, #020409 85%);
+  box-shadow: inset 0 0 12px #7982a344, 0 2px 8px #0007;
+  min-width: 0;
+}
+
+.cab-meter small {
+  display: block;
+  font: 800 9px/1.2 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.14em;
+  color: #ffe6a8;
+}
+
+.cab-meter strong {
+  display: block;
+  margin-top: 2px;
+  font: 900 clamp(20px, 6vw, 30px) / 1.1 "Barlow Condensed", sans-serif;
+  color: #fff;
+  text-shadow: 0 0 10px #9aaafa, 0 0 4px #fff8;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+body[data-game] .scoreboard { display: none; }
+
+body[data-game] .status {
+  margin-top: 8px;
+  border: 2px ridge #c9a040;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #1a1428, #0a0814);
+  color: #ffe9b0;
+  min-height: 40px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 0 14px #0008;
+}
+
+body[data-game] .status.win {
+  color: #fff2a0;
+  border-color: #ffe08a;
+  box-shadow: inset 0 0 14px #ffd06033, 0 0 16px #ffc05044;
+}
+
+body[data-game] .bonus-banner {
+  margin: 8px 0 0;
+  border: 2px ridge #e5aafd;
+  background: linear-gradient(180deg, #3a2060aa, #140820aa);
+}
+
+/* —— Panel de controles —— */
+body[data-game] .control-card {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, #2a1828, #120c18);
+  box-shadow: inset 0 1px 0 #ffe08a33;
+  padding: 12px 10px 14px;
+  border-top: 3px ridge #c9a040;
+}
+
+body[data-game] .control-title {
+  margin-bottom: 8px;
+}
+
+body[data-game] .control-title strong {
+  color: #ffe08a;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+body[data-game] .wagers button {
+  border: 2px ridge #c9a040;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #3a2a20, #1a100c);
+  color: #ffe9b8;
+  box-shadow: inset 0 1px 0 #ffffff22, 0 3px 0 #0a0604;
+  min-height: 52px;
+}
+
+body[data-game] .wagers button[aria-pressed="true"] {
+  background: linear-gradient(180deg, #f0c050, #b07820);
+  color: #1a1008;
+  border-color: #ffe08a;
+  box-shadow: 0 0 14px #ffd06088, inset 0 1px 0 #fff6;
+}
+
+body[data-game] .actions {
+  grid-template-columns: 1.4fr 1fr;
+  margin-top: 12px;
+}
+
+body[data-game] .primary {
+  border: 3px ridge #ffe08a;
+  border-radius: 14px;
+  min-height: 64px;
+  font: 900 clamp(18px, 5vw, 24px) / 1 "Barlow Condensed", sans-serif;
+  letter-spacing: 0.08em;
+  color: #1a1008;
+  background:
+    radial-gradient(circle at 50% 30%, #fff6c0, transparent 55%),
+    linear-gradient(180deg, #ffe070, #e8a020 55%, #a06010);
+  box-shadow:
+    0 0 0 2px #5a3010,
+    0 6px 0 #5a3010,
+    0 10px 24px #0009,
+    0 0 22px #ffc05066;
+  text-shadow: 0 1px 0 #fff8;
+}
+
+body[data-game] .primary:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 2px #5a3010,
+    0 2px 0 #5a3010,
+    0 4px 12px #0009;
+}
+
+body[data-game] .secondary {
+  border: 2px ridge #8a7090;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #3a3048, #1a1428);
+  color: #f0e0ff;
+  box-shadow: 0 4px 0 #0a0610;
+  min-height: 64px;
+}
+
+body[data-game] .auto-row {
+  margin-top: 10px;
+}
+
+body[data-game] .auto-row select {
+  background: #120c18;
+  border-color: #c9a04088;
+  color: #ffe9b8;
+}
+
+body[data-game] .help-card {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #0a0610ee;
+  border-top: 1px solid #ffffff18;
+  color: #e8dcc8;
+}
+
+body[data-game] .slot-history,
+body[data-game] .note {
+  padding: 0 10px;
+  color: #a89888;
+}
+
+body[data-game] .slot-history {
+  margin-top: 10px;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Mobile compact */
+@media (max-width: 420px) {
+  .cabinet {
+    padding: 7px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+  .cabinet::before {
+    inset: 4px;
+    border-radius: 16px;
+  }
+  .cabinet-inner { border-radius: 14px; }
+  .cab-marquee { padding: 10px 8px 9px; }
+  .cab-marquee h1 { font-size: clamp(24px, 7.5vw, 34px); }
+  .reel-shell {
+    grid-template-columns: 20px minmax(0, 1fr) 20px;
+    gap: 3px;
+  }
+  .line-rail strong { font-size: 14px; }
+  .line-rail span { font-size: 7px; }
+  body[data-game] .slot-frame {
+    border-width: 3px;
+    padding: 3px;
+  }
+  body[data-game] .primary,
+  body[data-game] .secondary {
+    min-height: 58px;
+  }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+  body[data-game] .layout { max-width: 920px; }
+  .cabinet-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .cab-marquee { grid-column: 1 / -1; }
+  .cab-playfield { padding-right: 4px; }
+  body[data-game] .control-card {
+    border-top: 0;
+    border-left: 3px ridge #c9a040;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cab-leds i { animation: none; }
+}
