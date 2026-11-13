@@ -40,7 +40,7 @@ class KarmaWheel{
   const col=color(n)==='red'?'#a92927':color(n)==='black'?'#151818':'#14713d';
   this.drawRing(R*.60,R*.81,a+.006,b-.006,col);
   this.drawRing(R*.51,R*.59,a+.006,b-.006,color(n)==='red'?'#681f1b':color(n)==='black'?'#0a0b0a':'#0b4e2a');
-  c.save();c.rotate((i+.5)*TAU/37);c.translate(0,-R*.707);c.fillStyle='#fff5d7';c.font=`800 ${Math.max(9,R*.072)}px Georgia, serif`;c.textBaseline='middle';c.textAlign='center';c.shadowColor='#000';c.shadowBlur=3;c.fillText(String(n),0,0);c.shadowBlur=0;c.restore();
+  c.save();c.rotate((i+.5)*TAU/37);c.translate(0,-R*.707);c.fillStyle='#fff5d7';c.font=`800 ${Math.max(12,R*.095)}px Georgia, serif`;c.textBaseline='middle';c.textAlign='center';c.shadowColor='#000';c.shadowBlur=3;c.fillText(String(n),0,0);c.shadowBlur=0;c.restore();
  }
  this.disc(R*.58,'#5b331a','#d5a45c',R*.021);
  const cone=c.createRadialGradient(-R*.15,-R*.15,R*.02,0,0,R*.55);cone.addColorStop(0,'#fedba0');cone.addColorStop(.28,'#b47c45');cone.addColorStop(.6,'#542d1b');cone.addColorStop(.85,'#331c14');cone.addColorStop(1,'#d2a45f');this.disc(R*.54,cone,'#ffe0a1',R*.018);

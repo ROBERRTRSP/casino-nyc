@@ -172,7 +172,7 @@
     ctx.clearRect(0, 0, 128, 128);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = "700 86px Georgia, 'Times New Roman', serif";
+    ctx.font = "800 96px Georgia, 'Times New Roman', serif";
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'rgba(8,5,3,0.55)';
     ctx.strokeText(label, 64, 70);
@@ -243,12 +243,13 @@
 
       const scene = new THREE.Scene();
       this.scene = scene;
-      const camera = new THREE.PerspectiveCamera(28, 1, 0.08, 40);
+      const camera = new THREE.PerspectiveCamera(32, 1, 0.08, 40);
       this.camera = camera;
       this._look = new THREE.Vector3(0, 0.05, 0);
       this._camOrbit = -0.32;
-      this._camPitch = 0.52;
-      this._camSubject = 1.76;
+      this._camPitch = 0.50;
+      /* Más cerca = números del aro más legibles en móvil */
+      this._camSubject = 1.52;
 
       scene.add(new THREE.AmbientLight(0xfff3e2, 0.42));
       scene.add(new THREE.HemisphereLight(0xfff1d4, 0x1b120c, 0.65));
@@ -405,7 +406,7 @@
         if (texture) {
           this._keep(texture);
           const plane = new THREE.Mesh(
-            this._keep(new THREE.PlaneGeometry(0.118, 0.095)),
+            this._keep(new THREE.PlaneGeometry(0.148, 0.118)),
             this._keep(new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, side: THREE.DoubleSide })),
           );
           plane.renderOrder = 3;

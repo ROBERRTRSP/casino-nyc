@@ -1376,7 +1376,7 @@ html:has(.wait-screen) body {
     height: auto;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-columns: minmax(72px, 0.24fr) minmax(0, 1fr);
+    grid-template-columns: minmax(200px, 42%) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     align-items: stretch;
     justify-items: stretch;
@@ -1483,11 +1483,18 @@ html:has(.wait-screen) body {
   .paint.column { font-size: clamp(8px, 2.4cqw, 13px); }
 
   .plaque {
-    bottom: 4%;
-    padding: 4px 10px 6px;
-    min-width: 72px;
+    top: 6px;
+    bottom: auto;
+    padding: 4px 10px 5px;
+    min-width: 64px;
+    transform: translateX(-50%) scale(0.8);
   }
-  .plaque strong { font-size: 22px; }
+  .plaque strong { font-size: 20px; }
+
+  .paint.num { font-size: clamp(13px, 4cqw, 22px); }
+  .paint.outside,
+  .paint.dozen,
+  .paint.column { font-size: clamp(10px, 2.8cqw, 15px); }
 }
 
 /* iPad vertical: la mesa ocupa toda la pantalla. La rueda arriba y el paño, más grande, debajo. */
@@ -1814,7 +1821,7 @@ html:has(.wait-screen) body {
   height: auto !important;
   max-height: none !important;
   aspect-ratio: auto !important;
-  grid-template-columns: minmax(72px, 0.24fr) minmax(0, 1fr) !important;
+  grid-template-columns: minmax(200px, 42%) minmax(0, 1fr) !important;
   grid-template-rows: minmax(0, 1fr) !important;
   align-items: stretch !important;
   border-radius: 999px 16px 16px 999px !important;
@@ -1890,4 +1897,43 @@ html:has(.wait-screen) body {
 .mesa-root.is-phone-landscape .bet-chip .chip-sm {
   width: clamp(9px, 3.8cqw, 20px) !important;
   height: clamp(9px, 3.8cqw, 20px) !important;
+}
+
+.mesa-root.is-phone-landscape .plaque {
+  top: 6px !important;
+  bottom: auto !important;
+  left: 50% !important;
+  transform: translateX(-50%) scale(0.78) !important;
+  padding: 4px 10px 5px !important;
+  min-width: 64px !important;
+  z-index: 5 !important;
+}
+
+.mesa-root.is-phone-landscape .plaque strong {
+  font-size: 20px !important;
+}
+
+.mesa-root.is-phone-landscape .plaque em {
+  font-size: 10px !important;
+}
+
+.mesa-root.is-phone-landscape .paint.num {
+  font-size: clamp(13px, 4cqw, 22px) !important;
+}
+
+.mesa-root.is-phone-landscape .paint.outside,
+.mesa-root.is-phone-landscape .paint.dozen,
+.mesa-root.is-phone-landscape .paint.column {
+  font-size: clamp(10px, 2.8cqw, 15px) !important;
+}
+
+/* Retrato: rueda un poco más grande y números del paño más legibles */
+@media (max-width: 700px) and (orientation: portrait) {
+  .wheel-well {
+    width: min(42vw, 168px);
+  }
+
+  .paint.num {
+    font-size: clamp(15px, 4.8cqw, 26px);
+  }
 }
