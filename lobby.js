@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], walletKey='campana_link_demo_v2', favKey='casino_nyc_favorites', profileKey='casino_nyc_profile', bonusKey='casino_nyc_last_daily', settingsKey='casino_nyc_settings';
-const games={campana:{name:'Campana Link',category:'tragamonedas',live:true,path:'games/campana-link.html?version=goliat-1'},diamond:{name:'Diamond Stars',category:'tragamonedas',live:true,path:'games/diamond-stars.html?version=slot-fx-7'},ruleta:{name:'Ruleta KARMA',category:'mesas',live:true,path:'games/ruleta-europea.html?version=goliat-1'},fortuna:{name:'Fortuna 7',category:'tragamonedas',live:true,path:'games/fortuna-7.html?version=slot-fx-7'}};
+const games={campana:{name:'Campana Link',category:'tragamonedas',live:true,path:'games/campana-link.html?version=goliat-2'},diamond:{name:'Diamond Stars',category:'tragamonedas',live:true,path:'games/diamond-stars.html?version=slot-fx-8'},ruleta:{name:'Ruleta KARMA',category:'mesas',live:true,path:'games/ruleta-europea.html?version=goliat-2'},fortuna:{name:'Fortuna 7',category:'tragamonedas',live:true,path:'games/fortuna-7.html?version=slot-fx-8'}};
 const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}};
 const save=(key,val)=>{try{localStorage.setItem(key,JSON.stringify(val));return true}catch{return false}};
 const money=n=>(Math.max(0,n)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});

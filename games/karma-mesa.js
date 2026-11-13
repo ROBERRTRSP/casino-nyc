@@ -197,13 +197,15 @@
     verdict = mode;
     root.classList.add(mode === 'win' ? 'is-win' : 'is-lose');
     const taunt = (mode === 'win' ? WIN_TAUNTS : LOSE_TAUNTS)[Math.floor(Math.random() * 3)];
-    const detail =
-      mode === 'win'
-        ? `Nº ${pocket} · +${C.money(payout)} · ${taunt}`
-        : `Nº ${pocket} · ${taunt}`;
-    if (window.GoliatFx) {
+    if (mode === 'win' && window.GoliatFx) {
       window.GoliatFxBase = '../assets/';
-      window.GoliatFx.show(mode === 'win' ? 'win' : 'lose', mode === 'win' ? C.money(payout) : '', detail);
+      const stake = totalStake() || 1;
+      window.GoliatFx.showIfBig(
+        payout,
+        stake,
+        C.money(payout),
+        `Nº ${pocket} · +${C.money(payout)} · ${taunt}`
+      );
     }
     setTimeout(() => {
       root.classList.remove('is-win', 'is-lose');

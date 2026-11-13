@@ -156,21 +156,19 @@ async function oneSpin(){if(running)return false;
   if(C.updateWallet(reward)){
    C.playSound('win');
    setStatus('¡Ganaste '+C.money(reward)+' créditos ficticios!', 'win');
-   showOutcomeFx(scatterCount>=3?'bonus':'win', C.money(reward), scatterCount>=3?'+'+C.money(reward)+' · 5 giros gratis':'+'+C.money(reward)+' créditos');
+   const detail=scatterCount>=3?'+'+C.money(reward)+' · 5 giros gratis':'+'+C.money(reward)+' créditos';
+   window.GoliatFx?.showIfBig(reward, bet, C.money(reward), detail);
   }else setStatus('No se pudo guardar el premio demo.','error');
  }
  else if(scatterCount>=3){
   setStatus('✨ ¡BONO DE 5 GIROS GRATIS!','win');
-  showOutcomeFx('bonus','','5 giros gratis desbloqueados');
   C.playSound('win');
  }
  else if(freeSpins>0){
   setStatus('Giro gratis terminado · Puedes continuar.');
-  if(!inAuto) showOutcomeFx('lose','','Sin premio en este giro gratis');
  }
  else {
   setStatus('Giro terminado. Prueba otra combinación.');
-  if(!inAuto) showOutcomeFx('lose','','Sin premio · Sigue girando');
  }
  draw(winners);record((reward?'+'+C.money(reward):'0.00')+(free?' 🎁':''));running=false;save();updateUI();return true;
 }

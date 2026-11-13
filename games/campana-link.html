@@ -407,15 +407,13 @@ async function spin(){
     startBonus(result.bells);
     setStatus('🔔 ¡BELL LINK! '+result.bells.length+' campanas: comienza la bonificación.','bonus');
     record('🔔 BONUS · '+result.bells.length+' campanas',true);sound('bell');
-    window.GoliatFx?.show('bonus','',result.bells.length+' campanas · Bell Link');
   } else if(result.total>0){
     setStatus('🎉 ¡PREMIO! '+money(result.total)+' créditos · '+result.matched.length+' líneas ganadoras','good');
     record('+'+money(result.total)+' créditos',true);sound('win');
-    window.GoliatFx?.show('win',money(result.total),'+'+money(result.total)+' créditos');
+    window.GoliatFx?.showIfBig(result.total,state.bet,money(result.total),'+'+money(result.total)+' créditos');
   }else{
     setStatus('Sin premio esta vez. ¡Prueba otra combinación!');
     record('— '+money(state.bet),false);
-    if(!auto.running) window.GoliatFx?.show('lose','','Sin premio · Goliat se queda');
   }
   state.busy=false;
   persist();renderBoard();renderHud();
@@ -453,7 +451,7 @@ async function bonusSpin(){
     state.credit+=award;state.lastWin+=award;state.bonus=null;state.winning.clear();
     setStatus('🎉 ¡BONO COMPLETADO! '+count+' campanas · '+money(award)+' créditos'+(jackName?' · JACKPOT '+jackName:'')+'!','good');
     record('🔔 +'+money(award),true);sound('win');
-    window.GoliatFx?.show(jackName?'bonus':'win',money(award),'+'+money(award)+(jackName?' · JACKPOT '+jackName:''));
+    window.GoliatFx?.showIfBig(award,state.bet,money(award),'+'+money(award)+(jackName?' · JACKPOT '+jackName:''));
   }else{
     setStatus(added?'¡'+added+' campana(s) nueva(s)! Se restablecen 3 giros.':'No salió campana nueva. Quedan '+b.left+' giros.','bonus');
     if(added)sound('bell');
@@ -502,4 +500,4 @@ renderBoard();renderHud();renderHistory();
 $('previewNotice').hidden=true;const banner=$('previewBanner');if(banner)banner.hidden=true;
 if(state.sound)$('soundBtn').textContent='🔊 Sonido';const fs=$('fullscreenBtn');if(fs)fs.addEventListener('click',async()=>{try{if(document.fullscreenElement){await document.exitFullscreen()}else if(document.documentElement.requestFullscreen){await document.documentElement.requestFullscreen()}else{setStatus('Para pantalla completa, utiliza la opción de tu navegador.')}}catch{setStatus('El navegador no permite pantalla completa en este momento.')}});
 })();
-</script><script src="casino-core.js?v=coins-2"></script><script src="goliat-fx.js?v=1"></script></body></html>
+</script><script src="casino-core.js?v=coins-2"></script><script src="goliat-fx.js?v=2"></script></body></html>
