@@ -1318,62 +1318,72 @@ html:has(.wait-screen) body {
   .tray-btn .chip span { width: 32px; height: 32px; font-size: 13px; }
 }
 
-/* Teléfono / iPhone horizontal: mesa a pantalla completa */
+/* Teléfono horizontal: filas fijas para que el tray NUNCA tape la mesa */
 @media (orientation: landscape) and (max-height: 560px),
        (orientation: landscape) and (max-width: 980px) {
+  .mesa-root {
+    /* svh = área visible real en Safari (evita solape con la barra del browser) */
+    height: 100svh;
+    max-height: 100svh;
+    grid-template-rows: 34px minmax(0, 1fr) auto;
+    padding-top: max(2px, env(safe-area-inset-top));
+    padding-bottom: 0;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
   .mesa-bar {
-    min-height: 36px;
-    padding: 3px 8px;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    padding: 0 8px;
     gap: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .mesa-brand small,
   .demo-banner,
-  .table-jackpot span { display: none; }
+  .table-jackpot { display: none; }
 
-  .back-lobby { height: 32px; padding: 0 8px; font-size: 10px; }
-  .mesa-credit strong { font-size: 16px; }
-  .bead { width: 22px; height: 22px; font-size: 10px; }
-
-  .table-jackpot {
-    position: absolute;
-    top: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    padding: 2px 10px;
-    pointer-events: none;
-  }
-
-  .table-jackpot strong { font-size: 12px; }
+  .back-lobby { height: 28px; padding: 0 8px; font-size: 10px; }
+  .mesa-credit span { font-size: 9px; }
+  .mesa-credit strong { font-size: 14px; line-height: 1.1; }
+  .phase-pill { padding: 3px 8px; font-size: 9px; }
+  .beads { max-width: 28vw; gap: 3px; }
+  .bead { width: 20px; height: 20px; font-size: 9px; }
 
   .table-unit {
     --croupier: 0px;
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     padding: 2px 4px;
-    height: 100%;
     min-height: 0;
+    height: auto;
+    overflow: hidden;
+    container-type: normal;
+    place-items: stretch;
   }
 
   .table-croupier { display: none; }
 
   .table-surface {
+    flex: 1 1 0;
     display: grid;
     width: 100%;
-    height: 100%;
     min-height: 0;
+    height: auto;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-columns: minmax(88px, 0.26fr) minmax(0, 1fr);
+    grid-template-columns: minmax(72px, 0.24fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     align-items: stretch;
     justify-items: stretch;
-    border-radius: 999px 18px 18px 999px;
-    border-width: 7px;
-    padding: 4px 8px 4px 4px;
+    border-radius: 999px 16px 16px 999px;
+    border-width: 6px;
+    padding: 3px 6px 3px 3px;
     gap: 2px;
-    flex: none;
   }
 
   .wheel-well {
@@ -1384,14 +1394,13 @@ html:has(.wait-screen) body {
     margin: 0;
     display: grid;
     place-items: center;
-    align-self: stretch;
+    min-height: 0;
   }
 
   .wheel-well .wheel-canvas {
-    width: min(100%, 100%);
-    height: min(100%, 100%);
+    width: 100%;
+    height: 100%;
     max-height: 100%;
-    object-fit: contain;
   }
 
   .felt-stage {
@@ -1415,53 +1424,70 @@ html:has(.wait-screen) body {
 
   .bet-chip .chip,
   .bet-chip .chip-sm {
-    width: clamp(10px, 4.2cqw, 22px);
-    height: clamp(10px, 4.2cqw, 22px);
+    width: clamp(9px, 3.8cqw, 20px);
+    height: clamp(9px, 3.8cqw, 20px);
   }
 
   .tray {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    gap: 6px;
-    padding: 4px 8px calc(4px + env(safe-area-inset-bottom));
+    gap: 4px;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 3px 6px max(3px, env(safe-area-inset-bottom));
+    overflow: hidden;
+    z-index: 20;
+    flex: none;
   }
 
   .tray-chips {
     flex: 1;
     min-width: 0;
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 3px;
   }
 
   .tray-actions {
     flex: none;
-    gap: 4px;
+    gap: 3px;
   }
 
   .tray-actions .phase-pill { display: none; }
 
-  .tray-btn .chip { width: 38px; height: 38px; }
-  .tray-btn .chip span { width: 24px; height: 24px; font-size: 10px; }
+  .tray-btn .chip { width: 30px; height: 30px; }
+  .tray-btn .chip span { width: 18px; height: 18px; font-size: 9px; }
+  .tray-btn .chip.chip-selected,
+  .chip-selected { outline-width: 2px; outline-offset: 1px; transform: none; }
 
   .ghost-btn {
-    height: 34px;
-    padding: 0 8px;
-    font-size: 11px;
+    height: 30px;
+    padding: 0 7px;
+    font-size: 10px;
+    border-radius: 8px;
   }
 
   .spin-btn {
-    height: 42px;
-    min-width: 86px;
-    padding: 0 12px;
-    font-size: 14px;
+    height: 34px;
+    min-width: 78px;
+    padding: 0 10px;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    border-radius: 10px;
     flex: none;
   }
 
-  .paint.num { font-size: clamp(12px, 3.6cqw, 20px); }
+  .paint.num { font-size: clamp(11px, 3.4cqw, 18px); }
   .paint.outside,
   .paint.dozen,
-  .paint.column { font-size: clamp(9px, 2.6cqw, 14px); }
+  .paint.column { font-size: clamp(8px, 2.4cqw, 13px); }
+
+  .plaque {
+    bottom: 4%;
+    padding: 4px 10px 6px;
+    min-width: 72px;
+  }
+  .plaque strong { font-size: 22px; }
 }
 
 /* iPad vertical: la mesa ocupa toda la pantalla. La rueda arriba y el paño, más grande, debajo. */
