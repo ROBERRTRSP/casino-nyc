@@ -43,26 +43,35 @@ function clearOutcomeFx(){
   const fx=document.getElementById('slotFx');
   if(fx)fx.remove();
   document.querySelector('.stage')?.classList.remove('is-slot-win','is-slot-lose','is-slot-bonus');
+  document.body.classList.remove('is-slot-celebrate');
   if(fxTimer){clearTimeout(fxTimer);fxTimer=0}
 }
 function showOutcomeFx(kind,amountText,detail){
   clearOutcomeFx();
   const stage=document.querySelector('.stage');
-  if(stage)stage.classList.add(kind==='win'?'is-slot-win':kind==='bonus'?'is-slot-bonus':'is-slot-lose');
+  const stageClass=kind==='win'?'is-slot-win':kind==='bonus'?'is-slot-bonus':'is-slot-lose';
+  if(stage)stage.classList.add(stageClass);
+  if(kind!=='lose')document.body.classList.add('is-slot-celebrate');
   const lines=kind==='win'?WIN_LINES:kind==='bonus'?BONUS_LINES:LOSE_LINES;
   const kicker=lines[Math.floor(Math.random()*lines.length)];
-  const title=kind==='win'?'¡GANASTE!':kind==='bonus'?'¡BONO!':'SIN PREMIO';
-  const icon=kind==='win'?'💎':kind==='bonus'?'✨':'🌑';
-  const coins=kind==='lose'?'':`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:18},()=>'<i></i>').join('')}</span>`;
+  const title=kind==='win'?'¡GANASTE!':kind==='bonus'?'¡BONO!':'¡PERDISTE!';
+  const icon=kind==='win'?'💎':kind==='bonus'?'✨':'💥';
+  const coins=kind==='lose'
+    ?''
+    :`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:30},()=>'<i></i>').join('')}</span>`;
+  const sparks=`<span class="slot-fx-sparks" aria-hidden="true">${Array.from({length:12},()=>'<b></b>').join('')}</span>`;
   const fx=document.createElement('div');
   fx.id='slotFx';
   fx.className='slot-fx is-'+kind;
   fx.setAttribute('role','status');
   fx.innerHTML=`
+    <div class="slot-fx-vignette"></div>
     <div class="slot-fx-flash"></div>
     <div class="slot-fx-rays"></div>
     <div class="slot-fx-shock"></div>
+    <div class="slot-fx-shock slot-fx-shock-2"></div>
     ${coins}
+    ${sparks}
     <div class="slot-fx-stamp">
       <span class="slot-fx-icon">${icon}</span>
       <span class="slot-fx-kicker">${kicker}</span>
@@ -70,7 +79,8 @@ function showOutcomeFx(kind,amountText,detail){
       <em>${detail||amountText||''}</em>
     </div>`;
   document.body.appendChild(fx);
-  fxTimer=window.setTimeout(clearOutcomeFx,2800);
+  const ttl=kind==='lose'?2600:3600;
+  fxTimer=window.setTimeout(clearOutcomeFx,ttl);
 }
 function record(outcome){history.unshift(outcome);history=history.slice(0,5);const el=$('slotHistory');if(el)el.textContent=history.map(e=>e).join('  ·  ');save()}
 function updateUI(){const w=C.wallet();$('balance').textContent=C.money(w.credit);$('prize').textContent=C.money(creditsPrize);$('count').textContent=String(spins);$('bet').textContent=C.money(bet);
