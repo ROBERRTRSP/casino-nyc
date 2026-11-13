@@ -376,4 +376,29 @@
   window.addEventListener('storage', update);
   renderPlaque(null);
   update();
+
+  /* iOS Safari: fuerza layout de teléfono horizontal con la altura visible real.
+     Evita que reglas de “iPad landscape” pisen el layout en iPhone Pro Max. */
+  function syncPhoneLandscape() {
+    const root = $('mesaRoot');
+    if (!root) return;
+    const vv = window.visualViewport;
+    const w = Math.round(vv?.width || window.innerWidth);
+    const h = Math.round(vv?.height || window.innerHeight);
+    const phoneLandscape = w > h && h <= 560;
+    root.classList.toggle('is-phone-landscape', phoneLandscape);
+    root.style.setProperty('--vvh', `${h}px`);
+    if (phoneLandscape) {
+      root.style.height = `${h}px`;
+      root.style.maxHeight = `${h}px`;
+    } else {
+      root.style.removeProperty('height');
+      root.style.removeProperty('max-height');
+    }
+  }
+  syncPhoneLandscape();
+  window.addEventListener('resize', syncPhoneLandscape);
+  window.addEventListener('orientationchange', () => setTimeout(syncPhoneLandscape, 80));
+  window.visualViewport?.addEventListener('resize', syncPhoneLandscape);
+  window.visualViewport?.addEventListener('scroll', syncPhoneLandscape);
 })();
