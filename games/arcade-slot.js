@@ -27,8 +27,8 @@ function clearOutcomeFx(){window.GoliatFx?.clear()}
 function showOutcomeFx(kind,amountText,detail){window.GoliatFx?.show(kind,amountText,detail)}
 function record(outcome){history.unshift(outcome);history=history.slice(0,5);const el=$('slotHistory');if(el)el.textContent=history.map(e=>e).join('  ·  ');save()}
 function updateUI(){const w=C.wallet();$('balance').textContent=C.money(w.credit);$('prize').textContent=C.money(creditsPrize);$('count').textContent=String(spins);$('bet').textContent=C.money(bet);
-$('spin').disabled=running||autoCount>0||(freeSpins===0&&w.credit<bet);$('spin').textContent=running?'GIRANDO…':freeSpins>0?'🎁 GIRO GRATIS':'▶ GIRAR';
-$('autoButton').textContent=autoCount>0?'■ DETENER AUTO':'⏵ AUTO JUGAR';$('autoButton').disabled=running&&autoCount===0;
+$('spin').disabled=running||autoCount>0||(freeSpins===0&&w.credit<bet);$('spin').textContent=running?'GIRANDO…':freeSpins>0?'GIRO GRATIS':'GIRAR';
+$('autoButton').textContent=autoCount>0?'DETENER':'AUTO';$('autoButton').disabled=running&&autoCount===0;
 $('autoSelect').disabled=running||autoCount>0;document.querySelectorAll('[data-bet]').forEach(b=>{b.disabled=running||autoCount>0||freeSpins>0;b.setAttribute('aria-pressed',String(+b.dataset.bet===bet))});
 $('bonus').textContent=freeSpins>0?'✨ '+freeSpins+' giro'+(freeSpins===1?'':'s')+' gratis restante'+(freeSpins===1?'':'s'):'';
 $('autoRemaining').textContent=autoCount>0?'Restan '+autoCount+' giros':'Modo manual';}
