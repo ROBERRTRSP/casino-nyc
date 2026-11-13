@@ -1086,10 +1086,11 @@ html:has(.wait-screen) body {
   border-radius: 18px;
 }
 
+/* —— Móvil / tablet estrecha —— */
 @media (max-width: 980px) {
   .mesa-bar {
     gap: 8px;
-    min-height: 48px;
+    min-height: 46px;
     padding: 6px 10px;
   }
 
@@ -1099,47 +1100,50 @@ html:has(.wait-screen) body {
   .bead { width: 24px; height: 24px; font-size: 11px; }
 
   .table-unit {
-    --croupier: clamp(64px, 11dvh, 96px);
+    --croupier: 0px;
     place-items: stretch;
-    padding: calc(var(--croupier) * 0.72) 8px 8px;
+    align-content: start;
+    padding: 8px 8px 6px;
     min-height: 0;
     overflow: hidden;
   }
 
+  /* En pantallas chicas el mono se corta; mejor ocultarlo. */
+  .table-croupier { display: none; }
+
   .table-jackpot {
-    top: 2px;
+    position: static;
+    transform: none;
+    justify-self: center;
+    margin: 0 0 6px;
     padding: 4px 12px 5px;
+    z-index: 2;
   }
 
-  .table-jackpot strong { font-size: 16px; }
+  .table-jackpot strong { font-size: 15px; }
   .table-jackpot span { font-size: 9px; }
-
-  .table-croupier {
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(var(--croupier) + 8px);
-    bottom: calc(100% - 12px);
-  }
 
   .table-surface {
     width: 100%;
-    height: 100%;
-    max-height: none;
+    height: auto;
+    max-height: 100%;
     aspect-ratio: auto;
     transform: none;
+    align-self: stretch;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(140px, 38%) minmax(0, 1fr);
-    border-radius: 28px;
+    grid-template-rows: auto auto;
+    border-radius: 24px;
     border-width: 10px;
     padding: 8px;
-    gap: 4px;
+    gap: 6px;
+    overflow: hidden;
   }
 
   .wheel-well {
-    width: min(100%, 280px);
-    height: 100%;
-    max-height: 100%;
+    width: min(42%, 168px);
+    height: auto;
     aspect-ratio: 1;
+    max-height: none;
     margin: 0 auto;
     justify-self: center;
   }
@@ -1147,7 +1151,7 @@ html:has(.wait-screen) body {
   .felt-stage {
     container-type: inline-size;
     width: 100%;
-    height: 100%;
+    height: auto;
     min-height: 0;
     padding: 0;
     place-items: center;
@@ -1156,11 +1160,12 @@ html:has(.wait-screen) body {
   .felt-rail {
     width: 100%;
     height: auto;
-    max-height: 100%;
+    max-height: none;
     aspect-ratio: 1016 / 432;
   }
 
   .demo-banner { display: none; }
+  .plaque { bottom: 6%; transform: translateX(-50%) scale(0.85); }
 
   .tray {
     gap: 8px;
@@ -1193,68 +1198,113 @@ html:has(.wait-screen) body {
     letter-spacing: 0.08em;
   }
 
-  .paint.num { font-size: clamp(12px, 3.4vw, 18px); }
+  .paint.num { font-size: clamp(13px, 3.6vw, 20px); }
   .paint.outside,
   .paint.dozen,
-  .paint.column { font-size: clamp(9px, 2.6vw, 13px); }
+  .paint.column { font-size: clamp(10px, 2.8vw, 14px); }
 }
 
-/* Teléfono vertical: paño grande abajo, rueda compacta arriba, tray fijo. */
+/* Teléfono vertical: el paño crece y llena el hueco; tray sin recortes. */
 @media (max-width: 700px) and (orientation: portrait) {
   .mesa-bar a.back-lobby { height: 34px; padding: 0 8px; font-size: 10px; }
   .mesa-brand small { display: none; }
   .phase-pill { padding: 4px 8px; font-size: 10px; }
 
   .table-unit {
-    --croupier: clamp(52px, 9dvh, 78px);
-    padding: calc(var(--croupier) * 0.55) 6px 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 4px 6px;
+    min-height: 0;
+  }
+
+  .table-jackpot {
+    flex: none;
+    margin-bottom: 4px;
   }
 
   .table-surface {
-    grid-template-rows: minmax(120px, 30%) minmax(0, 1fr);
-    border-radius: 22px;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 20px;
     border-width: 8px;
-    padding: 6px;
+    padding: 10px 6px 12px;
+    grid-template-columns: none;
+    grid-template-rows: none;
   }
 
   .wheel-well {
-    width: min(56%, 200px);
+    flex: none;
+    width: min(36vw, 140px);
     height: auto;
-    max-height: 28dvh;
+    aspect-ratio: 1;
   }
 
+  .felt-stage {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    container-type: inline-size;
+    display: grid;
+    place-items: center;
+  }
+
+  .felt-rail {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 1016 / 432;
+  }
+
+  .paint.num { font-size: clamp(14px, 4.2cqw, 24px); }
+  .paint.outside,
+  .paint.dozen,
+  .paint.column { font-size: clamp(11px, 3.2cqw, 16px); }
+
   .tray {
+    flex: none;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "chips spin"
       "actions spin";
     align-items: center;
-    gap: 6px 8px;
+    gap: 8px 8px;
+    padding: 10px 10px calc(12px + env(safe-area-inset-bottom));
+    overflow: visible;
   }
 
-  .tray-chips { grid-area: chips; }
+  .tray-chips {
+    grid-area: chips;
+    padding: 4px 0 2px;
+  }
   .tray-actions {
     grid-area: actions;
     flex-wrap: nowrap;
     gap: 4px;
     justify-content: flex-start;
   }
-  .tray-actions .phase-pill {
-    display: none;
-  }
+  .tray-actions .phase-pill { display: none; }
   .spin-btn {
     grid-area: spin;
     align-self: stretch;
     height: auto;
-    min-height: 84px;
+    min-height: 88px;
     min-width: 96px;
   }
+  .chip { width: 52px; height: 52px; }
+  .chip span { width: 32px; height: 32px; font-size: 13px; }
 }
 
-/* Teléfono horizontal: rueda | paño, tray opaco abajo sin tapar. */
-@media (max-height: 500px) and (orientation: landscape),
-       (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+/* Teléfono horizontal: rueda | paño, tray fijo abajo. */
+@media (orientation: landscape) and (max-height: 520px),
+       (orientation: landscape) and (max-width: 950px) and (max-height: 700px) {
   .mesa-bar {
     min-height: 40px;
     padding: 4px 8px;
@@ -1265,28 +1315,33 @@ html:has(.wait-screen) body {
   .table-jackpot span { display: none; }
 
   .table-jackpot {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
     padding: 3px 10px;
+    pointer-events: none;
   }
 
-  .table-jackpot strong { font-size: 14px; }
+  .table-jackpot strong { font-size: 13px; }
 
   .table-unit {
-    --croupier: clamp(40px, 14dvh, 64px);
-    padding: calc(var(--croupier) * 0.35) 6px 4px;
+    --croupier: 0px;
+    padding: 4px 6px;
   }
 
-  .table-croupier {
-    height: calc(var(--croupier) + 4px);
-  }
+  .table-croupier { display: none; }
 
   .table-surface {
     width: 100%;
     height: 100%;
     max-height: none;
     aspect-ratio: auto;
-    grid-template-columns: minmax(100px, 0.42fr) minmax(0, 1fr);
+    grid-template-columns: minmax(96px, 0.34fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
-    border-radius: 999px 24px 24px 999px;
+    align-items: center;
+    border-radius: 999px 22px 22px 999px;
     border-width: 8px;
     padding: 6px 10px 6px 6px;
     gap: 4px;
@@ -1294,20 +1349,23 @@ html:has(.wait-screen) body {
 
   .wheel-well {
     width: 100%;
-    height: 100%;
-    max-height: none;
-    aspect-ratio: auto;
-    margin: 0;
+    height: auto;
+    max-height: 100%;
+    aspect-ratio: 1;
+    margin: 0 auto;
   }
 
   .felt-stage {
     height: 100%;
+    width: 100%;
     padding: 0;
+    place-items: center;
   }
 
   .felt-rail {
     width: 100%;
     max-height: 100%;
+    height: auto;
   }
 
   .tray {
@@ -1349,10 +1407,10 @@ html:has(.wait-screen) body {
     flex: none;
   }
 
-  .paint.num { font-size: clamp(10px, 2.2vh, 16px); }
+  .paint.num { font-size: clamp(11px, 2.4vh, 17px); }
   .paint.outside,
   .paint.dozen,
-  .paint.column { font-size: clamp(8px, 1.8vh, 12px); }
+  .paint.column { font-size: clamp(9px, 2vh, 13px); }
 }
 
 /* iPad vertical: la mesa ocupa toda la pantalla. La rueda arriba y el paño, más grande, debajo. */
@@ -1378,16 +1436,32 @@ html:has(.wait-screen) body {
   }
 
   .table-unit {
-    --croupier: clamp(130px, 17dvh, 200px);
+    --croupier: clamp(110px, 15dvh, 180px);
     perspective: none;
     place-items: stretch;
-    padding: var(--croupier) 8px 4px;
+    padding: calc(var(--croupier) * 0.7) 8px 4px;
+  }
+
+  .table-croupier {
+    display: block;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--croupier) + 10px);
+    bottom: calc(100% - 14px);
+  }
+
+  .table-jackpot {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
   }
 
   .table-surface {
     width: 100%;
-    height: 100%;
-    max-height: none;
+    height: auto;
+    max-height: 100%;
     aspect-ratio: auto;
     transform: none;
     align-items: center;
@@ -1401,8 +1475,9 @@ html:has(.wait-screen) body {
   }
 
   .wheel-well {
-    width: min(78%, 420px);
-    height: min(32dvh, 360px);
+    width: min(52%, 280px);
+    height: auto;
+    max-height: 28dvh;
     aspect-ratio: 1;
     margin: 0 auto;
     justify-self: center;
