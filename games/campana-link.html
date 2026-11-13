@@ -211,7 +211,7 @@ button{touch-action:manipulation}
   .reel.rolling .reel-track{will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
   .reel.rolling .symbol-art{filter:none!important;-webkit-filter:none!important}
 }
-</style></head><body><div id="previewBanner" role="alert" style="margin:12px auto 4px;width:min(100% - 24px,760px);background:#2b1110;color:#fff4cf;border:2px solid #ffd263;border-radius:14px;padding:13px 16px;text-align:center;font:700 15px/1.45 system-ui;box-shadow:0 0 18px #0008">⚠️ <strong>VISTA PREVIA SIN JUEGO:</strong> Si ves este aviso, los botones no pueden funcionar aquí. Abre este archivo como una página web en Safari para jugar. <a href="https://app.netlify.com/drop" style="color:#afffff">Publicar en Netlify Drop</a>.</div>
+</style><link rel="stylesheet" href="slot-fx.css?v=6"></head><body><div id="previewBanner" role="alert" style="margin:12px auto 4px;width:min(100% - 24px,760px);background:#2b1110;color:#fff4cf;border:2px solid #ffd263;border-radius:14px;padding:13px 16px;text-align:center;font:700 15px/1.45 system-ui;box-shadow:0 0 18px #0008">⚠️ <strong>VISTA PREVIA SIN JUEGO:</strong> Si ves este aviso, los botones no pueden funcionar aquí. Abre este archivo como una página web en Safari para jugar. <a href="https://app.netlify.com/drop" style="color:#afffff">Publicar en Netlify Drop</a>.</div>
 <main class="app"><header class="topbar"><div class="brand"><i class="led"></i> <a href="../index.html" style="color:#ffe9a6;text-decoration:none;display:inline-flex;align-items:center;gap:7px;min-height:38px">‹ LOBBY</a> <span>· CAMPANA LINK</span></div><div class="top-actions"><button aria-label="Alternar pantalla completa" class="tinybtn" id="fullscreenBtn" title="Pantalla completa" type="button">⛶ Pantalla completa</button><button aria-label="Activar o desactivar sonido" class="tinybtn" id="soundBtn" title="Sonido" type="button">🔇 Sonido</button><button aria-label="Mostrar ayuda" class="tinybtn" id="rulesBtn" title="Ayuda" type="button">ⓘ Ayuda</button></div></header>
 <section aria-label="Máquina de tragamonedas de demostración" class="cabinet"><div class="cabinet-content">
 <div class="marquee"><div aria-label="Campana dorada y logotipo Bell Link" class="hero-art" role="img"></div><div aria-label="Premios especiales ficticios" class="jackpots"><div class="jackpot grand"><span class="jtitle">GRAND</span><span class="jamount">55,458.30</span></div><div class="jackpot major"><span class="jtitle">MAJOR</span><span class="jamount">2,997.50</span></div><div class="jackpot minor"><span class="jtitle">MINOR</span><span class="jamount">250.00</span></div><div class="jackpot mini"><span class="jtitle">MINI</span><span class="jamount">50.00</span></div></div></div>
@@ -407,12 +407,15 @@ async function spin(){
     startBonus(result.bells);
     setStatus('🔔 ¡BELL LINK! '+result.bells.length+' campanas: comienza la bonificación.','bonus');
     record('🔔 BONUS · '+result.bells.length+' campanas',true);sound('bell');
+    window.GoliatFx?.show('bonus','',result.bells.length+' campanas · Bell Link');
   } else if(result.total>0){
     setStatus('🎉 ¡PREMIO! '+money(result.total)+' créditos · '+result.matched.length+' líneas ganadoras','good');
     record('+'+money(result.total)+' créditos',true);sound('win');
+    window.GoliatFx?.show('win',money(result.total),'+'+money(result.total)+' créditos');
   }else{
     setStatus('Sin premio esta vez. ¡Prueba otra combinación!');
     record('— '+money(state.bet),false);
+    if(!auto.running) window.GoliatFx?.show('lose','','Sin premio · Goliat se queda');
   }
   state.busy=false;
   persist();renderBoard();renderHud();
@@ -450,6 +453,7 @@ async function bonusSpin(){
     state.credit+=award;state.lastWin+=award;state.bonus=null;state.winning.clear();
     setStatus('🎉 ¡BONO COMPLETADO! '+count+' campanas · '+money(award)+' créditos'+(jackName?' · JACKPOT '+jackName:'')+'!','good');
     record('🔔 +'+money(award),true);sound('win');
+    window.GoliatFx?.show(jackName?'bonus':'win',money(award),'+'+money(award)+(jackName?' · JACKPOT '+jackName:''));
   }else{
     setStatus(added?'¡'+added+' campana(s) nueva(s)! Se restablecen 3 giros.':'No salió campana nueva. Quedan '+b.left+' giros.','bonus');
     if(added)sound('bell');
@@ -498,4 +502,4 @@ renderBoard();renderHud();renderHistory();
 $('previewNotice').hidden=true;const banner=$('previewBanner');if(banner)banner.hidden=true;
 if(state.sound)$('soundBtn').textContent='🔊 Sonido';const fs=$('fullscreenBtn');if(fs)fs.addEventListener('click',async()=>{try{if(document.fullscreenElement){await document.exitFullscreen()}else if(document.documentElement.requestFullscreen){await document.documentElement.requestFullscreen()}else{setStatus('Para pantalla completa, utiliza la opción de tu navegador.')}}catch{setStatus('El navegador no permite pantalla completa en este momento.')}});
 })();
-</script></body></html>
+</script><script src="casino-core.js?v=coins-2"></script><script src="goliat-fx.js?v=1"></script></body></html>

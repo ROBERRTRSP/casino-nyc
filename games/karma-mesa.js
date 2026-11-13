@@ -191,39 +191,24 @@
     if (existing) existing.remove();
     if (!mode) {
       verdict = null;
+      window.GoliatFx?.clear();
       return;
     }
     verdict = mode;
     root.classList.add(mode === 'win' ? 'is-win' : 'is-lose');
     const taunt = (mode === 'win' ? WIN_TAUNTS : LOSE_TAUNTS)[Math.floor(Math.random() * 3)];
-    const img = mode === 'win' ? '../assets/monkey-win.jpg' : '../assets/monkey-lose.jpg';
-    const fx = document.createElement('div');
-    fx.id = 'hitFx';
-    fx.className = `hit-fx hit-${mode}`;
-    fx.setAttribute('role', 'status');
-    fx.innerHTML = `
-      <div class="hit-flash"></div>
-      <div class="hit-vignette"></div>
-      <div class="hit-rays"></div>
-      <div class="hit-shockwave"></div>
-      <div class="hit-shockwave hit-shockwave-2"></div>
-      ${mode === 'win' ? `<span class="coins" aria-hidden="true">${Array.from({ length: 24 }, () => '<i></i>').join('')}</span>` : ''}
-      <div class="hit-stamp">
-        <div class="mascot-wrap mascot-wrap-${mode}" aria-hidden="true">
-          <div class="mascot-bubble"><span>${taunt}</span></div>
-          <div class="mascot-monkey mascot-${mode}"><img class="mascot-canvas" src="${img}" alt=""></div>
-        </div>
-        <span class="hit-pocket ${B.pocketColor(pocket)}">${pocket}</span>
-        <span class="hit-kicker">${mode === 'win' ? 'CORONASTE · EL MONO PAGA' : 'TE PELASTE · LA BANCA GANA'}</span>
-        <strong>${mode === 'win' ? '¡GANASTE!' : '¡PERDEDOR!'}</strong>
-        <em>${mode === 'win' ? C.money(payout) : 'Sin premio · La banca se queda todo'}</em>
-      </div>`;
-    root.appendChild(fx);
+    const detail =
+      mode === 'win'
+        ? `Nº ${pocket} · +${C.money(payout)} · ${taunt}`
+        : `Nº ${pocket} · ${taunt}`;
+    if (window.GoliatFx) {
+      window.GoliatFxBase = '../assets/';
+      window.GoliatFx.show(mode === 'win' ? 'win' : 'lose', mode === 'win' ? C.money(payout) : '', detail);
+    }
     setTimeout(() => {
-      if (fx.parentNode) fx.remove();
       root.classList.remove('is-win', 'is-lose');
       verdict = null;
-    }, 4100);
+    }, 4200);
   }
 
   function update() {
