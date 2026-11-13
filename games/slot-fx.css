@@ -244,9 +244,36 @@
 
 .slot-fx-mono {
   flex: 0 0 auto;
-  width: clamp(72px, 22vw, 118px);
-  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.45));
+  width: clamp(96px, 28vw, 160px);
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
   transform-origin: 50% 100%;
+}
+
+.slot-fx-mono.is-goliat {
+  width: clamp(118px, 34vw, 196px);
+  z-index: 4;
+}
+
+.slot-fx-mono .goliat-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 42%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 82% at 50% 42%, #000 62%, transparent 100%);
+}
+
+.slot-fx-mono.is-right .goliat-photo {
+  transform: scaleX(-1);
+}
+
+.slot-fx.is-lose .slot-fx-mono .goliat-photo {
+  filter: brightness(1.55) contrast(1.15) saturate(1.05);
+}
+
+.slot-fx.is-win .slot-fx-mono .goliat-photo,
+.slot-fx.is-bonus .slot-fx-mono .goliat-photo {
+  filter: brightness(1.08) contrast(1.05);
 }
 
 .slot-fx-mono.is-left { animation: mono-enter-left 0.55s cubic-bezier(0.2, 1.4, 0.35, 1) both; }
@@ -270,19 +297,18 @@
   animation: mono-enter-right 0.5s ease both, mono-sob 0.7s ease 0.65s infinite;
 }
 
-.slot-fx-mono .mono-svg { display: block; width: 100%; height: auto; }
-
-.slot-fx.is-win .slot-fx-mono .mono-arm-l,
-.slot-fx.is-bonus .slot-fx-mono .mono-arm-l {
-  transform-origin: 22px 108px;
-  animation: mono-wave-l 0.45s ease infinite alternate;
+.slot-fx-goliat-tag {
+  display: block;
+  margin-top: 10px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  font-weight: 800;
+  color: #ffe08a;
+  opacity: 0.85;
 }
 
-.slot-fx.is-win .slot-fx-mono .mono-arm-r,
-.slot-fx.is-bonus .slot-fx-mono .mono-arm-r {
-  transform-origin: 98px 108px;
-  animation: mono-wave-r 0.45s ease infinite alternate;
-}
+.slot-fx.is-lose .slot-fx-goliat-tag { color: #ffb0b0; }
 
 .slot-fx-bananas {
   position: absolute;
