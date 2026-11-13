@@ -23,6 +23,55 @@ function symHtml(id){const s=symbol(id);return '<span class="glyph graphic graph
 function cellHtml(id,highlight=false){return '<div class="symbol'+(highlight?' highlight':'')+'" aria-label="'+symbol(id).id+'">'+symHtml(id)+'</div>'}
 function draw(winners=[]){const high=new Set(winners.flat());$('reels').innerHTML=board.map((col,i)=>'<div class="reel" data-col="'+i+'">'+col.map((x,j)=>cellHtml(x,high.has(i*3+j))).join('')+'</div>').join('')}
 function setStatus(s,kind=''){$('message').textContent=s;$('message').className='status '+kind}
+const WIN_LINES=[
+  '¡BRILLANTE! · LOS DIAMANTES PAGAN',
+  '¡COMBINACIÓN GANADORA!',
+  '¡LAS ESTRELLAS TE SONRÍEN!',
+];
+const LOSE_LINES=[
+  'SIN PREMIO ESTA VEZ',
+  'LA MÁQUINA SE QUEDA CON TODO',
+  'PRUEBA OTRA COMBINACIÓN',
+];
+const BONUS_LINES=[
+  '¡BONO DE ESTRELLAS!',
+  '¡GIROS GRATIS DESBLOQUEADOS!',
+  '¡SCATTER EN LLAMAS!',
+];
+let fxTimer=0;
+function clearOutcomeFx(){
+  const fx=document.getElementById('slotFx');
+  if(fx)fx.remove();
+  document.querySelector('.stage')?.classList.remove('is-slot-win','is-slot-lose','is-slot-bonus');
+  if(fxTimer){clearTimeout(fxTimer);fxTimer=0}
+}
+function showOutcomeFx(kind,amountText,detail){
+  clearOutcomeFx();
+  const stage=document.querySelector('.stage');
+  if(stage)stage.classList.add(kind==='win'?'is-slot-win':kind==='bonus'?'is-slot-bonus':'is-slot-lose');
+  const lines=kind==='win'?WIN_LINES:kind==='bonus'?BONUS_LINES:LOSE_LINES;
+  const kicker=lines[Math.floor(Math.random()*lines.length)];
+  const title=kind==='win'?'¡GANASTE!':kind==='bonus'?'¡BONO!':'SIN PREMIO';
+  const icon=kind==='win'?'💎':kind==='bonus'?'✨':'🌑';
+  const coins=kind==='lose'?'':`<span class="slot-fx-coins" aria-hidden="true">${Array.from({length:18},()=>'<i></i>').join('')}</span>`;
+  const fx=document.createElement('div');
+  fx.id='slotFx';
+  fx.className='slot-fx is-'+kind;
+  fx.setAttribute('role','status');
+  fx.innerHTML=`
+    <div class="slot-fx-flash"></div>
+    <div class="slot-fx-rays"></div>
+    <div class="slot-fx-shock"></div>
+    ${coins}
+    <div class="slot-fx-stamp">
+      <span class="slot-fx-icon">${icon}</span>
+      <span class="slot-fx-kicker">${kicker}</span>
+      <strong>${title}</strong>
+      <em>${detail||amountText||''}</em>
+    </div>`;
+  document.body.appendChild(fx);
+  fxTimer=window.setTimeout(clearOutcomeFx,2800);
+}
 function record(outcome){history.unshift(outcome);history=history.slice(0,5);const el=$('slotHistory');if(el)el.textContent=history.map(e=>e).join('  ·  ');save()}
 function updateUI(){const w=C.wallet();$('balance').textContent=C.money(w.credit);$('prize').textContent=C.money(creditsPrize);$('count').textContent=String(spins);$('bet').textContent=C.money(bet);
 $('spin').disabled=running||autoCount>0||(freeSpins===0&&w.credit<bet);$('spin').textContent=running?'GIRANDO…':freeSpins>0?'🎁 GIRO GRATIS':'▶ GIRAR';
@@ -141,18 +190,35 @@ function animateColumn(node,start,target,index){return new Promise(resolve=>{
  backup=window.setTimeout(finish,duration+150);
 })}
 async function oneSpin(){if(running)return false;
+ clearOutcomeFx();
  if(!freeSpins&&C.wallet().credit<bet){setStatus('Créditos demo insuficientes. Añade créditos desde el lobby.','error');autoStop=true;return false}
  const free=freeSpins>0;if(free){freeSpins--;save()}else if(!C.updateWallet(-bet,1)){setStatus('No se pudo registrar la apuesta de prueba.','error');return false}
+ const inAuto=autoCount>0;
  running=true;creditsPrize=0;spins++;setStatus(free?'✨ Girando bono gratis…':'Los rodillos están girando…');C.playSound('spin');draw();updateUI();
  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
  const next=Array.from({length:N},()=>Array.from({length:3},()=>C.weighted(SYM)));
  await Promise.all([...document.querySelectorAll('.reel')].map((r,i)=>animateColumn(r,board[i],next[i],i)));
  board=next;const {reward,winners,scatterCount}=evaluate();creditsPrize=reward;
- if(reward){if(C.updateWallet(reward)){C.playSound('win');setStatus('¡Ganaste '+C.money(reward)+' créditos ficticios!', 'win')}else setStatus('No se pudo guardar el premio demo.','error')}
- else if(scatterCount>=3)setStatus('✨ ¡BONO! Has obtenido 5 giros gratis.', 'win');
- else if(freeSpins>0)setStatus('Giro gratis terminado · Puedes continuar.');
- else setStatus('Giro terminado. Prueba otra combinación.');
- if(scatterCount>=3)setStatus('✨ ¡BONO DE 5 GIROS GRATIS!'+(reward?' Premio adicional '+C.money(reward):''),'win');
+ if(reward){
+  if(C.updateWallet(reward)){
+   C.playSound('win');
+   setStatus('¡Ganaste '+C.money(reward)+' créditos ficticios!', 'win');
+   showOutcomeFx(scatterCount>=3?'bonus':'win', C.money(reward), scatterCount>=3?'+'+C.money(reward)+' · 5 giros gratis':'+'+C.money(reward)+' créditos');
+  }else setStatus('No se pudo guardar el premio demo.','error');
+ }
+ else if(scatterCount>=3){
+  setStatus('✨ ¡BONO DE 5 GIROS GRATIS!','win');
+  showOutcomeFx('bonus','','5 giros gratis desbloqueados');
+  C.playSound('win');
+ }
+ else if(freeSpins>0){
+  setStatus('Giro gratis terminado · Puedes continuar.');
+  if(!inAuto) showOutcomeFx('lose','','Sin premio en este giro gratis');
+ }
+ else {
+  setStatus('Giro terminado. Prueba otra combinación.');
+  if(!inAuto) showOutcomeFx('lose','','Sin premio · Sigue girando');
+ }
  draw(winners);record((reward?'+'+C.money(reward):'0.00')+(free?' 🎁':''));running=false;save();updateUI();return true;
 }
 async function startAuto(){if(autoCount>0){autoStop=true;setStatus('El autojuego se detendrá después del giro actual.');return}if(running)return;
@@ -164,5 +230,6 @@ document.querySelectorAll('[data-bet]').forEach(b=>b.addEventListener('click',()
 // Tabla de pagos realmente usada por los símbolos y por la función evaluate.
 const paylist=$('paylist');if(paylist){paylist.innerHTML=SYM.filter(s=>!s.scatter).map(s=>'<div><span class="symbol pay-symbol"><span class="glyph graphic graphic-'+s.id+'" aria-hidden="true"></span></span><b>'+s.id.toUpperCase()+'</b><div>'+(isDiamond?'3: '+(s.pay[0]??'–')+'x · 4: '+(s.pay[1]??'–')+'x · 5: '+(s.pay[2]??'–')+'x':'3: '+s.pay[0]+'x')+'</div></div>').join('');}
 window.addEventListener('pageshow',updateUI);window.addEventListener('storage',updateUI);draw();updateUI();if($('slotHistory'))$('slotHistory').textContent=history.length?'Últimos: '+history.join(' · '):'Últimos giros: sin historial';
-window.__casinoSlotTest={evaluate,getState:()=>({freeSpins,spins,bet,board,autoCount}),setBoard:next=>{board=next;draw()}};
+window.__casinoSlotTest={evaluate,getState:()=>({freeSpins,spins,bet,board,autoCount}),setBoard:next=>{board=next;draw()},showOutcomeFx,clearOutcomeFx};
+window.showOutcomeFx=showOutcomeFx;
 })();
